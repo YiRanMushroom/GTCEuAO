@@ -26,6 +26,7 @@ public class gtceuao {
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    // setting things up
 
     public gtceuao() {
         // Register the setup method for modloading

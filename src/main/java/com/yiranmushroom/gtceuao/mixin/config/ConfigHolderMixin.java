@@ -16,6 +16,21 @@ public abstract class ConfigHolderMixin {
         @Configurable.Gui.NumberFormat("0.0#")
         public double overclockDivisor = 4.0;
 
+        @Shadow(remap = false)
+        @Configurable
+        @Configurable.Comment({"Whether to enable the cleanroom, required for various recipes.", "Default: false"})
+        public boolean enableCleanroom = false;
+
+        @Shadow(remap = false)
+        @Configurable
+        @Configurable.Comment({"Whether to enable the Maintenance Hatch, required for Multiblocks.", "Default: false"})
+        public boolean enableMaintenance = false;
+
+        @Shadow(remap = false)
+        @Configurable
+        @Configurable.Comment({"Wether to add a \"Bedrock Ore Miner\" (also enables bedrock ore generation)", "Default: true"})
+        public boolean doBedrockOres = true;
+
 
     }
 

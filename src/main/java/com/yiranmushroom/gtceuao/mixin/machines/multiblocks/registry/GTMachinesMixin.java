@@ -14,10 +14,12 @@ import com.gregtechceu.gtceu.client.renderer.machine.ProcessingArrayMachineRende
 import com.gregtechceu.gtceu.common.data.GTCompassSections;
 import com.gregtechceu.gtceu.common.data.GTMachines;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
-import com.gregtechceu.gtceu.config.ConfigHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -35,14 +37,12 @@ public abstract class GTMachinesMixin {
      * @author YiranMushroom
      * @reason Cannot Use Head Injection
      */
-    @Overwrite(remap = false)
-    public static MultiblockMachineDefinition[] registerTieredMultis(String name,
-                                                                     BiFunction<IMachineBlockEntity, Integer, MultiblockControllerMachine> factory,
-                                                                     BiFunction<Integer, MultiblockMachineBuilder, MultiblockMachineDefinition> builder,
-                                                                     int... tiers) {
+    @Inject(method = "registerTieredMultis", at = @At("HEAD"), cancellable = true, remap = false)
+    private static void registerTieredMultis(String name, BiFunction<IMachineBlockEntity, Integer, MultiblockControllerMachine> factory, BiFunction<Integer, MultiblockMachineBuilder, MultiblockMachineDefinition> builder, int[] tiers, CallbackInfoReturnable<MultiblockMachineDefinition[]> cir) {
 
+        // Processing Array
         if (name.equals("processing_array")) {
-            builder = (tier, p_builder) -> p_builder
+            cir.setReturnValue(gtceuao$originalRegisterTieredMultis(name, factory, (tier, p_builder) -> p_builder
                     .langValue(VNF[tier] + " Processing Array")
                     .rotationState(RotationState.NON_Y_AXIS)
                     .blockProp(p -> p.noOcclusion().isViewBlocking((state, level, pos) -> false))
@@ -73,10 +73,9 @@ public abstract class GTMachinesMixin {
                             GTCEu.id("block/multiblock/processing_array")))
                     .compassSections(GTCompassSections.TIER[IV])
                     .compassNode("processing_array")
-                    .register();
+                    .register(), tiers)
+            );
         }
-
-        return gtceuao$originalRegisterTieredMultis(name, factory, builder, tiers);
 
     }
 

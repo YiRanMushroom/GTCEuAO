@@ -40,7 +40,7 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Multiplier of Processing Array Parallel Amount.", "Default: 16"})
         @Configurable.DecimalRange(min = 1, max = 4096)
-        public int PAPMultiplier = 1;
+        public int PAPMultiplier = 16;
 
         @Configurable
         @Configurable.Comment({"Is Processing Arrays Have OP Chance of Output.", "Default: true"})

@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;*/
 
 
+/*
 @Mod.EventBusSubscriber
 
 public class ConfigWarning {
@@ -25,4 +26,4 @@ public class ConfigWarning {
             player.sendSystemMessage(Component.literal("You Should disable gregtech nativeEUToFE to run gtcefe, or CRASHES are expected.\nAlso, to apply that needs game restart."));
         }
     }
-}
+}*/

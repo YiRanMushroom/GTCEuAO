@@ -24,11 +24,11 @@ public abstract class ConfigHolderMixin {
     public abstract static class compatibilityConfigsMixin {
         @Mixin(ConfigHolder.CompatibilityConfigs.EnergyCompatConfig.class)
         public abstract static class energyCompatConfigMixin {
-            @Shadow(remap = false)
+            /*@Shadow(remap = false)
             @Configurable
             @Configurable.Comment({"Enable Native GTEU to Platform native Energy (RF and alike) on GT Cables and Wires.", "This does not enable nor disable Converters.",
                     "SET TO TRUE MAY CAUSE EXCEPTIONS ","Default: false"})
-            public boolean nativeEUToPlatformNative = false;
+            public boolean nativeEUToPlatformNative = false;*/
         }
     }
 }

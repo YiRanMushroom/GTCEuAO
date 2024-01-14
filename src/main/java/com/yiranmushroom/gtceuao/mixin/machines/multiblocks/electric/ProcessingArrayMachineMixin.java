@@ -61,7 +61,7 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
             // apply overclock later
             if (AOConfigHolder.INSTANCE.machines.PAHasOPChance)
                 for (Content content : recipe.getOutputContents(ItemRecipeCapability.CAP)) {
-                    gtceuao.LOGGER.info("Modifiering Recipe Chance");
+                    gtceuao.LOGGER.info("Modifying Recipe Chance");
                     content.chance = 10000;
                 }
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getOverclockVoltage());

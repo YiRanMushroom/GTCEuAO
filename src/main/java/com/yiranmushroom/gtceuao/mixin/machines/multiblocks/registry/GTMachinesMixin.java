@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -51,11 +52,11 @@ public abstract class GTMachinesMixin {
                     .recipeType(DUMMY_RECIPES)
                     .recipeModifier(ProcessingArrayMachine::recipeModifier, true)
                     .pattern(definition -> FactoryBlockPattern.start()
-                            .aisle("XXX", "CCC", "XXX")
+                            .aisle("XXX", "ECE", "XXX")
                             .aisle("XXX", "C#C", "XXX")
-                            .aisle("XSX", "CCC", "XXX")
+                            .aisle("XSX", "ECE", "XXX")
                             .where('S', Predicates.controller(blocks(definition.getBlock())))
-                            .where('X', blocks(ProcessingArrayMachine.getCasingState(tier)).setMinGlobalLimited(4)
+                            .where('X', blocks(ProcessingArrayMachine.getCasingState(tier))
                                     .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
                                     .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
                                     .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
@@ -63,7 +64,23 @@ public abstract class GTMachinesMixin {
                                     .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
                                     .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
                                     .or(Predicates.autoAbilities(true, false, false)))
-                            .where('C', blocks(CLEANROOM_GLASS.get()))
+                            .where('C', blocks(CLEANROOM_GLASS.get(), Blocks.GLASS).setMinGlobalLimited(1)
+                                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
+                                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
+                                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
+                                    .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                            )
+                            .where('E',
+                                    Predicates.abilities(PartAbility.IMPORT_ITEMS)
+                                            .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                                            .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                                            .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
+                                            .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
+                                            .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                                            .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
+                            )
                             .where('#', Predicates.air())
                             .build())
                     .tooltips(Component.translatable("gtceu.universal.tooltip.parallel", ProcessingArrayMachine.getMachineLimit(tier)))

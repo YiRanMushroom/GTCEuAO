@@ -1,4 +1,4 @@
-package com.yiranmushroom.gtceuao.mixin;
+package com.yiranmushroom.gtceuao.mixin.energy.PEToEu;
 
 import com.gregtechceu.gtceu.api.capability.IEnergyContainer;
 import com.gregtechceu.gtceu.api.capability.IPlatformEnergyStorage;

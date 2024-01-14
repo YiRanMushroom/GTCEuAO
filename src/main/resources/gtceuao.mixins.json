@@ -2,15 +2,13 @@
   "required": true,
   "package": "com.yiranmushroom.gtceuao.mixin",
   "compatibilityLevel": "JAVA_16",
-  "refmap": "examplemod.refmap.json",
+  "refmap": "gtceuao.refmap.json",
   "mixins": [
-    "CommonProxyMixin",
-    "ConfigHolderMixin",
-    "ConfigHolderMixin$compatibilityConfigsMixin",
-    "ConfigHolderMixin$compatibilityConfigsMixin$energyCompatConfigMixin",
-    "ConfigHolderMixin$machineConfigsMixin",
-    "NotifiableEnergyContainerMixin",
-    "OverclockingLogicMixin"
+    "registries.CommonProxyMixin",
+    "energy.PEToEu.NotifiableEnergyContainerMixin",
+    "recipe.logics.OverclockingLogicMixin",
+    "config.ConfigHolderMixin",
+    "config.ConfigHolderMixin$machineConfigsMixin"
   ],
   "client": [
   ],

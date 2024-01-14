@@ -1,20 +1,18 @@
 package com.yiranmushroom.gtceuao.config;
 
-import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.yiranmushroom.gtceuao.gtceuao;
 
-import com.gregtechceu.gtceu.GTCEu;
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.configuration.config.format.ConfigFormats;
 
 @Config(id = gtceuao.MODID)
-public class MixinConfigHolder {
-    public static MixinConfigHolder INSTANCE;
+public class AOConfigHolder {
+    public static AOConfigHolder INSTANCE;
 
     public static void init() {
-        INSTANCE = Configuration.registerConfig(MixinConfigHolder.class, ConfigFormats.yaml()).getConfigInstance();
+        INSTANCE = Configuration.registerConfig(AOConfigHolder.class, ConfigFormats.yaml()).getConfigInstance();
     }
 
     @Configurable
@@ -33,6 +31,11 @@ public class MixinConfigHolder {
         @Configurable.DecimalRange(min = 1.0, max = 5.0)
         @Configurable.Gui.NumberFormat("0.0#")
         public double ExpPerfect = 3.0;
+
+        @Configurable
+        @Configurable.Comment({"Additional Times That Machines Are Allowed to Overclock, Still Confined by Voltage.", "Default: 0"})
+        @Configurable.DecimalRange(min = 0.0, max = 128.0)
+        public int bonusOfOCs = 0;
 
     }
 

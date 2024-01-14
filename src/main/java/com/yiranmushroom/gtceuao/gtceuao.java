@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class gtceuao {
     public static final String MODID = "gtceuao";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     // setting things up
 

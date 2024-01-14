@@ -9,6 +9,7 @@
     "ConfigHolderMixin$compatibilityConfigsMixin",
     "ConfigHolderMixin$compatibilityConfigsMixin$energyCompatConfigMixin",
     "ConfigHolderMixin$machineConfigsMixin",
+    "NotifiableEnergyContainerMixin",
     "OverclockingLogicMixin"
   ],
   "client": [

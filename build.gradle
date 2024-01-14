@@ -233,6 +233,8 @@ dependencies {
 
     implementation "curse.maven:config-444699:4710266"
 
+    implementation fg.deobf("curse.maven:lblib-626676:5026695")
+
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 

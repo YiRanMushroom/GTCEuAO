@@ -33,9 +33,9 @@ public class AOConfigHolder {
         public double ExpPerfect = 3.0;
 
         @Configurable
-        @Configurable.Comment({"Additional Times That Machines Are Allowed to Overclock, Still Confined by Voltage.", "Default: 0"})
+        @Configurable.Comment({"Additional Times That Machines Are Allowed to Overclock, Still Confined by Voltage.", "Default: 1"})
         @Configurable.DecimalRange(min = 0, max = 128)
-        public int bonusOfOCs = 0;
+        public int bonusOfOCs = 1;
 
         @Configurable
         @Configurable.Comment({"Multiplier of Processing Array Parallel Amount.", "Default: 16"})
@@ -45,6 +45,12 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Is Processing Arrays Have OP Chance of Output.", "Default: true"})
         public boolean PAHasOPChance = true;
+
+        @Configurable
+        @Configurable.Comment({"Is Processing Arrays Ignoring Machine Tier.",
+                "This Will Affect Both Recipe Tier Check, and Tier That Recipes can Be Overclocked to.",
+                "Default: true"})
+        public boolean PAIgnoreTier = true;
     }
 
 

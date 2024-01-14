@@ -85,4 +85,17 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
         cir.setReturnValue(super.getOutputLimits());
     }
 
+    @Inject(at = @At("HEAD"), method = "getTier", remap = false, cancellable = true)
+    private void getTier(CallbackInfoReturnable<Integer> cir) {
+        if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
+            cir.setReturnValue(super.getTier());
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "getMaxOverclockTier", remap = false, cancellable = true)
+    private void getMaxOverclockTier(CallbackInfoReturnable<Integer> cir) {
+        if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
+            cir.setReturnValue(super.getMaxOverclockTier());
+        }
+    }
 }

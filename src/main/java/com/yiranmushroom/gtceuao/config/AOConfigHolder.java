@@ -17,6 +17,7 @@ public class AOConfigHolder {
 
     @Configurable
     public MachineConfigs machines = new MachineConfigs();
+    @Configurable public RecipeConfigs recipes = new RecipeConfigs();
 
     public static class MachineConfigs {
 
@@ -51,6 +52,17 @@ public class AOConfigHolder {
                 "This Will Affect Both Recipe Tier Check, and Tier That Recipes can Be Overclocked to.",
                 "Default: true"})
         public boolean PAIgnoreTier = true;
+    }
+
+    public static class RecipeConfigs {
+        @Configurable
+        @Configurable.Comment({"Is Processing Arrays Have Easier Recipes.",
+                "Default: true"})
+        public boolean EasierPARecipes = true;
+
+        @Configurable
+        @Configurable.Comment({"Do circuit assemblers need higher tier circuits to craft.", "Default: false"})
+        public boolean circuitAssemblersNeedHigherTierCircuits = false;
     }
 
 

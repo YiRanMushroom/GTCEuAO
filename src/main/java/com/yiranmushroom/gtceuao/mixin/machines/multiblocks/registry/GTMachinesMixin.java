@@ -14,11 +14,7 @@ import com.gregtechceu.gtceu.client.renderer.machine.ProcessingArrayMachineRende
 import com.gregtechceu.gtceu.common.data.GTCompassSections;
 import com.gregtechceu.gtceu.common.data.GTMachines;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
-<<<<<<< HEAD
-//import com.gregtechceu.gtceu.config.ConfigHolder;
-=======
 import com.gregtechceu.gtceu.config.ConfigHolder;
->>>>>>> origin/master
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.spongepowered.asm.mixin.*;

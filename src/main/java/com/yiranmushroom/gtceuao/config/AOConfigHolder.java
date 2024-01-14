@@ -34,9 +34,17 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"Additional Times That Machines Are Allowed to Overclock, Still Confined by Voltage.", "Default: 0"})
-        @Configurable.DecimalRange(min = 0.0, max = 128.0)
+        @Configurable.DecimalRange(min = 0, max = 128)
         public int bonusOfOCs = 0;
 
+        @Configurable
+        @Configurable.Comment({"Multiplier of Processing Array Parallel Amount.", "Default: 16"})
+        @Configurable.DecimalRange(min = 1, max = 4096)
+        public int PAPMultiplier = 1;
+
+        @Configurable
+        @Configurable.Comment({"Is Processing Arrays Have OP Chance of Output.", "Default: true"})
+        public boolean PAHasOPChance = true;
     }
 
 

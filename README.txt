@@ -1,3 +1,7 @@
+THIS MOD NOW HAS SEVERE COMPATIBILITY ISSUES, ONLY TESTED IN BUILD 1.0.20b-build-411, USE IN OTHER VERSIONS AT YOUR OWN RISK
+(ALTHOUGH i CAN'T GUARANTEE IT WILL WORK IN 1.0.20b-build-411 EITHER)
+
+
 Current Functionalities:
 1. Add and widen configs about overclocking logic
 2. Add automatic platform energy to GTEU conversion

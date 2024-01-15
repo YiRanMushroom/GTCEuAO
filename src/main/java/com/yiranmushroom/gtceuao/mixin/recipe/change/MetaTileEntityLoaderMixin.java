@@ -36,6 +36,9 @@ import static com.gregtechceu.gtceu.data.recipe.CraftingComponent.*;
 import static com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityLoader.registerMachineRecipe;
 
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MetaTileEntityLoader.class)
 public class MetaTileEntityLoaderMixin {
@@ -43,8 +46,10 @@ public class MetaTileEntityLoaderMixin {
      * @author YiRanMushroom
      * @reason Get full control of the recipe registry
      */
-    @Overwrite(remap = false)
-    public static void init(Consumer<FinishedRecipe> provider) {
+//    @Overwrite(remap = false)
+    @Inject(method = "init", at = @At("RETURN"), remap = false)
+    private static void init(Consumer<FinishedRecipe> provider, CallbackInfo ci) {
+/*
         CraftingComponent.initializeComponents();
 
         VanillaRecipeHelper.addShapedRecipe(provider, true, "casing_ulv", GTBlocks.MACHINE_CASING_ULV.asStack(), "PPP", "PwP", "PPP", 'P', new UnificationEntry(TagPrefix.plate, GTMaterials.WroughtIron));
@@ -96,6 +101,7 @@ public class MetaTileEntityLoaderMixin {
         VanillaRecipeHelper.addShapedRecipe(provider, true, "casing_grate_casing", GTBlocks.CASING_GRATE.asStack(2), "PVP", "PFP", "PMP", 'P', new ItemStack(Blocks.IRON_BARS, 1), 'F', new UnificationEntry(TagPrefix.frameGt, GTMaterials.Steel), 'M', GTItems.ELECTRIC_MOTOR_MV, 'V', new UnificationEntry(TagPrefix.rotor, GTMaterials.Steel));
         VanillaRecipeHelper.addShapedRecipe(provider, true, "casing_assembly_control", GTBlocks.CASING_ASSEMBLY_CONTROL.asStack(2), "CPC", "SFE", "CMC", 'C', CustomTags.EV_CIRCUITS, 'P', GTItems.HIGH_POWER_INTEGRATED_CIRCUIT, 'S', GTItems.SENSOR_IV.asStack(), 'F', new UnificationEntry(TagPrefix.frameGt, GTMaterials.TungstenSteel), 'E', GTItems.EMITTER_IV.asStack(), 'M', GTItems.ELECTRIC_MOTOR_IV);
         VanillaRecipeHelper.addShapedRecipe(provider, true, "casing_assembly_line", GTBlocks.CASING_ASSEMBLY_LINE.asStack(2), "PGP", "AFA", "PGP", 'P', new UnificationEntry(TagPrefix.plate, GTMaterials.Steel), 'G', new UnificationEntry(TagPrefix.gear, GTMaterials.Ruridit), 'A', GTItems.ROBOT_ARM_IV.asStack(), 'F', ChemicalHelper.get(TagPrefix.frameGt, GTMaterials.TungstenSteel));
+*/
 
         // TODO Hazard sign blocks
         /*
@@ -138,6 +144,7 @@ public class MetaTileEntityLoaderMixin {
         VanillaRecipeHelper.addShapelessRecipe("noise_hazard_to_steel_solid_casing", MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID), MetaBlocks.WARNING_SIGN.getItemVariant(NOISE_HAZARD));
         */
 
+/*
         var multiHatchMaterials = new Material[]{
                 GTMaterials.Titanium, GTMaterials.TungstenSteel, GTMaterials.NiobiumTitanium,
                 GTMaterials.Iridium, GTMaterials.Naquadah, GTMaterials.Neutronium
@@ -264,18 +271,15 @@ public class MetaTileEntityLoaderMixin {
         VanillaRecipeHelper.addShapedRecipe(provider, true, "large_chemical_reactor", GTMachines.LARGE_CHEMICAL_REACTOR.asStack(), "CRC", "PMP", "CHC", 'C', CustomTags.HV_CIRCUITS, 'R', ChemicalHelper.get(TagPrefix.rotor, GTMaterials.StainlessSteel), 'P', ChemicalHelper.get(TagPrefix.pipeLargeFluid, GTMaterials.Polytetrafluoroethylene), 'M', GTItems.ELECTRIC_MOTOR_HV.asStack(), 'H', GTMachines.HULL[HV].asStack());
 
         VanillaRecipeHelper.addShapedRecipe(provider, true, "power_substation", GTMachines.POWER_SUBSTATION.asStack(), "LPL", "CBC", "LPL", 'L', GTItems.LAPOTRON_CRYSTAL, 'P', GTItems.POWER_INTEGRATED_CIRCUIT, 'C', CustomTags.LuV_CIRCUITS, 'B', GTBlocks.CASING_PALLADIUM_SUBSTATION.asStack());
+*/
 
         if (ConfigHolder.INSTANCE.machines.doProcessingArray) {
-            if (!AOConfigHolder.INSTANCE.recipes.EasierPARecipes) {
-                VanillaRecipeHelper.addShapedRecipe(provider, true, "processing_array", GTMachines.PROCESSING_ARRAY[GTValues.IV].asStack(), "COC", "RHR", "CPC", 'C', CustomTags.IV_CIRCUITS, 'O', GTItems.TOOL_DATA_ORB.asStack(), 'R', GTItems.ROBOT_ARM_EV.asStack(), 'P', GTBlocks.FLUID_PIPE_BLOCKS.get(TagPrefix.pipeLargeFluid, GTMaterials.StainlessSteel), 'H', GTMachines.HULL[GTValues.EV].asStack());
-                VanillaRecipeHelper.addShapedRecipe(provider, true, "advanced_processing_array", GTMachines.PROCESSING_ARRAY[GTValues.LuV].asStack(), "RCR", "SPE", "HNH", 'R', GTItems.ROBOT_ARM_LuV.asStack(), 'C', CustomTags.ZPM_CIRCUITS, 'S', GTItems.SENSOR_LuV, 'P', GTMachines.PROCESSING_ARRAY[IV].asStack(), 'E', GTItems.EMITTER_LuV.asStack(), 'H', new UnificationEntry(TagPrefix.plate, GTMaterials.HSSE), 'N', new UnificationEntry(TagPrefix.pipeLargeFluid, GTMaterials.Naquadah));
-            } else {
+            if (AOConfigHolder.INSTANCE.recipes.EasierPARecipes) {
                 VanillaRecipeHelper.addShapedRecipe(provider, true, "processing_array", GTMachines.PROCESSING_ARRAY[GTValues.IV].asStack(4), "CRC", "RHR", "CPC", 'C', CustomTags.MV_CIRCUITS, 'R', GTItems.ROBOT_ARM_LV.asStack(), 'P', GTBlocks.FLUID_PIPE_BLOCKS.get(TagPrefix.pipeLargeFluid, GTMaterials.Aluminium), 'H', GTMachines.HULL[GTValues.MV].asStack());
                 VanillaRecipeHelper.addShapedRecipe(provider, true, "advanced_processing_array", GTMachines.PROCESSING_ARRAY[GTValues.LuV].asStack(), "CPC", "RHR", "CTC", 'R', GTItems.ROBOT_ARM_EV.asStack(), 'C', CustomTags.IV_CIRCUITS, 'P', GTMachines.PROCESSING_ARRAY[IV].asStack(), 'H', GTMachines.HULL[GTValues.MV].asStack(), 'T', new UnificationEntry(TagPrefix.pipeLargeFluid, GTMaterials.Titanium));
-
             }
         }
-
+/*
         // GENERATORS
         VanillaRecipeHelper.addShapedRecipe(provider, true, "diesel_generator_lv", GTMachines.COMBUSTION[LV].asStack(), "PCP", "EME", "GWG", 'M', GTMachines.HULL[GTValues.LV].asStack(), 'P', GTItems.ELECTRIC_PISTON_LV, 'E', GTItems.ELECTRIC_MOTOR_LV, 'C', CustomTags.LV_CIRCUITS, 'W', new UnificationEntry(TagPrefix.cableGtSingle, GTMaterials.Tin), 'G', new UnificationEntry(TagPrefix.gear, GTMaterials.Steel));
         VanillaRecipeHelper.addShapedRecipe(provider, true, "diesel_generator_mv", GTMachines.COMBUSTION[MV].asStack(), "PCP", "EME", "GWG", 'M', GTMachines.HULL[GTValues.MV].asStack(), 'P', GTItems.ELECTRIC_PISTON_MV, 'E', GTItems.ELECTRIC_MOTOR_MV, 'C', CustomTags.MV_CIRCUITS, 'W', new UnificationEntry(TagPrefix.cableGtSingle, GTMaterials.Copper), 'G', new UnificationEntry(TagPrefix.gear, GTMaterials.Aluminium));
@@ -337,10 +341,11 @@ public class MetaTileEntityLoaderMixin {
         registerMachineRecipe(provider, GTMachines.FLUID_HEATER, "OGO", "PMP", "WCW", 'M', HULL, 'P', PUMP, 'O', COIL_HEATING_DOUBLE, 'C', CIRCUIT, 'W', CABLE, 'G', GLASS);
         registerMachineRecipe(provider, GTMachines.SIFTER, "WFW", "PMP", "CFC", 'M', HULL, 'P', PISTON, 'F', GTItems.ITEM_FILTER, 'C', CIRCUIT, 'W', CABLE);
         registerMachineRecipe(provider, GTMachines.ARC_FURNACE, "WGW", "CMC", "PPP", 'M', HULL, 'P', PLATE, 'C', CIRCUIT, 'W', CABLE_QUAD, 'G', new UnificationEntry(TagPrefix.dust, GTMaterials.Graphite));
+        */
         if (AOConfigHolder.INSTANCE.recipes.circuitAssemblersNeedHigherTierCircuits)
-            registerMachineRecipe(provider, GTMachines.CIRCUIT_ASSEMBLER, "RIE", "CHC", "WIW", 'R', ROBOT_ARM, 'I', BETTER_CIRCUIT, 'E', EMITTER, 'C', CONVEYOR, 'H', HULL, 'W', CABLE);
-        else
             registerMachineRecipe(provider, GTMachines.CIRCUIT_ASSEMBLER, "RIE", "CHC", "WIW", 'R', ROBOT_ARM, 'I', CIRCUIT, 'E', EMITTER, 'C', CONVEYOR, 'H', HULL, 'W', CABLE);
+
+        /*
         // TODO Replication system
         //registerMachineRecipe(GTMachines.MASS_FABRICATOR, "CFC", "QMQ", "CFC", 'M', HULL, 'Q', CABLE_QUAD, 'C', BETTER_CIRCUIT, 'F', FIELD_GENERATOR);
         //registerMachineRecipe(GTMachines.REPLICATOR, "EFE", "CMC", "EQE", 'M', HULL, 'Q', CABLE_QUAD, 'C', BETTER_CIRCUIT, 'F', FIELD_GENERATOR, 'E', EMITTER);
@@ -445,6 +450,6 @@ public class MetaTileEntityLoaderMixin {
             registerMachineRecipe(provider, true, GTMachines.ENERGY_CONVERTER_4A, " WW", "RMC", " WW", 'C', CIRCUIT, 'M', HULL, 'W', CABLE_QUAD, 'R', new UnificationEntry(TagPrefix.cableGtQuadruple, GTMaterials.RedAlloy));
             registerMachineRecipe(provider, true, GTMachines.ENERGY_CONVERTER_8A, " WW", "RMC", " WW", 'C', CIRCUIT, 'M', HULL, 'W', CABLE_OCT, 'R', new UnificationEntry(TagPrefix.cableGtOctal, GTMaterials.RedAlloy));
             registerMachineRecipe(provider, true, GTMachines.ENERGY_CONVERTER_16A, " WW", "RMC", " WW", 'C', CIRCUIT, 'M', HULL, 'W', CABLE_HEX, 'R', new UnificationEntry(TagPrefix.cableGtHex, GTMaterials.RedAlloy));
-        }
+        }*/
     }
 }

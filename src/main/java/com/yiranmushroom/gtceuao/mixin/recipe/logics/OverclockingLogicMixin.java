@@ -1,6 +1,8 @@
 package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
+import com.gregtechceu.gtceu.config.ConfigHolder;
+import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.longs.LongIntMutablePair;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
 import org.spongepowered.asm.mixin.Final;
@@ -11,17 +13,26 @@ import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 
 import javax.annotation.Nonnull;
 
+import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
+
 @Mixin(OverclockingLogic.class)
 public abstract class OverclockingLogicMixin {
     @Final
     @Shadow(remap = false)
-    public static double STANDARD_OVERCLOCK_DURATION_DIVISOR;
+    public static double STANDARD_OVERCLOCK_DURATION_DIVISOR = ConfigHolder.INSTANCE.machines.overclockDivisor;
     @Final
     @Shadow(remap = false)
     public static final double STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER = AOConfigHolder.INSTANCE.machines.overclockMultiplier;
     @Final
     @Shadow(remap = false)
     public static final double PERFECT_OVERCLOCK_DURATION_DIVISOR = Math.pow(STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE.machines.ExpPerfect);
+
+    @Final
+    @Shadow(remap = false)
+    public static final OverclockingLogic PERFECT_OVERCLOCK = new OverclockingLogic(PERFECT_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
+    @Final
+    @Shadow(remap = false)
+    public static final OverclockingLogic NON_PERFECT_OVERCLOCK = new OverclockingLogic(STANDARD_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
 
     /**
      * @author YiRanMushroom
@@ -34,10 +45,10 @@ public abstract class OverclockingLogicMixin {
         int amountPerfectOC = amountEUDiscount;
         recipeEUt = (long) ((double) recipeEUt * Math.min(1.0, Math.pow(0.95, (double) amountEUDiscount)));
         if (amountPerfectOC > 0) {
-            LongIntPair overclock = standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, amountPerfectOC, 4.0, 4.0);
-            return standardOverclockingLogic(overclock.leftLong(), maximumVoltage, overclock.rightInt(), maxOverclocks - amountPerfectOC, STANDARD_OVERCLOCK_DURATION_DIVISOR, 4.0);
+            LongIntPair overclock = standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, amountPerfectOC, PERFECT_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
+            return standardOverclockingLogic(overclock.leftLong(), maximumVoltage, overclock.rightInt(), maxOverclocks - amountPerfectOC, STANDARD_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
         } else {
-            return standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, maxOverclocks, STANDARD_OVERCLOCK_DURATION_DIVISOR, 4.0);
+            return standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, maxOverclocks, STANDARD_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
         }
     }
 
@@ -82,6 +93,7 @@ public abstract class OverclockingLogicMixin {
             // in case duration overclocking would waste energy
             resultVoltage = potentialVoltage;
         }
+
         return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
     }
 }

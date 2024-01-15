@@ -59,17 +59,22 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
             // apply parallel first
             recipe = GTRecipeModifiers.accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.PAPMultiplier * Math.min(limit, getMachineLimit(machine.getDefinition().getTier())), false).getA();
             // apply overclock later
-            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance)
-                for (Content content : recipe.getOutputContents(ItemRecipeCapability.CAP)) {
-                    gtceuao.LOGGER.info("Modifying Recipe Chance");
-                    content.chance = 10000;
-                }
+
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getOverclockVoltage());
+
+            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance) {
+                var copied = recipe.copy();
+                for (Content content : copied.getOutputContents(ItemRecipeCapability.CAP)) {
+                    content.chance = 1;
+                }
+                return copied;
+            }
+
             return recipe;
+
         }
         return null;
     }
-
 
     @Inject(at = @At("HEAD"), method = "getCasingState", remap = false, cancellable = true)
     private static void getCasingState(int tier, CallbackInfoReturnable<Block> cir) {

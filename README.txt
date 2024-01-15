@@ -7,6 +7,7 @@ Current Functionalities:
 5. Add configs to determine weather something has easier recipes.
     1. Processing Arrays
     2. Circuit Assemblers
+6. Add configs to modify Parallel Logic
 
 ---------------------------------------------------
 TODO:

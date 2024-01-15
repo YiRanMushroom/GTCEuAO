@@ -17,13 +17,14 @@ public class AOConfigHolder {
 
     @Configurable
     public MachineConfigs machines = new MachineConfigs();
-    @Configurable public RecipeConfigs recipes = new RecipeConfigs();
+    @Configurable
+    public RecipeConfigs recipes = new RecipeConfigs();
 
     public static class MachineConfigs {
 
         @Configurable
         @Configurable.Comment({"Multiplier for Recipe Power Consumption per Overclock.", "Default: 1.0"})
-        @Configurable.DecimalRange(min = 1.0, max = 2.0)
+        @Configurable.DecimalRange(min = 1.0, max = 4.0)
         @Configurable.Gui.NumberFormat("0.0#")
         public double overclockMultiplier = 1.0;
 
@@ -52,6 +53,12 @@ public class AOConfigHolder {
                 "This Will Affect Both Recipe Tier Check, and Tier That Recipes can Be Overclocked to.",
                 "Default: true"})
         public boolean PAIgnoreTier = true;
+
+        @Configurable
+        @Configurable.Comment({"Do Parallel Need More Power to Operate, Rather than Use Original Recipe Power.",
+                "Only Affect Input Energy",
+                "Default: false"})
+        public boolean ParallelNeedMorePower = false;
     }
 
     public static class RecipeConfigs {
@@ -63,6 +70,8 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do circuit assemblers need higher tier circuits to craft.", "Default: false"})
         public boolean circuitAssemblersNeedHigherTierCircuits = false;
+
+
     }
 
 

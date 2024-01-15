@@ -12,6 +12,7 @@
     "machines.multiblocks.electric.ProcessingArrayMachineMixin",
     "machines.multiblocks.registry.GTMachinesMixin",
     "recipe.change.MetaTileEntityLoaderMixin",
+    "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
     "registries.CommonProxyMixin"
   ],

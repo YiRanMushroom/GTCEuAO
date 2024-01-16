@@ -1,5 +1,5 @@
-THIS MOD NOW HAS SEVERE COMPATIBILITY ISSUES, ONLY TESTED IN BUILD 1.0.20b-build-411, USE IN OTHER VERSIONS AT YOUR OWN RISK
-(ALTHOUGH i CAN'T GUARANTEE IT WILL WORK IN 1.0.20b-build-411 EITHER)
+THIS MOD NOW HAS SEVERE COMPATIBILITY ISSUES, ONLY TESTED IN BUILD 1.0.20b-build-412, USE IN OTHER VERSIONS AT YOUR OWN RISK
+(ALTHOUGH i CAN'T GUARANTEE IT WILL WORK IN 1.0.20b-build-412 EITHER)
 
 
 Current Functionalities:
@@ -12,6 +12,7 @@ Current Functionalities:
     1. Processing Arrays
     2. Circuit Assemblers
 6. Add configs to modify Parallel Logic
+7. Add configs to make easier circuits, boards, chips recipes.
 
 ---------------------------------------------------
 TODO:

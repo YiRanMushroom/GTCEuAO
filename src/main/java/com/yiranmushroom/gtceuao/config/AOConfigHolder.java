@@ -71,7 +71,21 @@ public class AOConfigHolder {
         @Configurable.Comment({"Do circuit assemblers need higher tier circuits to craft.", "Default: false"})
         public boolean circuitAssemblersNeedHigherTierCircuits = false;
 
+        @Configurable
+        @Configurable.Comment({"Do expensive wafers have a better output after cut.", "Default: true"})
+        public boolean expensiveWafersHaveHighOutput = true;
 
+        @Configurable
+        @Configurable.Comment({"Do easier crystal processor recipes been registered, this will also slightly buff the output of the original recipes.", "Default: true"})
+        public boolean easierCrystalProcessors = true;
+
+        @Configurable
+        @Configurable.Comment({"Do circuits have higher output, usually doubled.", "Default: true"})
+        public boolean circuitsHaveHigherOutput = true;
+
+        @Configurable
+        @Configurable.Comment({"Are easier board recipe enabled. This will still need you to complete necessary processing", "Default: true"})
+        public boolean easierBoardRecipes = true;
     }
 
 

@@ -11,10 +11,12 @@ Current Functionalities:
 5. Add configs to determine weather something has easier recipes.
     1. Processing Arrays
     2. Circuit Assemblers
+    3. AE2 buses and hatches, this will also make GTRecipes for AE2 components. (Haven't making yet)
 6. Add configs to modify Parallel Logic
 7. Add configs to make easier circuits, boards, chips recipes.
 8. Support survival mode creative flight through configs (default disabled)
-9. Cleaning up DEV Environment logs
+9. Add configs to buff buses and hatches (Now doing)
+
 
 ---------------------------------------------------
 TODO:

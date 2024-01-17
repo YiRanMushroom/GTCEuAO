@@ -17,11 +17,8 @@ public class GameTypeMixin {
     @Inject(method = "updatePlayerAbilities", at = @At("RETURN"), remap = true)
     public void updatePlayerAbilities(Abilities pAbilities, CallbackInfo ci) {
 
-//        LOGGER.info("Injecting updatePlayerAbilities.");
-
         if (AOConfigHolder.INSTANCE.misc.flyAlwaysEnabled) {
             pAbilities.mayfly = true;
-//            LOGGER.info("Fly should always be enabled.");
         }
     }
 }

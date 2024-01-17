@@ -62,6 +62,10 @@ public class AOConfigHolder {
                 "Only Affect Input Energy",
                 "Default: false"})
         public boolean ParallelNeedMorePower = false;
+
+        @Configurable
+        @Configurable.Comment({"Do buff buses and hatches", "Default: true"})
+        public boolean buffBusesAndHatches = true;
     }
 
     public static class RecipeConfigs {
@@ -89,6 +93,11 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Are easier board recipe enabled. This will still need you to complete necessary processing", "Default: true"})
         public boolean easierBoardRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({"Are AE2 buses and hatches have easier recipes. This will also add GTRecipes for AE2 components", "Default: true"})
+        public boolean AE2RecipeSupport = true;
+
     }
 
     public static class MiscConfigs {

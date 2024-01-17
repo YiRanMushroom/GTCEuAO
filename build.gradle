@@ -239,6 +239,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:lblib-626676:5026695")
 
+    implementation "curse.maven:applied_energistics_2-223794:5032144"
+
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 

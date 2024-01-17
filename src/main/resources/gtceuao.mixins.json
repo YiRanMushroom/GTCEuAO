@@ -10,6 +10,8 @@
     "config.ConfigHolderMixin$machineConfigsMixin",
     "energy.PEToEu.NotifiableEnergyContainerMixin",
     "machines.multiblocks.electric.ProcessingArrayMachineMixin",
+    "machines.multiblocks.parts.FluidHatchPartMachineMixin",
+    "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.registry.GTMachinesMixin",
     "misc.GameTypeMixin",
     "recipe.change.MetaTileEntityLoaderMixin",

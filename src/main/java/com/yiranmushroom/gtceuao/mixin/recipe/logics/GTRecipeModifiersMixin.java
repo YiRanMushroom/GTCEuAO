@@ -29,7 +29,7 @@ public class GTRecipeModifiersMixin {
             if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
                 copied = new GTRecipe(copied.recipeType, copied.id, copied.inputs, copied.outputs,
                         oriEUt, copied.tickOutputs, copied.conditions, copied.data, copied.duration, copied.isFuel);
-                LOGGER.info("Original Recipe has a EUt of " + EURecipeCapability.CAP.of(oriEUt.get(EURecipeCapability.CAP).get(0).content) + ", copied recipe has a EUt of " + EURecipeCapability.CAP.of(copied.tickInputs.get(EURecipeCapability.CAP).get(0).content) + ".");
+//                LOGGER.info("Original Recipe has a EUt of " + EURecipeCapability.CAP.of(oriEUt.get(EURecipeCapability.CAP).get(0).content) + ", copied recipe has a EUt of " + EURecipeCapability.CAP.of(copied.tickInputs.get(EURecipeCapability.CAP).get(0).content) + ".");
             }
 
 

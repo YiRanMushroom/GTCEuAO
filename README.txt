@@ -13,6 +13,8 @@ Current Functionalities:
     2. Circuit Assemblers
 6. Add configs to modify Parallel Logic
 7. Add configs to make easier circuits, boards, chips recipes.
+8. Support survival mode creative flight through configs (default disabled)
+9. Cleaning up DEV Environment logs
 
 ---------------------------------------------------
 TODO:

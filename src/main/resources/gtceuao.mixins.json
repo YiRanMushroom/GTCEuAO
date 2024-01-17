@@ -11,6 +11,7 @@
     "energy.PEToEu.NotifiableEnergyContainerMixin",
     "machines.multiblocks.electric.ProcessingArrayMachineMixin",
     "machines.multiblocks.registry.GTMachinesMixin",
+    "misc.GameTypeMixin",
     "recipe.change.MetaTileEntityLoaderMixin",
     "recipe.change.machineRecipes.GTRecipesMixin",
     "recipe.logics.GTRecipeModifiersMixin",

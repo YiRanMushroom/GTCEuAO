@@ -20,6 +20,9 @@ public class AOConfigHolder {
     @Configurable
     public RecipeConfigs recipes = new RecipeConfigs();
 
+    @Configurable
+    public MiscConfigs misc = new MiscConfigs();
+
     public static class MachineConfigs {
 
         @Configurable
@@ -86,6 +89,13 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Are easier board recipe enabled. This will still need you to complete necessary processing", "Default: true"})
         public boolean easierBoardRecipes = true;
+    }
+
+    public static class MiscConfigs {
+        @Configurable
+        @Configurable.Comment({"Is fly always enabled. (even in survival mode)","Default: false"})
+        public boolean flyAlwaysEnabled = false;
+
     }
 
 

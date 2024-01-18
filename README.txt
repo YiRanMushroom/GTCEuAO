@@ -1,6 +1,6 @@
-THIS MOD NOW HAS SEVERE COMPATIBILITY ISSUES, ONLY TESTED IN BUILD 1.0.20b-build-412, USE IN OTHER VERSIONS AT YOUR OWN RISK
-(ALTHOUGH i CAN'T GUARANTEE IT WILL WORK IN 1.0.20b-build-412 EITHER)
+Please use Curseforge / Modrinth gregtech versions! Not GitHub's!
 
+请使用 Curseforge / Modrinth 的 GregTech 版本！不要用GitHub的！
 
 Current Functionalities:
 1. Add and widen configs about overclocking logic

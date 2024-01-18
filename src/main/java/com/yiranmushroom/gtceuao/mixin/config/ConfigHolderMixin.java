@@ -41,6 +41,14 @@ public abstract class ConfigHolderMixin {
 
         }
     }
+
+    @Mixin(ConfigHolder.RecipeConfigs.class)
+    public abstract static class recipeConfigsMixin {
+        @Shadow(remap = false)
+        @Configurable
+        @Configurable.Comment({"Whether to remove Block/Ingot compression and decompression in the Crafting Table.", "Default: false"})
+        public boolean disableManualCompression = false; // default true
+    }
 }
 
 

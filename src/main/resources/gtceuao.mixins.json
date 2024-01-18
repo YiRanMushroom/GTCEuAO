@@ -8,6 +8,7 @@
     "config.ConfigHolderMixin$compatibilityConfigsMixin",
     "config.ConfigHolderMixin$compatibilityConfigsMixin$energyCompatConfigMixin",
     "config.ConfigHolderMixin$machineConfigsMixin",
+    "config.ConfigHolderMixin$recipeConfigsMixin",
     "energy.PEToEu.NotifiableEnergyContainerMixin",
     "machines.multiblocks.electric.ProcessingArrayMachineMixin",
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",

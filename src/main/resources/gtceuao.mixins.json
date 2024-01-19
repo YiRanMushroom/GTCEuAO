@@ -15,6 +15,7 @@
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.registry.GTMachinesMixin",
     "machines.multiblocks.registry.GTRegistryMixin",
+    "machines.multiblocks.registry.MultiblockMachineBuilderMixin",
     "misc.GameTypeMixin",
     "recipe.change.MetaTileEntityLoaderMixin",
     "recipe.change.machineRecipes.GTRecipesMixin",

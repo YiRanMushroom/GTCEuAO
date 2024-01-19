@@ -64,8 +64,12 @@ public class AOConfigHolder {
         public boolean ParallelNeedMorePower = false;
 
         @Configurable
-        @Configurable.Comment({"Do buff buses and hatches", "Default: true"})
+        @Configurable.Comment({"Do Buff Buses and Hatches","Because of bug of gregtech itself, the item slot cannot be too large, may fix in the future", "Default: true"})
         public boolean buffBusesAndHatches = true;
+
+        @Configurable
+        @Configurable.Comment({"Do Multiblocks Be Strongly Buffed", "Default: true"})
+        public boolean buffMultiblocks = true;
     }
 
     public static class RecipeConfigs {

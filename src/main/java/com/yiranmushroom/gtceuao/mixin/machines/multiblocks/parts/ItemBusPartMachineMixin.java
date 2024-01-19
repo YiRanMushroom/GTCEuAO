@@ -12,7 +12,7 @@ public class ItemBusPartMachineMixin {
     @Inject(method = "getInventorySize", at = @At("HEAD"), cancellable = true, remap = false)
     private void getInventorySize(CallbackInfoReturnable<Integer> cir) {
         if (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches) {
-            int sizeRoot = 1 + 2 * Math.min(9, ((ItemBusPartMachine) (Object) this).getTier());
+            int sizeRoot = Math.min(1 + 2 * Math.min(9, ((ItemBusPartMachine) (Object) this).getTier()), 10);
             cir.setReturnValue(sizeRoot * sizeRoot);
         }
 

@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -38,27 +39,21 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
         super(registrate, name, definitionFactory, metaMachine, blockFactory, itemFactory, blockEntityFactory);
     }
 
+    private static HashMap<String, Boolean> nameMap = new HashMap<>() {
+        {
+            this.put("electric_blast_furnace", false);
+            this.put("iv_processing_array", false);
+            this.put("luv_processing_array", false);
+        }
+    };
 
-    @Inject(method = "register()Lcom/gregtechceu/gtceu/api/machine/MultiblockMachineDefinition;", at = @At("HEAD"), cancellable = false, remap = false)
-    private void registerM(CallbackInfoReturnable<MultiblockMachineDefinition> cir) {
-        if (AOConfigHolder.INSTANCE.machines.buffMultiblocks)
-            switch (this.name) {
-                case "electric_blast_furnace" ->
-                        ((MultiblockMachineBuilder) (Object) this).recipeModifier(AORecipeModifier::ebfOverclock)
-                                .pattern(definition -> FactoryBlockPattern.start()
-                                        .aisle("XXX", "CCC", "CCC", "XXX")
-                                        .aisle("XXX", "C#C", "C#C", "XMX")
-                                        .aisle("XSX", "CCC", "CCC", "XXX")
-                                        .where('S', controller(blocks(definition.getBlock())))
-                                        .where('X', blocks(CASING_INVAR_HEATPROOF.get())
-                                                .or(autoAbilities(definition.getRecipeTypes()))
-                                                .or(autoAbilities(true, false, false)))
-                                        .where('M', ability(PartAbility.MUFFLER).or(autoAbilities(true, false, false)
-                                                .or(blocks(CASING_INVAR_HEATPROOF.get()))))
-                                        .where('C', heatingCoils())
-                                        .where('#', air())
-                                        .build());
-            }
+    @Inject(method = "register()Lcom/gregtechceu/gtceu/api/machine/MultiblockMachineDefinition;",
+            at = @At("HEAD"), cancellable = true, remap = false)
+    private void newRegister(CallbackInfoReturnable<MultiblockMachineDefinition> cir) {
+        if (nameMap.containsKey(name) && !nameMap.get(name)) {
+            nameMap.put(name, true);
+            cir.setReturnValue(null);
+        }
     }
 
 }

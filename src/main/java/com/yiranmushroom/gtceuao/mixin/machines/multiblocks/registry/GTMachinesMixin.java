@@ -12,9 +12,11 @@ import com.gregtechceu.gtceu.api.machine.MultiblockMachineDefinition;
 import com.gregtechceu.gtceu.api.machine.multiblock.CoilWorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.MultiblockControllerMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
+import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
+import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
 import com.gregtechceu.gtceu.client.renderer.machine.ProcessingArrayMachineRenderer;
@@ -47,6 +49,7 @@ import java.util.function.BiFunction;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.api.GTValues.ALL_TIERS;
 import static com.gregtechceu.gtceu.api.pattern.Predicates.*;
+import static com.gregtechceu.gtceu.api.pattern.util.RelativeDirection.*;
 import static com.gregtechceu.gtceu.api.registry.GTRegistries.REGISTRATE;
 import static com.gregtechceu.gtceu.common.data.GTBlocks.*;
 import static com.gregtechceu.gtceu.common.data.GTMachines.*;
@@ -55,6 +58,283 @@ import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 @Mixin(GTMachines.class)
 public abstract class GTMachinesMixin {
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition ASSEMBLY_LINE = REGISTRATE.multiblock("assembly_line", WorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.ASSEMBLY_LINE_RECIPES)
+            .recipeModifier(AORecipeModifier::perfectMachineParallel)
+            .appearanceBlock(CASING_STEEL_SOLID)
+            .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT)
+                    .aisle("FIF", "RTR", "SAG", "#Y#")
+                    .aisle("FIF", "RTR", "GAG", "#Y#").setRepeatable(3, 15)
+                    .aisle("FOF", "RTR", "GAG", "#Y#")
+                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('F', blocks(CASING_STEEL_SOLID.get())
+                            .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(4)))
+                    .where('O', Predicates.abilities(PartAbility.EXPORT_ITEMS).addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))
+                    .where('Y', blocks(CASING_STEEL_SOLID.get()).or(Predicates.abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1)))
+                    .where('I', Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                    .where('G', blocks(CASING_GRATE.get()))
+                    .where('A', blocks(CASING_ASSEMBLY_CONTROL.get()))
+                    .where('R', blocks(CASING_LAMINATED_GLASS.get()))
+                    .where('T', blocks(CASING_ASSEMBLY_LINE.get()))
+                    .where('#', Predicates.any())
+                    .build())
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
+                    GTCEu.id("block/multiblock/assembly_line"), false)
+            .compassSections(GTCompassSections.TIER[IV])
+            .compassNodeSelf()
+            .register();
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition VACUUM_FREEZER = REGISTRATE.multiblock("vacuum_freezer", WorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.VACUUM_RECIPES)
+            .recipeModifier(AORecipeModifier::perfectMachineParallel)
+            .appearanceBlock(CASING_ALUMINIUM_FROSTPROOF)
+            .pattern(definition -> FactoryBlockPattern.start()
+                    .aisle("XXX", "XXX", "XXX")
+                    .aisle("XXX", "X#X", "XXX")
+                    .aisle("XXX", "XSX", "XXX")
+                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('X', blocks(CASING_ALUMINIUM_FROSTPROOF.get())
+                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
+                            .or(Predicates.autoAbilities(true, true, false)))
+                    .where('#', Predicates.air())
+                    .build())
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_frost_proof"),
+                    GTCEu.id("block/multiblock/vacuum_freezer"), false)
+            .compassSections(GTCompassSections.TIER[HV])
+            .compassNodeSelf()
+            .register();
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition DISTILLATION_TOWER = REGISTRATE.multiblock("distillation_tower", WorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.DISTILLATION_RECIPES)
+            .recipeModifier(AORecipeModifier::perfectMachineParallel)
+            .appearanceBlock(CASING_STAINLESS_CLEAN)
+            .pattern(definition -> FactoryBlockPattern.start(RIGHT, BACK, UP)
+                    .aisle("YSY", "YYY", "YYY")
+                    .aisle("XXX", "X#X", "XXX").setRepeatable(1, 11)
+                    .aisle("XXX", "XXX", "XXX")
+                    .where('S', Predicates.controller(blocks(definition.getBlock())))
+                    .where('Y', blocks(CASING_STAINLESS_CLEAN.get())
+                            .or(Predicates.abilities(PartAbility.EXPORT_ITEMS).setMaxGlobalLimited(1))
+                            .or(Predicates.abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1))
+                            .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                            .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS)))
+                    .where('X', blocks(CASING_STAINLESS_CLEAN.get())
+                            .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS)))
+                    .where('#', Predicates.air())
+                    .build())
+            .partSorter(Comparator.comparingInt(a -> a.self().getPos().getY()))
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_clean_stainless_steel"),
+                    GTCEu.id("block/multiblock/distillation_tower"), false)
+            .compassSections(GTCompassSections.TIER[EV])
+            .compassNodeSelf()
+            .register();
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition CRACKER = REGISTRATE.multiblock("cracker", CoilWorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.CRACKING_RECIPES)
+            .recipeModifier(AORecipeModifier::crackerOverclock)
+            .appearanceBlock(CASING_STAINLESS_CLEAN)
+            .pattern(definition -> FactoryBlockPattern.start()
+                    .aisle("HCHCH", "HCHCH", "HCHCH")
+                    .aisle("HCHCH", "H###H", "HCHCH")
+                    .aisle("HCHCH", "HCOCH", "HCHCH")
+                    .where('O', Predicates.controller(blocks(definition.get())))
+                    .where('H', blocks(CASING_STAINLESS_CLEAN.get())
+                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
+                            .or(Predicates.autoAbilities(true, true, false)))
+                    .where('#', Predicates.air())
+                    .where('C', Predicates.heatingCoils())
+                    .build())
+            .shapeInfos(definition -> {
+                List<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
+                var builder = MultiblockShapeInfo.builder()
+                        .aisle("FCICD", "HCSCH", "HCMCH")
+                        .aisle("ECHCH", "H###H", "HCHCH")
+                        .aisle("ECHCH", "HCHCH", "HCHCH")
+                        .where('S', definition, Direction.NORTH)
+                        .where('H', CASING_STAINLESS_CLEAN.getDefaultState())
+                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.WEST)
+                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.NORTH)
+                        .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
+                        .where('M', MAINTENANCE_HATCH, Direction.NORTH)
+                        .where('#', Blocks.AIR.defaultBlockState());
+                ALL_COILS.entrySet().stream()
+                        .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
+                        .forEach(coil -> shapeInfo.add(builder.shallowCopy().where('C', coil.getValue().get()).build()));
+                return shapeInfo;
+            })
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_clean_stainless_steel"),
+                    GTCEu.id("block/multiblock/cracking_unit"), false)
+            .tooltips(Component.translatable("gtceu.machine.cracker.tooltip.1"))
+            .additionalDisplay((controller, components) -> {
+                if (controller instanceof CoilWorkableElectricMultiblockMachine coilMachine && controller.isFormed()) {
+                    components.add(Component.translatable("gtceu.multiblock.cracking_unit.energy", 100 - 10 * coilMachine.getCoilTier()));
+                }
+            })
+            .compassSections(GTCompassSections.TIER[EV])
+            .compassNodeSelf()
+            .register();
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition PYROLYSE_OVEN = REGISTRATE.multiblock("pyrolyse_oven", CoilWorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.PYROLYSE_RECIPES)
+            .recipeModifier(AORecipeModifier::pyrolyseOvenOverclock)
+            .appearanceBlock(MACHINE_CASING_ULV)
+            .pattern(definition -> FactoryBlockPattern.start()
+                    .aisle("XXX", "XXX", "XXX")
+                    .aisle("CCC", "C#C", "CCC")
+                    .aisle("CCC", "C#C", "CCC")
+                    .aisle("XXX", "XSX", "XXX")
+                    .where('S', Predicates.controller(blocks(definition.get())))
+                    .where('X', blocks(MACHINE_CASING_ULV.get()).or(Predicates.autoAbilities(definition.getRecipeTypes()))
+                            .or(Predicates.autoAbilities(true, true, false)))
+                    .where('C', Predicates.heatingCoils())
+                    .where('#', Predicates.air())
+                    .build())
+            .shapeInfos(definition -> {
+                List<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
+                var builder = MultiblockShapeInfo.builder()
+                        .aisle("IXO", "XSX", "FMD")
+                        .aisle("CCC", "C#C", "CCC")
+                        .aisle("CCC", "C#C", "CCC")
+                        .aisle("EEX", "XHX", "XXX")
+                        .where('S', definition, Direction.NORTH)
+                        .where('X', MACHINE_CASING_ULV.getDefaultState())
+                        .where('E', ENERGY_INPUT_HATCH[GTValues.LV], Direction.SOUTH)
+                        .where('I', ITEM_IMPORT_BUS[GTValues.LV], Direction.NORTH)
+                        .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.NORTH)
+                        .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
+                        .where('H', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
+                        .where('M', MAINTENANCE_HATCH, Direction.NORTH)
+                        .where('#', Blocks.AIR.defaultBlockState());
+                ALL_COILS.entrySet().stream()
+                        .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
+                        .forEach(coil -> shapeInfo.add(builder.shallowCopy().where('C', coil.getValue().get()).build()));
+                return shapeInfo;
+            })
+            .workableCasingRenderer(GTCEu.id("block/casings/voltage/ulv/side"),
+                    GTCEu.id("block/multiblock/pyrolyse_oven"), false)
+            .tooltips(Component.translatable("gtceu.machine.pyrolyse_oven.tooltip.1"))
+            .additionalDisplay((controller, components) -> {
+                if (controller instanceof CoilWorkableElectricMultiblockMachine coilMachine && controller.isFormed()) {
+                    components.add(Component.translatable("gtceu.multiblock.pyrolyse_oven.speed", coilMachine.getCoilTier() == 0 ? 75 : 50 * (coilMachine.getCoilTier() + 1)));
+                }
+            })
+            .compassSections(GTCompassSections.TIER[MV])
+            .compassNodeSelf()
+            .register();
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition IMPLOSION_COMPRESSOR = REGISTRATE.multiblock("implosion_compressor", WorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.IMPLOSION_RECIPES)
+            .recipeModifier(AORecipeModifier::perfectMachineParallel)
+            .appearanceBlock(CASING_STEEL_SOLID)
+            .pattern(definition -> FactoryBlockPattern.start()
+                    .aisle("XXX", "XXX", "XXX")
+                    .aisle("XXX", "X#X", "XXX")
+                    .aisle("XXX", "XSX", "XXX")
+                    .where('S', controller(blocks(definition.get())))
+                    .where('X', blocks(CASING_STEEL_SOLID.get())
+                            .or(Predicates.autoAbilities(definition.getRecipeTypes()))
+                            .or(Predicates.autoAbilities(true, true, false)))
+                    .where('#', Predicates.air())
+                    .build())
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
+                    GTCEu.id("block/multiblock/implosion_compressor"), false)
+            .compassSections(GTCompassSections.TIER[HV])
+            .compassNodeSelf()
+            .register();
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition LARGE_CHEMICAL_REACTOR = REGISTRATE.multiblock("large_chemical_reactor", CoilWorkableElectricMultiblockMachine::new)
+            .rotationState(RotationState.NON_Y_AXIS)
+            .recipeType(GTRecipeTypes.LARGE_CHEMICAL_RECIPES)
+            .recipeModifier(AORecipeModifier::perfectCoilMachineParallel)
+            .appearanceBlock(CASING_PTFE_INERT)
+            .pattern(definition -> {
+                var casing = blocks(CASING_PTFE_INERT.get());
+                var abilities = Predicates.autoAbilities(definition.getRecipeTypes())
+                        .or(Predicates.autoAbilities(true, false, false));
+                return FactoryBlockPattern.start()
+                        .aisle("XXX", "XCX", "XXX")
+                        .aisle("XCX", "CPC", "XCX")
+                        .aisle("XXX", "XSX", "XXX")
+                        .where('S', Predicates.controller(blocks(definition.getBlock())))
+                        .where('X', casing.or(abilities))
+                        .where('P', blocks(CASING_POLYTETRAFLUOROETHYLENE_PIPE.get()))
+                        .where('C', heatingCoils().setExactLimit(1)
+                                .or(abilities)
+                                .or(casing))
+                        .build();
+            })
+            .shapeInfos(definition -> {
+                ArrayList<MultiblockShapeInfo> shapeInfo = new ArrayList<>();
+                var baseBuilder = MultiblockShapeInfo.builder()
+                        .where('S', definition, Direction.NORTH)
+                        .where('X', CASING_PTFE_INERT.getDefaultState())
+                        .where('P', CASING_POLYTETRAFLUOROETHYLENE_PIPE.getDefaultState())
+                        .where('C', COIL_CUPRONICKEL.getDefaultState())
+                        .where('I', ITEM_IMPORT_BUS[3], Direction.NORTH)
+                        .where('E', ENERGY_INPUT_HATCH[3], Direction.NORTH)
+                        .where('O', ITEM_EXPORT_BUS[3], Direction.NORTH)
+                        .where('F', FLUID_IMPORT_HATCH[3], Direction.NORTH)
+                        .where('M', MAINTENANCE_HATCH, Direction.NORTH)
+                        .where('H', FLUID_EXPORT_HATCH[3], Direction.NORTH);
+                shapeInfo.add(baseBuilder.shallowCopy()
+                        .aisle("IXO", "FSH", "XMX")
+                        .aisle("XXX", "XPX", "XXX")
+                        .aisle("XEX", "XCX", "XXX")
+                        .build()
+                );
+                shapeInfo.add(baseBuilder.shallowCopy()
+                        .aisle("IXO", "FSH", "XMX")
+                        .aisle("XXX", "XPX", "XCX")
+                        .aisle("XEX", "XXX", "XXX")
+                        .build()
+                );
+                shapeInfo.add(baseBuilder.shallowCopy()
+                        .aisle("IXO", "FSH", "XMX")
+                        .aisle("XCX", "XPX", "XXX")
+                        .aisle("XEX", "XXX", "XXX")
+                        .build()
+                );
+                shapeInfo.add(baseBuilder.shallowCopy()
+                        .aisle("IXO", "FSH", "XMX")
+                        .aisle("XXX", "CPX", "XXX")
+                        .aisle("XEX", "XXX", "XXX")
+                        .build()
+                );
+                shapeInfo.add(baseBuilder.shallowCopy()
+                        .aisle("IXO", "FSH", "XMX")
+                        .aisle("XXX", "XPC", "XXX")
+                        .aisle("XEX", "XXX", "XXX")
+                        .build()
+                );
+                return shapeInfo;
+            })
+            .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_inert_ptfe"),
+                    GTCEu.id("block/multiblock/large_chemical_reactor"), false)
+            .compassSections(GTCompassSections.TIER[HV])
+            .compassNodeSelf()
+            .register();
 
     @Final
     @Shadow(remap = false)
@@ -124,7 +404,7 @@ public abstract class GTMachinesMixin {
                     .where('X', blocks(CASING_INVAR_HEATPROOF.get())
                             .or(autoAbilities(definition.getRecipeTypes()))
                             .or(autoAbilities(true, false, false)))
-                    .where('M', ability(PartAbility.MUFFLER).or(autoAbilities(true, false, false)
+                    .where('M', Predicates.abilities(PartAbility.MUFFLER).or(autoAbilities(true, false, false)
                             .or(blocks(CASING_INVAR_HEATPROOF.get()))))
                     .where('C', heatingCoils())
                     .where('#', air())
@@ -173,6 +453,7 @@ public abstract class GTMachinesMixin {
                                                                      int... tiers) {
         return null;
     }
+
 
     @Unique
     private static MachineDefinition[] gtceuao$registerTieredMachines(String name,

@@ -84,12 +84,11 @@ public abstract class OverclockingLogicMixin {
             // do not allow duration to go below one tick
             if (potentialDuration < 1) {
                 potentialDuration = 1;
+                resultDuration = potentialDuration;
                 break;
             }
-            // update the duration for the next iteration
-            resultDuration = potentialDuration;
-
             // update the voltage for the next iteration after everything else
+            resultDuration = potentialDuration;
             // in case duration overclocking would waste energy
             resultVoltage = potentialVoltage;
         }

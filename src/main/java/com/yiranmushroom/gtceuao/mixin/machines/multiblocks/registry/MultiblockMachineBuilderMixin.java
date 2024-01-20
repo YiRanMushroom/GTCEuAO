@@ -44,6 +44,13 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
             this.put("electric_blast_furnace", false);
             this.put("iv_processing_array", false);
             this.put("luv_processing_array", false);
+            this.put("large_chemical_reactor", false);
+            this.put("implosion_compressor", false);
+            this.put("pyrolyse_oven", false);
+            this.put("cracker", false);
+            this.put("distillation_tower", false);
+            this.put("vacuum_freezer", false);
+            this.put("assembly_line", false);
         }
     };
 

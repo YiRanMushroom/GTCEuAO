@@ -68,8 +68,12 @@ public class AOConfigHolder {
         public boolean buffBusesAndHatches = true;
 
         @Configurable
-        @Configurable.Comment({"Do Multiblocks Be Strongly Buffed", "Default: true"})
+        @Configurable.Comment({"Do Multiblocks Be Strongly Buffed, most of them would become parallelable.", "Default: true"})
         public boolean buffMultiblocks = true;
+
+        @Configurable
+        @Configurable.Comment({"In what amount should be non-coilblock multiblock machines parallel.", "Default: 4096"})
+        public int multiblockParallelAmount = 4096;
     }
 
     public static class RecipeConfigs {

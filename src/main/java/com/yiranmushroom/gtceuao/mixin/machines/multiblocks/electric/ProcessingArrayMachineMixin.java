@@ -17,6 +17,7 @@ import com.gregtechceu.gtceu.api.registry.GTRegistries;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
+import com.gregtechceu.gtceu.utils.GTUtil;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import com.yiranmushroom.gtceuao.gtceuao;
 import net.minecraft.world.item.ItemStack;
@@ -93,14 +94,14 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
     @Inject(at = @At("HEAD"), method = "getTier", remap = false, cancellable = true)
     private void getTier(CallbackInfoReturnable<Integer> cir) {
         if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
-            cir.setReturnValue(super.getTier());
+            cir.setReturnValue((int) GTUtil.getTierByVoltage(getMaxVoltage()));
         }
     }
 
     @Inject(at = @At("HEAD"), method = "getMaxOverclockTier", remap = false, cancellable = true)
     private void getMaxOverclockTier(CallbackInfoReturnable<Integer> cir) {
         if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
-            cir.setReturnValue(super.getMaxOverclockTier());
+            cir.setReturnValue((int) GTUtil.getTierByVoltage(getMaxVoltage()));
         }
     }
 }

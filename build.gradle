@@ -235,7 +235,9 @@ dependencies {
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
     annotationProcessor fg.deobf('org.spongepowered:mixin:0.8.5:processor')
 
-    implementation fg.deobf("curse.maven:gtceu-890405:5041060")
+//    implementation fg.deobf("curse.maven:gtceu-890405:5041060")
+
+    implementation fg.deobf(fileTree(dir: 'dep\\jar', include: '*.jar'))
 
     implementation "curse.maven:config-444699:4710266"
 

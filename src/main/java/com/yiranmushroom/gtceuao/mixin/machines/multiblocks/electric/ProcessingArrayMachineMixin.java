@@ -32,6 +32,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,18 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
                 return null;
             }
 
-            var limit = processingArray.machineStorage.storage.getStackInSlot(0).getCount();
-            // apply parallel first
-            recipe = GTRecipeModifiers.accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.PAPMultiplier * Math.min(limit, getMachineLimit(machine.getDefinition().getTier())), false).getA();
-            // apply overclock later
+            var parallelLimit = processingArray.machineStorage.storage.getStackInSlot(0).getCount() * AOConfigHolder.INSTANCE.machines.PAPMultiplier;
 
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getOverclockVoltage());
+            // apply parallel first
+            var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
+                    machine, recipe, Math.min(parallelLimit, getMachineLimit(machine.getDefinition().getTier())) * AOConfigHolder.INSTANCE.machines.PAPMultiplier, false
+            ));
+            int parallelCount = parallel.getB();
+            recipe = parallel.getA();
+
+            // apply overclock afterwards
+            long maxVoltage = processingArray.getOverclockVoltage() * parallelCount;
+            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, maxVoltage);
 
             if (AOConfigHolder.INSTANCE.machines.PAHasOPChance) {
                 var copied = recipe.copy();
@@ -72,10 +79,10 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
             }
 
             return recipe;
-
         }
         return null;
     }
+
 
     @Inject(at = @At("HEAD"), method = "getCasingState", remap = false, cancellable = true)
     private static void getCasingState(int tier, CallbackInfoReturnable<Block> cir) {
@@ -98,8 +105,8 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "getMaxOverclockTier", remap = false, cancellable = true)
-    private void getMaxOverclockTier(CallbackInfoReturnable<Integer> cir) {
+    @Inject(at = @At("HEAD"), method = "getOverclockTier", remap = false, cancellable = true)
+    private void getOverclockTier(CallbackInfoReturnable<Integer> cir) {
         if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
             cir.setReturnValue((int) GTUtil.getTierByVoltage(getMaxVoltage()));
         }

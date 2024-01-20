@@ -1,6 +1,5 @@
-Please use Curseforge / Modrinth gregtech versions! Not GitHub's!
-
-请使用 Curseforge / Modrinth 的 GregTech 版本！不要用GitHub的！
+Please read information about version when downloading in release.
+请在下载前仔细阅读release中的版本信息，使用不正确版本及其可能导致游戏崩溃问题。
 
 Current Functionalities:
 1. Add and widen configs about overclocking logic

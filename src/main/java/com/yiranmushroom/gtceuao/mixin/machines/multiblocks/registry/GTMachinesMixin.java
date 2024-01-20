@@ -104,7 +104,7 @@ public abstract class GTMachinesMixin {
                     .where('S', Predicates.controller(blocks(definition.getBlock())))
                     .where('X', blocks(CASING_ALUMINIUM_FROSTPROOF.get())
                             .or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                            .or(Predicates.autoAbilities(true, true, false)))
+                            .or(Predicates.autoAbilities(true, false, false).or(Predicates.abilities(PartAbility.MUFFLER))))
                     .where('#', Predicates.air())
                     .build())
             .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_frost_proof"),
@@ -204,7 +204,7 @@ public abstract class GTMachinesMixin {
                     .aisle("XXX", "XSX", "XXX")
                     .where('S', Predicates.controller(blocks(definition.get())))
                     .where('X', blocks(MACHINE_CASING_ULV.get()).or(Predicates.autoAbilities(definition.getRecipeTypes()))
-                            .or(Predicates.autoAbilities(true, true, false)))
+                            .or(Predicates.autoAbilities(true, false, false).or(Predicates.abilities(PartAbility.MUFFLER))))
                     .where('C', Predicates.heatingCoils())
                     .where('#', Predicates.air())
                     .build())

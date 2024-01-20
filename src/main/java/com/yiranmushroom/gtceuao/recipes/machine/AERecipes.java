@@ -74,11 +74,11 @@ public class AERecipes {
 
         // Circuits
 
-        /*BENDER_RECIPES.recipeBuilder("silicon_circuit")
+        BENDER_RECIPES.recipeBuilder("silicon_circuit")
                 .inputItems(AEItems.SILICON.stack())
                 .outputItems(AEItems.SILICON_PRINT.stack(4))
                 .circuitMeta(14)
-                .duration(160).EUt(VA[LV]).save(provider);*/
+                .duration(160).EUt(VA[LV]).save(provider);
 
         BENDER_RECIPES.recipeBuilder("gold_circuit")
                 .inputItems(new UnificationEntry(ingot, Gold))
@@ -92,11 +92,11 @@ public class AERecipes {
                 .circuitMeta(14)
                 .duration(160).EUt(VA[LV]).save(provider);
 
-        BENDER_RECIPES.recipeBuilder("certus_circuit")
+        /*BENDER_RECIPES.recipeBuilder("certus_circuit")
                 .inputItems(AEItems.CERTUS_QUARTZ_CRYSTAL.stack())
                 .outputItems(AEItems.CALCULATION_PROCESSOR_PRINT.stack(4))
                 .circuitMeta(14)
-                .duration(160).EUt(VA[LV]).save(provider);
+                .duration(160).EUt(VA[LV]).save(provider);*/
 
         // From GregTech
         BENDER_RECIPES.recipeBuilder("silicon_circuit_g")

@@ -418,6 +418,7 @@ public abstract class GTMachinesMixin {
                                     .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
                                     .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
                                     .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                                    .or(Predicates.autoAbilities(true, false, false))
                             )
                             .where('E',
                                     Predicates.abilities(PartAbility.IMPORT_ITEMS)
@@ -427,6 +428,7 @@ public abstract class GTMachinesMixin {
                                             .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
                                             .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
                                             .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
+                                            .or(Predicates.autoAbilities(true, false, false))
                             )
                             .where('#', air())
                             .build())

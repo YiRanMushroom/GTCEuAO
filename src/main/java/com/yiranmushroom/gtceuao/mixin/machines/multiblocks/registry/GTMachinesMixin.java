@@ -455,7 +455,7 @@ public abstract class GTMachinesMixin {
                     .where('X', blocks(CASING_INVAR_HEATPROOF.get())
                             .or(autoAbilities(definition.getRecipeTypes()))
                             .or(autoAbilities(true, false, false)))
-                    .where('M', Predicates.abilities(PartAbility.MUFFLER).or(autoAbilities(true, false, false)
+                    .where('M', Predicates.abilities(PartAbility.MUFFLER).or(abilities()
                             .or(blocks(CASING_INVAR_HEATPROOF.get()))))
                     .where('C', heatingCoils())
                     .where('#', air())

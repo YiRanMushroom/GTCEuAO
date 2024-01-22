@@ -7,7 +7,7 @@ Current Functionalities:
 3. Add configs to control processing array chance and tier
 4. Change structures of multiblock machines, making them earlier accessible, and enhance their functions:
     1. Processing Array: Allow you to use normal glass, and more places can be used to put multiblock components.
-5. Add configs to determine weather something has easier recipes.
+5. Add configs to determine whether something has easier recipes.
     1. Processing Arrays
     2. Circuit Assemblers
     3. AE2 buses and hatches, this will also make GTRecipes for AE2 components.
@@ -15,6 +15,8 @@ Current Functionalities:
 7. Add configs to make easier circuits, boards, chips recipes.
 8. Support survival mode creative flight through configs (default disabled)
 9. Add configs to buff buses and hatches
+10. Add recipes for bedrock miners.
+11. Add config for disabling void miner/drill depletion.
 
 
 ---------------------------------------------------

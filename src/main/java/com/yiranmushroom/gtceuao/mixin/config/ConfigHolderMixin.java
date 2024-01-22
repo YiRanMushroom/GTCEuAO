@@ -28,7 +28,9 @@ public abstract class ConfigHolderMixin {
 
         @Shadow(remap = false)
         @Configurable
-        @Configurable.Comment({"Wether to add a \"Bedrock Ore Miner\" (also enables bedrock ore generation)", "Default: true"})
+        @Configurable.Comment({"Wether to add a \"Bedrock Ore Miner\" (also enables bedrock ore generation)",
+                "This will also slightly change the recipe of the fluid drilling rig.",
+                "Default: true"})
         public boolean doBedrockOres = true;
 
 

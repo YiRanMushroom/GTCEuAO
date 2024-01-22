@@ -16,16 +16,20 @@ import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMa
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
+import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
 import com.gregtechceu.gtceu.client.renderer.machine.ProcessingArrayMachineRenderer;
 import com.gregtechceu.gtceu.common.data.*;
+import com.gregtechceu.gtceu.common.machine.multiblock.electric.BedrockOreMinerMachine;
+import com.gregtechceu.gtceu.common.machine.multiblock.electric.FluidDrillMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.part.ItemBusPartMachine;
 import com.gregtechceu.gtceu.common.registry.GTRegistration;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
+import com.lowdragmc.lowdraglib.Platform;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
 import net.minecraft.ChatFormatting;
@@ -60,6 +64,35 @@ import static com.gregtechceu.gtceu.common.registry.GTRegistration.REGISTRATE;
 
 @Mixin(GTMachines.class)
 public abstract class GTMachinesMixin {
+    @Final
+    @Shadow(remap = false)
+    public static final MultiblockMachineDefinition[] FLUID_DRILLING_RIG = registerTieredMultis("fluid_drilling_rig", FluidDrillMachine::new, (tier, builder) -> builder
+                    .rotationState(RotationState.NON_Y_AXIS)
+                    .langValue("%s Fluid Drilling Rig %s".formatted(VLVH[tier], VLVT[tier]))
+                    .recipeType(DUMMY_RECIPES)
+                    .tooltips(
+                            Component.translatable("gtceu.machine.fluid_drilling_rig.description"),
+                            Component.translatable("gtceu.machine.fluid_drilling_rig.depletion", FormattingUtil.formatNumbers(gtceuao$getDepletionChanceFluid(tier) * 100)),
+                            Component.translatable("gtceu.universal.tooltip.energy_tier_range", GTValues.VNF[tier], GTValues.VNF[tier + 1]),
+                            Component.translatable("gtceu.machine.fluid_drilling_rig.production", FluidDrillMachine.getRigMultiplier(tier), FormattingUtil.formatNumbers(FluidDrillMachine.getRigMultiplier(tier) * 1.5)))
+                    .appearanceBlock(() -> FluidDrillMachine.getCasingState(tier))
+                    .pattern((definition) -> FactoryBlockPattern.start()
+                            .aisle("XXX", "#F#", "#F#", "#F#", "###", "###", "###")
+                            .aisle("XXX", "FCF", "FCF", "FCF", "#F#", "#F#", "#F#")
+                            .aisle("XSX", "#F#", "#F#", "#F#", "###", "###", "###")
+                            .where('S', controller(blocks(definition.get())))
+                            .where('X', blocks(FluidDrillMachine.getCasingState(tier)).setMinGlobalLimited(3)
+                                    .or(abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3))
+                                    .or(abilities(PartAbility.EXPORT_FLUIDS).setMaxGlobalLimited(1)))
+                            .where('C', blocks(FluidDrillMachine.getCasingState(tier)))
+                            .where('F', blocks(FluidDrillMachine.getFrameState(tier)))
+                            .where('#', any())
+                            .build())
+                    .workableCasingRenderer(FluidDrillMachine.getBaseTexture(tier), GTCEu.id("block/multiblock/fluid_drilling_rig"), false)
+                    .compassSections(GTCompassSections.TIER[MV])
+                    .compassNode("fluid_drilling_rig")
+                    .register(),
+            MV, HV, EV);
 
     @Final
     @Shadow(remap = false)
@@ -450,6 +483,38 @@ public abstract class GTMachinesMixin {
             .compassNodeSelf()
             .register();
 
+    @Inject(method = "init", at = @At(value = "INVOKE", target = "Lcom/gregtechceu/gtceu/GTCEu;isKubeJSLoaded()Z"), remap = false)
+    private static void init(CallbackInfo ci) {
+        LOGGER.info("GTCEU-AO: Registering Multiblocks");
+        if ((ConfigHolder.INSTANCE.machines.doBedrockOres || Platform.isDevEnv()))
+            BEDROCK_ORE_MINER = registerTieredMultis("bedrock_ore_miner", BedrockOreMinerMachine::new, (tier, builder) -> builder
+                            .rotationState(RotationState.NON_Y_AXIS)
+                            .langValue("%s Bedrock Ore Miner %s".formatted(VLVH[tier], VLVT[tier]))
+                            .recipeType(new GTRecipeType(GTCEu.id("bedrock_ore_miner"), "dummy"))
+                            .tooltips(
+                                    Component.translatable("gtceu.machine.bedrock_ore_miner.description"),
+                                    Component.translatable("gtceu.machine.bedrock_ore_miner.depletion", FormattingUtil.formatNumbers(gtceuao$getDepletionChanceItem(tier))),
+                                    Component.translatable("gtceu.universal.tooltip.energy_tier_range", GTValues.VNF[tier], GTValues.VNF[tier + 1]),
+                                    Component.translatable("gtceu.machine.bedrock_ore_miner.production", BedrockOreMinerMachine.getRigMultiplier(tier), FormattingUtil.formatNumbers(BedrockOreMinerMachine.getRigMultiplier(tier) * 1.5)))
+                            .appearanceBlock(() -> BedrockOreMinerMachine.getCasingState(tier))
+                            .pattern((definition) -> FactoryBlockPattern.start()
+                                    .aisle("XXX", "#F#", "#F#", "#F#", "###", "###", "###")
+                                    .aisle("XXX", "FCF", "FCF", "FCF", "#F#", "#F#", "#F#")
+                                    .aisle("XSX", "#F#", "#F#", "#F#", "###", "###", "###")
+                                    .where('S', controller(blocks(definition.get())))
+                                    .where('X', blocks(BedrockOreMinerMachine.getCasingState(tier)).setMinGlobalLimited(3)
+                                            .or(abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1).setMaxGlobalLimited(3))
+                                            .or(abilities(PartAbility.EXPORT_ITEMS).setMaxGlobalLimited(1)))
+                                    .where('C', blocks(BedrockOreMinerMachine.getCasingState(tier)))
+                                    .where('F', blocks(BedrockOreMinerMachine.getFrameState(tier)))
+                                    .where('#', any())
+                                    .build())
+                            .workableCasingRenderer(BedrockOreMinerMachine.getBaseTexture(tier), GTCEu.id("block/multiblock/bedrock_ore_miner"), false)
+                            .register(),
+                    MV, HV, EV);
+
+    }
+
     @Shadow(remap = false)
     public static MultiblockMachineDefinition[] registerTieredMultis(String name,
                                                                      BiFunction<IMachineBlockEntity, Integer, MultiblockControllerMachine> factory,
@@ -510,5 +575,19 @@ public abstract class GTMachinesMixin {
                             ALL_TIERS)
             );
         }
+    }
+
+    @Unique
+    private static double gtceuao$getDepletionChanceItem(int tier){
+        if (AOConfigHolder.INSTANCE.machines.bedrockDrillsDepleteResources)
+            return 100.0 / BedrockOreMinerMachine.getDepletionChance(tier);
+        return 0.0;
+    }
+
+    @Unique
+    private static double gtceuao$getDepletionChanceFluid(int tier){
+        if (AOConfigHolder.INSTANCE.machines.bedrockDrillsDepleteResources)
+            return 100.0 / FluidDrillMachine.getDepletionChance(tier);
+        return 0.0;
     }
 }

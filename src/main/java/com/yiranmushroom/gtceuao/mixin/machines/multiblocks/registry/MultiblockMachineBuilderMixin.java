@@ -51,6 +51,12 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
             this.put("distillation_tower", false);
             this.put("vacuum_freezer", false);
             this.put("assembly_line", false);
+            this.put("mv_fluid_drilling_rig", false);
+            this.put("hv_fluid_drilling_rig", false);
+            this.put("ev_fluid_drilling_rig", false);
+            this.put("mv_bedrock_ore_miner", false);
+            this.put("hv_bedrock_ore_miner", false);
+            this.put("ev_bedrock_ore_miner", false);
         }
     };
 

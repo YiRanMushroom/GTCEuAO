@@ -68,12 +68,18 @@ public class AOConfigHolder {
         public boolean buffBusesAndHatches = true;
 
         @Configurable
-        @Configurable.Comment({"Do Multiblocks Be Strongly Buffed, most of them would become parallelable.", "Default: true"})
+        @Configurable.Comment({"Do Multiblocks Be Strongly Buffed, most of them would become parallelable.",
+                "Due to technical issues, this will always be true, even if you set it to false.",
+                "Default: true"})
         public boolean buffMultiblocks = true;
 
         @Configurable
         @Configurable.Comment({"In what amount should be non-coilblock multiblock machines parallel.", "Default: 4096"})
         public int multiblockParallelAmount = 4096;
+
+        @Configurable
+        @Configurable.Comment({"Do bedrock drills deplete resources.", "Default: false"})
+        public boolean bedrockDrillsDepleteResources = false;
     }
 
     public static class RecipeConfigs {

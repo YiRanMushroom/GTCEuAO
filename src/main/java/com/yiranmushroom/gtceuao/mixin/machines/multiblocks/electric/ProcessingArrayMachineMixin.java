@@ -53,30 +53,35 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
     @Nullable
     public static GTRecipe recipeModifier(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof ProcessingArrayMachine processingArray && processingArray.machineStorage.storage.getStackInSlot(0).getCount() > 0) {
-            if (RecipeHelper.getRecipeEUtTier(recipe) > processingArray.getTier()) {
-                return null;
+
+            int parallelLimit = 0;
+
+            if (AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower){
+                parallelLimit = Math.min(
+                        processingArray.machineStorage.storage.getStackInSlot(0).getCount(),
+                        (int) (processingArray.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))
+                );
+            } else{
+                if (processingArray.getMaxVoltage()>=RecipeHelper.getInputEUt(recipe))
+                    parallelLimit = processingArray.machineStorage.storage.getStackInSlot(0).getCount();
+                else return null;
             }
 
-            var parallelLimit = processingArray.machineStorage.storage.getStackInSlot(0).getCount() * AOConfigHolder.INSTANCE.machines.PAPMultiplier;
+            if (parallelLimit <= 0)
+                return null;
+
+            parallelLimit*=AOConfigHolder.INSTANCE.machines.PAPMultiplier;
 
             // apply parallel first
             var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
-                    machine, recipe, Math.min(parallelLimit, getMachineLimit(machine.getDefinition().getTier())) * AOConfigHolder.INSTANCE.machines.PAPMultiplier, false
+                    machine, recipe, parallelLimit, false
             ));
             int parallelCount = parallel.getB();
             recipe = parallel.getA();
 
-            // apply overclock afterwards
-            long maxVoltage = processingArray.getOverclockVoltage() * parallelCount;
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, maxVoltage);
-
-            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance) {
-                var copied = recipe.copy();
-                for (Content content : copied.getOutputContents(ItemRecipeCapability.CAP)) {
-                    content.chance = 1;
-                }
-                return copied;
-            }
+            // apply overclock afterward
+//            long maxVoltage = Math.min(processingArray.getOverclockVoltage() * parallelCount, processingArray.getMaxVoltage());
+            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getMaxVoltage());
 
             return recipe;
         }

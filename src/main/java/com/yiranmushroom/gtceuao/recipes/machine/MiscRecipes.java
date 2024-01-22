@@ -19,6 +19,7 @@ import static com.gregtechceu.gtceu.common.data.GTMaterials.Osmiridium;
 import static com.gregtechceu.gtceu.common.data.GTRecipeTypes.ASSEMBLER_RECIPES;
 
 public class MiscRecipes {
+
     public static void register(Consumer<FinishedRecipe> provider) {
 
         if (ConfigHolder.INSTANCE.machines.doBedrockOres || Platform.isDevEnv()) {
@@ -55,40 +56,7 @@ public class MiscRecipes {
                     .outputItems(FLUID_DRILLING_RIG[EV])
                     .duration(400).EUt(VA[IV]).save(provider);
 
-            ASSEMBLER_RECIPES.recipeBuilder("mv_fluid_drilling_rig")
-                    .inputItems(HULL[MV])
-                    .inputItems(frameGt, Aluminium, 4)
-                    .inputItems(CustomTags.MV_CIRCUITS, 4)
-                    .inputItems(ELECTRIC_MOTOR_MV, 4)
-                    .inputItems(ELECTRIC_PUMP_MV, 4)
-                    .inputItems(gear, VanadiumSteel, 4)
-                    .circuitMeta(2)
-                    .outputItems(FLUID_DRILLING_RIG[MV])
-                    .duration(400).EUt(VA[MV]).save(provider);
-
-            ASSEMBLER_RECIPES.recipeBuilder("hv_fluid_drilling_rig")
-                    .inputItems(HULL[HV])
-                    .inputItems(frameGt, StainlessSteel, 4)
-                    .inputItems(CustomTags.HV_CIRCUITS, 4)
-                    .inputItems(ELECTRIC_MOTOR_HV, 4)
-                    .inputItems(ELECTRIC_PUMP_HV, 4)
-                    .inputItems(gear, BlueSteel, 4)
-                    .circuitMeta(2)
-                    .outputItems(FLUID_DRILLING_RIG[HV])
-                    .duration(400).EUt(VA[EV]).save(provider);
-
-            ASSEMBLER_RECIPES.recipeBuilder("ev_fluid_drilling_rig")
-                    .inputItems(HULL[EV])
-                    .inputItems(frameGt, Titanium, 4)
-                    .inputItems(CustomTags.EV_CIRCUITS, 4)
-                    .inputItems(ELECTRIC_MOTOR_EV, 4)
-                    .inputItems(ELECTRIC_PUMP_EV, 4)
-                    .inputItems(gear, Ultimet, 4)
-                    .circuitMeta(2)
-                    .outputItems(FLUID_DRILLING_RIG[EV])
-                    .duration(400).EUt(VA[IV]).save(provider);
-
-            ASSEMBLER_RECIPES.recipeBuilder("mv_bedrock_ore_miner")
+            ASSEMBLER_RECIPES.recipeBuilder("bedrock_ore_miner_mv")
                     .inputItems(HULL[MV])
                     .inputItems(frameGt, Aluminium, 4)
                     .inputItems(CustomTags.MV_CIRCUITS, 4)
@@ -99,7 +67,7 @@ public class MiscRecipes {
                     .outputItems(BEDROCK_ORE_MINER[MV])
                     .duration(400).EUt(VA[MV]).save(provider);
 
-            ASSEMBLER_RECIPES.recipeBuilder("hv_bedrock_ore_miner")
+            ASSEMBLER_RECIPES.recipeBuilder("bedrock_ore_miner_hv")
                     .inputItems(HULL[HV])
                     .inputItems(frameGt, StainlessSteel, 4)
                     .inputItems(CustomTags.HV_CIRCUITS, 4)
@@ -110,7 +78,7 @@ public class MiscRecipes {
                     .outputItems(BEDROCK_ORE_MINER[HV])
                     .duration(400).EUt(VA[HV]).save(provider);
 
-            ASSEMBLER_RECIPES.recipeBuilder("ev_bedrock_ore_miner")
+            ASSEMBLER_RECIPES.recipeBuilder("bedrock_ore_miner_ev")
                     .inputItems(HULL[EV])
                     .inputItems(frameGt, Titanium, 4)
                     .inputItems(CustomTags.EV_CIRCUITS, 4)

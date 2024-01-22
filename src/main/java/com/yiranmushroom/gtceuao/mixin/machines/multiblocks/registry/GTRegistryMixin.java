@@ -18,17 +18,14 @@ import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 @Mixin(GTRegistry.class)
 public abstract class GTRegistryMixin<K, V> implements Iterable<V> {
-
-
-
     /**
-     * @author
-     * @reason
+     * @author YiranMushroom
+     * @reason Overwrite the register method to overwrite static final values.
      */
     @Overwrite(remap = false)
     public void register(K key, V value) {
-        ((GTRegistry)(Object)this).remove(key);
-        ((GTRegistry)(Object)this).registerOrOverride(key, value);
+        ((GTRegistry<K, V>) (Object) this).remove(key);
+        ((GTRegistry<K, V>) (Object) this).registerOrOverride(key, value);
     }
 
 

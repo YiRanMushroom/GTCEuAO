@@ -19,6 +19,7 @@
     "misc.GameTypeMixin",
     "recipe.change.MetaTileEntityLoaderMixin",
     "recipe.change.machineRecipes.GTRecipesMixin",
+    "recipe.change.machineRecipes.WireRecipeHandlerMixin",
     "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
     "registries.CommonProxyMixin"

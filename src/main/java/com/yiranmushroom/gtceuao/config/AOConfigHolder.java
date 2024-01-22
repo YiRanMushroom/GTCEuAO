@@ -106,6 +106,17 @@ public class AOConfigHolder {
         @Configurable.Comment({"Are AE2 buses and hatches have easier recipes. This will also add GTRecipes for AE2 components", "Default: true"})
         public boolean AE2RecipeSupport = true;
 
+        @Configurable
+        @Configurable.Comment({"Are easier recipes for polymers are enabled.", "Default: true"})
+        public boolean easierPolymerRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({"Are easier recipes for wrought iron and steel are enabled.", "Default: true"})
+        public boolean easierWroughtIronAndSteel = true;
+
+        @Configurable
+        @Configurable.Comment({"Are easier recipes for cables are enabled.", "Default: true"})
+        public boolean easierCableRecipes = true;
     }
 
     public static class MiscConfigs {

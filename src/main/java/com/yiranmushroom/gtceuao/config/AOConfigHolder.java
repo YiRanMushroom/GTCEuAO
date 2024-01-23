@@ -123,6 +123,14 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Are easier recipes for cables are enabled.", "Default: true"})
         public boolean easierCableRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({"Are ex nihilo like recipes and material being registered and enabled.", "Default: true"})
+        public boolean exNihiloLikeRecipesAndMaterials = true;
+
+        @Configurable
+        @Configurable.Comment({"Are easier recipes for ore processing are enabled.", "Default: true"})
+        public boolean easierOreProcessing = true;
     }
 
     public static class MiscConfigs {

@@ -1,9 +1,6 @@
 package com.yiranmushroom.gtceuao.recipes;
 
-import com.yiranmushroom.gtceuao.recipes.machine.AERecipes;
-import com.yiranmushroom.gtceuao.recipes.machine.CircuitRecipes;
-import com.yiranmushroom.gtceuao.recipes.machine.EasyChemistryRecipes;
-import com.yiranmushroom.gtceuao.recipes.machine.MiscRecipes;
+import com.yiranmushroom.gtceuao.recipes.machine.*;
 import net.minecraft.data.recipes.FinishedRecipe;
 
 import java.util.function.Consumer;
@@ -14,5 +11,7 @@ public class RecipeRegistry {
         AERecipes.register(provider);
         EasyChemistryRecipes.register(provider);
         MiscRecipes.register(provider);
+        ExNihiloRecipe.register(provider);
+        EasyOreProcessing.register(provider);
     }
 }

@@ -2,7 +2,6 @@
   "required": true,
   "package": "com.yiranmushroom.gtceuao.mixin",
   "compatibilityLevel": "JAVA_16",
-  "refmap": "gtceuao.refmap.json",
   "mixins": [
     "config.ConfigHolderMixin",
     "config.ConfigHolderMixin$compatibilityConfigsMixin",
@@ -30,6 +29,7 @@
     "registries.CommonProxyMixin"
   ],
   "client": [
+    "misc.TestMixin"
   ],
   "injectors": {
     "defaultRequire": 1

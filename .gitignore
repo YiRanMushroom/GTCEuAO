@@ -1,25 +1,26 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
-
-# idea
-out
+build/
 *.ipr
+run/
 *.iws
+out/
 *.iml
-.idea
+.gradle/
+output/
+bin/
+libs/
 
-# gradle
-build
-.gradle
+.classpath
+*/.factorypath
+.project
+.idea/
+classes/
+.metadata
+.vscode
+.settings
+*.launch
+.architectury-transformer/debug.log
+src/generated/resources/.cache/
 
-# other
-eclipse
-run
+*.patch
+*.DS_Store
 
-# Files from Forge MDK
-forge*changelog.txt

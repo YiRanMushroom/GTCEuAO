@@ -20,11 +20,10 @@ import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
-import com.gregtechceu.gtceu.client.renderer.machine.ProcessingArrayMachineRenderer;
+import com.yiranmushroom.gtceuao.recovery.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.common.data.*;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.BedrockOreMinerMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.FluidDrillMachine;
-import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.part.ItemBusPartMachine;
 import com.gregtechceu.gtceu.common.registry.GTRegistration;
 import com.gregtechceu.gtceu.config.ConfigHolder;
@@ -371,7 +370,7 @@ public abstract class GTMachinesMixin {
             .compassNodeSelf()
             .register();
 
-    @Final
+    /*@Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition[] PROCESSING_ARRAY = ConfigHolder.INSTANCE.machines.doProcessingArray ? registerTieredMultis("processing_array", ProcessingArrayMachine::new,
             (tier, builder) -> builder
@@ -424,7 +423,63 @@ public abstract class GTMachinesMixin {
                     .compassSections(GTCompassSections.TIER[IV])
                     .compassNode("processing_array")
                     .register(),
-            IV, LuV) : null;
+            IV, LuV) : null;*/
+
+    @Final
+    @Shadow(remap = false)
+    public final static MultiblockMachineDefinition[] PROCESSING_ARRAY = ConfigHolder.INSTANCE.machines.doProcessingArray ? registerTieredMultis("processing_array", ProcessingArrayMachine::new,
+        (tier, builder) ->  builder
+            .langValue(VNF[tier] + " Processing Array")
+            .rotationState(RotationState.NON_Y_AXIS)
+            .blockProp(p -> p.noOcclusion().isViewBlocking((state, level, pos) -> false))
+            .shape(Shapes.box(0.001, 0.001, 0.001, 0.999, 0.999, 0.999))
+            .appearanceBlock(() -> ProcessingArrayMachine.getCasingState(tier))
+            .recipeType(DUMMY_RECIPES)
+            .recipeModifier(ProcessingArrayMachine::recipeModifier, true)
+            .pattern(definition -> FactoryBlockPattern.start()
+                .aisle("XXX", "ECE", "EEE")
+                .aisle("XXX", "C#C", "EEE")
+                .aisle("XSX", "ECE", "EEE")
+                .where('S', Predicates.controller(blocks(definition.getBlock())))
+                .where('X', blocks(ProcessingArrayMachine.getCasingState(tier))
+                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
+                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
+                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
+                    .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                    .or(Predicates.autoAbilities(true, false, false)))
+                .where('C', blocks(CLEANROOM_GLASS.get(), Blocks.GLASS).setMinGlobalLimited(1)
+                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
+                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
+                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
+                    .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                    .or(Predicates.autoAbilities(true, false, false))
+                )
+                .where('E',
+                    Predicates.abilities(PartAbility.IMPORT_ITEMS)
+                        .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
+                        .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
+                        .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
+                        .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
+                        .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                        .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
+                        .or(Predicates.autoAbilities(true, false, false))
+                )
+                .where('#', air())
+                .build())
+            .tooltips(Component.translatable("gtceu.universal.tooltip.parallel", ProcessingArrayMachine.getMachineLimit(tier)))
+            .workableCasingRenderer(tier == IV ?
+                    GTCEu.id("block/casings/solid/machine_casing_solid_steel") :
+                    GTCEu.id("block/casings/solid/machine_casing_robust_tungstensteel"),
+                GTCEu.id("block/multiblock/processing_array"))
+            .compassSections(GTCompassSections.TIER[IV])
+            .compassNode("processing_array")
+//            .tooltips(Component.translatable("gtceu.universal.tooltip.deprecated"))
+            .register(),
+        IV, LuV) : null;
 
     @Final
     @Shadow(remap = false)

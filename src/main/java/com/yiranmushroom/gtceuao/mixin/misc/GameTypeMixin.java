@@ -18,7 +18,10 @@ public class GameTypeMixin {
     public void updatePlayerAbilities(Abilities pAbilities, CallbackInfo ci) {
 
         if (AOConfigHolder.INSTANCE.misc.flyAlwaysEnabled) {
+            LOGGER.info("Allowing flight by gtceuao is not well implemented yet. Use at your own risk.");
             pAbilities.mayfly = true;
         }
+
+        LOGGER.info("function is called");
     }
 }

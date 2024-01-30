@@ -30,6 +30,7 @@
     "registries.CommonProxyMixin"
   ],
   "client": [
+    "misc.TestMixin"
   ],
   "injectors": {
     "defaultRequire": 1

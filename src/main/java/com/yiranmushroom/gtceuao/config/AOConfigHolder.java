@@ -131,11 +131,15 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Are easier recipes for ore processing are enabled.", "Default: true"})
         public boolean easierOreProcessing = true;
+
+        @Configurable
+        @Configurable.Comment({"Are ore yield being strongly buffed?.","Tends to fix original gregtech ore processing issues.", "Default: true"})
+        public boolean buffOreYield = true;
     }
 
     public static class MiscConfigs {
         @Configurable
-        @Configurable.Comment({"Is fly always enabled. (even in survival mode)","Default: false"})
+        @Configurable.Comment({"Is fly always enabled. (even in survival mode)","Currently working not well.","Default: false"})
         public boolean flyAlwaysEnabled = false;
 
     }

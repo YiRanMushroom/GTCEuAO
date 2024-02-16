@@ -216,11 +216,6 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
             parallelLimit*=AOConfigHolder.INSTANCE.machines.PAPMultiplier;
 
-            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance)
-                for (var content : recipe.getOutputContents(ItemRecipeCapability.CAP)){
-                    content.chance = 1.0F;
-                }
-
             // apply parallel first
             var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
                 machine, recipe, parallelLimit, false
@@ -231,6 +226,11 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
             // apply overclock afterward
 //            long maxVoltage = Math.min(processingArray.getOverclockVoltage() * parallelCount, processingArray.getMaxVoltage());
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getMaxVoltage());
+
+            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance)
+                for (var content : recipe.getOutputContents(ItemRecipeCapability.CAP)){
+                    content.chance = 1.0F;
+                }
 
             return recipe;
         }

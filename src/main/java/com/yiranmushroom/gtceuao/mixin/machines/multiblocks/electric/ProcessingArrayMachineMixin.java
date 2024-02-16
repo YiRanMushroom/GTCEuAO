@@ -1,3 +1,4 @@
+/*
 package com.yiranmushroom.gtceuao.mixin.machines.multiblocks.electric;
 
 import com.gregtechceu.gtceu.api.GTValues;
@@ -16,7 +17,7 @@ import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.registry.GTRegistries;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
-import com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine;
+import com.yiranmushroom.gtceuao.recovery.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.utils.GTUtil;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import com.yiranmushroom.gtceuao.gtceuao;
@@ -36,7 +37,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static com.gregtechceu.gtceu.common.machine.multiblock.electric.ProcessingArrayMachine.getMachineLimit;
+import static com.yiranmushroom.gtceuao.recovery.ProcessingArrayMachine.getMachineLimit;
 
 @Mixin(ProcessingArrayMachine.class)
 public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectricMultiblockMachine implements IMachineModifyDrops {
@@ -45,10 +46,12 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
         super(holder, tier);
     }
 
-    /**
+    */
+/**
      * @author YiRanMushroom
      * @reason Need to modify chance and parallel logic
-     */
+     *//*
+
     @Overwrite(remap = false)
     @Nullable
     public static GTRecipe recipeModifier(MetaMachine machine, @Nonnull GTRecipe recipe) {
@@ -117,3 +120,4 @@ public abstract class ProcessingArrayMachineMixin extends TieredWorkableElectric
         }
     }
 }
+*/

@@ -9,7 +9,6 @@
     "config.ConfigHolderMixin$machineConfigsMixin",
     "config.ConfigHolderMixin$recipeConfigsMixin",
     "energy.PEToEu.NotifiableEnergyContainerMixin",
-    "machines.multiblocks.electric.ProcessingArrayMachineMixin",
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.registry.GTMachinesMixin",

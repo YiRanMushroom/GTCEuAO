@@ -1,13 +1,13 @@
 modLoader = "javafml"
-loaderVersion = "[${forge_version},)"
+loaderVersion = "[47,)"
 #issueTrackerURL = ""
-license = "${mod_license}"
+license = "MIT License"
 
 [[mods]]
-modId = "${mod_id}"
+modId = "gtceuao"
 version = "${version}"
 displayName = "${mod_name}"
-authors = "KilaBash, screret, serenibyss, Tech22"
+authors = "YiranMushroom"
 description = "${mod_description}"
 logoFile = "icon.png"
 displayURL = "${mod_url}"

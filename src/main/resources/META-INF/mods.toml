@@ -1,6 +1,5 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
 license = "MIT License"
 
 [[mods]]
@@ -11,4 +10,11 @@ authors = "YiranMushroom"
 description = "${mod_description}"
 logoFile = "icon.png"
 displayURL = "${mod_url}"
-credits = "GregoriusT, Mr_Touchyou, Zerrens for making GregTech and textures, the GT5u authors and maintainers for providing the original code, and the community."
+credits = "Using GTCEu-mordern's codebase in some files. Thanks to the great concept of GregTech to make this game more fun and challenging."
+
+[[dependencies.gtceuao]]
+modId = "gtceu"
+mandatory = true
+versionRange = "[1.1.3.b,)"
+ordering = "NONE"
+side = "BOTH"

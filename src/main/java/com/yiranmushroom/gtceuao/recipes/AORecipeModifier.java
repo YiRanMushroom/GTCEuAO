@@ -34,12 +34,12 @@ public class AORecipeModifier {
             recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
 
             return RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> OverclockingLogic.heatingCoilOverclockingLogic(
-                    Math.abs(recipeEUt),
-                    maxVoltage,
-                    duration,
-                    amountOC,
-                    blastFurnaceTemperature,
-                    recipe1.data.contains("ebf_temp") ? recipe1.data.getInt("ebf_temp") : 0
+                Math.abs(recipeEUt),
+                maxVoltage,
+                duration,
+                amountOC,
+                blastFurnaceTemperature,
+                recipe1.data.contains("ebf_temp") ? recipe1.data.getInt("ebf_temp") : 0
             )), recipe, coilMachine.getMaxVoltage());
 
         }
@@ -116,14 +116,16 @@ public class AORecipeModifier {
             return 16;
         } else if (coilType.equals(NICHROME)) {
             return 64;
-        } else if (coilType.equals(HSSG)) {
+        } else if (coilType.equals(RTMALLOY)) {
             return 256;
-        } else if (coilType.equals(NAQUADAH)) {
+        } else if (coilType.equals(HSSG)) {
             return 1024;
-        } else if (coilType.equals(TRINIUM)) {
+        } else if (coilType.equals(NAQUADAH)) {
             return 4096;
-        } else if (coilType.equals(TRITANIUM)) {
+        } else if (coilType.equals(TRINIUM)) {
             return 16384;
+        } else if (coilType.equals(TRITANIUM)) {
+            return 65536;
         }
         return 1;
     }

@@ -58,7 +58,8 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
     protected static final ManagedFieldHolder MANAGED_FIELD_HOLDER = new ManagedFieldHolder(ProcessingArrayMachine.class, TieredWorkableElectricMultiblockMachine.MANAGED_FIELD_HOLDER);
 
-    @Persisted @DescSynced
+    @Persisted
+    @DescSynced
     public final NotifiableItemStackHandler machineStorage;
     //runtime
     @Nullable
@@ -91,11 +92,11 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
     protected boolean isMachineStack(ItemStack itemStack) {
         if (itemStack.getItem() instanceof MetaMachineItem metaMachineItem) {
             var recipeTypes = metaMachineItem.getDefinition().getRecipeTypes();
-            if(recipeTypes == null){
+            if (recipeTypes == null) {
                 return false;
             }
-            for(GTRecipeType type : recipeTypes){
-                if(type != GTRecipeTypes.DUMMY_RECIPES){
+            for (GTRecipeType type : recipeTypes) {
+                if (type != GTRecipeTypes.DUMMY_RECIPES) {
                     return true;
                 }
             }
@@ -191,7 +192,19 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
     @Override
     public long getMaxVoltage() {
-        return super.getMaxVoltage();
+        if (this.energyContainer == null) {
+            this.energyContainer = this.getEnergyContainer();
+        }
+
+        long highestVoltage;
+
+        highestVoltage = this.energyContainer.getHighestInputVoltage();
+        if (this.energyContainer.getNumHighestInputContainers() > 1) {
+            int tier = GTUtil.getTierByVoltage(highestVoltage);
+            return GTValues.V[Math.min(tier + 1, 14)];
+        } else {
+            return highestVoltage;
+        }
     }
 
     @Nullable
@@ -200,13 +213,13 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
             int parallelLimit = 0;
 
-            if (AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower){
+            if (AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
                 parallelLimit = Math.min(
                     processingArray.machineStorage.storage.getStackInSlot(0).getCount(),
                     (int) (processingArray.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))
                 );
-            } else{
-                if (processingArray.getMaxVoltage()>=RecipeHelper.getInputEUt(recipe))
+            } else {
+                if (processingArray.getMaxVoltage() >= RecipeHelper.getInputEUt(recipe))
                     parallelLimit = processingArray.machineStorage.storage.getStackInSlot(0).getCount();
                 else return null;
             }
@@ -214,7 +227,7 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
             if (parallelLimit <= 0)
                 return null;
 
-            parallelLimit*=AOConfigHolder.INSTANCE.machines.PAPMultiplier;
+            parallelLimit *= AOConfigHolder.INSTANCE.machines.PAPMultiplier;
 
             // apply parallel first
             var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
@@ -228,7 +241,7 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, processingArray.getMaxVoltage());
 
             if (AOConfigHolder.INSTANCE.machines.PAHasOPChance)
-                for (var content : recipe.getOutputContents(ItemRecipeCapability.CAP)){
+                for (var content : recipe.getOutputContents(ItemRecipeCapability.CAP)) {
                     content.chance = 1.0F;
                 }
 
@@ -236,14 +249,6 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
         }
         return null;
     }
-
-    /*@Override
-    public Map<RecipeCapability<?>, Integer> getOutputLimits() {
-        if (getMachineDefinition() != null) {
-            return getMachineDefinition().getRecipeOutputLimits();
-        }
-        return GTRegistries.RECIPE_CAPABILITIES.values().stream().map(key -> Map.entry(key, 0)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }*/
 
     //////////////////////////////////////
     //********        Gui       ********//
@@ -260,7 +265,7 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
     @Override
     public Widget createUIWidget() {
-        var widget =  super.createUIWidget();
+        var widget = super.createUIWidget();
         if (widget instanceof WidgetGroup group) {
             var size = group.getSize();
             group.addWidget(new SlotWidget(machineStorage.storage, 0, size.width - 30, size.height - 30, true, true)

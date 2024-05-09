@@ -15,6 +15,6 @@ credits = "Using GTCEu-mordern's codebase in some files. Thanks to the great con
 [[dependencies.gtceuao]]
 modId = "gtceu"
 mandatory = true
-versionRange = "[1.1.3.b,)"
+versionRange = "[1.2.1,1.2.1b)"
 ordering = "NONE"
 side = "BOTH"

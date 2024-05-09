@@ -12,7 +12,7 @@ import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.data.recipe.CustomTags;
 import com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityMachineRecipeLoader;
-import com.gregtechceu.gtceu.integration.ae2.GTAEMachines;
+import com.gregtechceu.gtceu.integration.ae2.machine.MEBusPartMachine;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.TagKey;

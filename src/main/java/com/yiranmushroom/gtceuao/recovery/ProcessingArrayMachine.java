@@ -191,7 +191,7 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
 
     @Override
     public long getMaxVoltage() {
-        return getMaxHatchVoltage();
+        return super.getMaxVoltage();
     }
 
     @Nullable

@@ -16,6 +16,7 @@ import lombok.val;
 import javax.annotation.Nonnull;
 
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
+import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
 import static com.yiranmushroom.gtceuao.mixin.recipe.logics.OverclockingLogicMixin.PERFECT_OVERCLOCK;
 
 public class AORecipeModifier {
@@ -30,8 +31,8 @@ public class AORecipeModifier {
                 return null;
             }
 
-            var result = GTRecipeModifiers.accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
-            recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
+            var result = accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
+            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
 
             return RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> OverclockingLogic.heatingCoilOverclockingLogic(
                 Math.abs(recipeEUt),
@@ -40,7 +41,7 @@ public class AORecipeModifier {
                 amountOC,
                 blastFurnaceTemperature,
                 recipe1.data.contains("ebf_temp") ? recipe1.data.getInt("ebf_temp") : 0
-            )), recipe, coilMachine.getMaxVoltage());
+            )), recipe, coilMachine.getOverclockVoltage());
 
         }
         return null;
@@ -48,9 +49,9 @@ public class AORecipeModifier {
 
     public static GTRecipe perfectCoilMachineParallel(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof CoilWorkableElectricMultiblockMachine coilMachine) {
-            val result = GTRecipeModifiers.accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
-            recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, coilMachine.getMaxVoltage());
+            val result = accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
+            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
+            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, coilMachine.getOverclockVoltage());
             return recipe;
         }
         return null;
@@ -58,9 +59,12 @@ public class AORecipeModifier {
 
     public static GTRecipe perfectMachineParallel(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
-            val result = GTRecipeModifiers.accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.multiblockParallelAmount, false);
-            recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, workableMachine.getMaxVoltage());
+
+            var result = accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.multiblockParallelAmount, false);
+            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
+
+            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, workableMachine.getOverclockVoltage());
+
             return recipe;
 
         }
@@ -72,8 +76,8 @@ public class AORecipeModifier {
             if (RecipeHelper.getRecipeEUtTier(recipe) > coilMachine.getTier()) {
                 return null;
             }
-            val result = GTRecipeModifiers.accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
-            recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
+            val result = accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
+            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
             return RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
                 var pair = OverclockingLogic.NON_PERFECT_OVERCLOCK.getLogic().runOverclockingLogic(recipe1, recipeEUt, maxVoltage, duration, amountOC);
                 if (coilMachine.getCoilTier() == 0) {
@@ -83,7 +87,7 @@ public class AORecipeModifier {
                 }
                 pair.second(Math.max(1, pair.secondInt()));
                 return pair;
-            }), recipe, coilMachine.getMaxVoltage());
+            }), recipe, coilMachine.getOverclockVoltage());
         }
         return null;
     }
@@ -94,8 +98,8 @@ public class AORecipeModifier {
                 return null;
             }
 
-            val result = GTRecipeModifiers.accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
-            recipe = result.getA() == recipe ? result.getA().copy() : result.getA();
+            val result = accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
+            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
 
             return RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
                 var pair = OverclockingLogic.NON_PERFECT_OVERCLOCK.getLogic().runOverclockingLogic(recipe1, recipeEUt, maxVoltage, duration, amountOC);
@@ -104,7 +108,7 @@ public class AORecipeModifier {
                     pair.first((long) Math.max(1, eu));
                 }
                 return pair;
-            }), recipe, coilMachine.getMaxVoltage());
+            }), recipe, coilMachine.getOverclockVoltage());
         }
         return null;
     }

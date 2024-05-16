@@ -23,6 +23,8 @@
     "recipe.change.machineRecipes.MetaTileEntityMachineRecipeLoaderMixin",
     "recipe.change.machineRecipes.OreRecipeHandlerMixin",
     "recipe.change.machineRecipes.WireRecipeHandlerMixin",
+    "recipe.logics.EURecipeCapabilityMixin",
+    "recipe.logics.GTRecipeMixin",
     "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
     "registries.CommonProxyMixin"

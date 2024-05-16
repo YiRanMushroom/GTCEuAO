@@ -1,48 +1,59 @@
 package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
+import com.gregtechceu.gtceu.api.GTValues;
+import com.gregtechceu.gtceu.api.capability.IParallelHatch;
 import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.IRecipeCapabilityHolder;
+import com.gregtechceu.gtceu.api.machine.MetaMachine;
+import com.gregtechceu.gtceu.api.machine.feature.IOverclockMachine;
+import com.gregtechceu.gtceu.api.machine.feature.ITieredMachine;
+import com.gregtechceu.gtceu.api.machine.feature.multiblock.IMultiController;
+import com.gregtechceu.gtceu.api.machine.multiblock.CoilWorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
+import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
+import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
+import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.content.ContentModifier;
+import com.gregtechceu.gtceu.api.recipe.modifier.ParallelLogic;
+import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
+import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
-import net.minecraft.util.Tuple;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.Util;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Mixin(GTRecipeModifiers.class)
 public class GTRecipeModifiersMixin {
+
     /**
      * @author YiranMushroom
-     * @reason Need to modify this to change energy consumption
+     * @reason Use this to determine if the generator should use more fuel, false if ParallelNeedMorePower is false
      */
     @Overwrite(remap = false)
-    private static Tuple<GTRecipe, Integer> tryParallel(IRecipeCapabilityHolder holder, GTRecipe original, int min, int max, boolean modifyDuration) {
-        if (min > max) {
-            return null;
-        } else {
-            int mid = (min + max) / 2;
-            var oriEUt = original.tickInputs;
-            GTRecipe copied = original.copy(ContentModifier.multiplier((double) mid), modifyDuration);
-            if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
-                copied = new GTRecipe(copied.recipeType, copied.id, copied.inputs, copied.outputs,
-                    oriEUt, copied.tickOutputs, copied.conditions, copied.ingredientActions,copied.data, copied.duration, copied.isFuel);
-//                LOGGER.info("Original Recipe has a EUt of " + EURecipeCapability.CAP.of(oriEUt.get(EURecipeCapability.CAP).get(0).content) + ", copied recipe has a EUt of " + EURecipeCapability.CAP.of(copied.tickInputs.get(EURecipeCapability.CAP).get(0).content) + ".");
-            }
-
-
-            if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
-                if (mid == max) {
-                    return new Tuple<>(copied, mid);
-                } else {
-                    Tuple<GTRecipe, Integer> tryMore = tryParallel(holder, original, mid + 1, max, modifyDuration);
-                    return tryMore != null ? tryMore : new Tuple<>(copied, mid);
+    public static Pair<GTRecipe, Integer> fastParallel(MetaMachine machine, @NotNull GTRecipe recipe, int maxParallel, boolean modifyDuration) {
+        if (machine instanceof IRecipeCapabilityHolder holder) {
+            while (maxParallel > 0) {
+                var copied = recipe.copy(ContentModifier.multiplier(maxParallel), modifyDuration);
+                if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
+                    copied = new GTRecipe(copied.recipeType, copied.id, recipe.inputs, copied.outputs,
+                        recipe.tickInputs, copied.tickOutputs, copied.conditions, copied.ingredientActions, copied.data, copied.duration, copied.isFuel);
                 }
-            } else {
-                return tryParallel(holder, original, min, mid - 1, modifyDuration);
+                if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
+                    return Pair.of(copied, maxParallel);
+                }
+                maxParallel /= 2;
             }
         }
+        return Pair.of(recipe, 1);
     }
 }

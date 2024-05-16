@@ -22,7 +22,7 @@ dependencies {
 
     // Gtceu
 
-    modImplementation "curse.maven:gtceu_modern-890405:5311877"
+    modImplementation "curse.maven:gtceu_modern-890405:5334939"
 
     // From Forge
 

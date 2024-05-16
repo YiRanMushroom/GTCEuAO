@@ -1,6 +1,7 @@
 package com.yiranmushroom.gtceuao.mixin.machines.multiblocks.registry;
 
 import com.gregtechceu.gtceu.GTCEu;
+import com.gregtechceu.gtceu.api.GTCEuAPI;
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.capability.recipe.IO;
 import com.gregtechceu.gtceu.api.data.RotationState;
@@ -205,7 +206,7 @@ public abstract class GTMachinesMixin {
                 .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
                 .where('M', MAINTENANCE_HATCH, Direction.NORTH)
                 .where('#', Blocks.AIR.defaultBlockState());
-            ALL_COILS.entrySet().stream()
+            GTCEuAPI.HEATING_COILS.entrySet().stream()
                 .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
                 .forEach(coil -> shapeInfo.add(builder.shallowCopy().where('C', coil.getValue().get()).build()));
             return shapeInfo;
@@ -257,7 +258,7 @@ public abstract class GTMachinesMixin {
                 .where('H', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
                 .where('M', MAINTENANCE_HATCH, Direction.NORTH)
                 .where('#', Blocks.AIR.defaultBlockState());
-            ALL_COILS.entrySet().stream()
+            GTCEuAPI.HEATING_COILS.entrySet().stream()
                 .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
                 .forEach(coil -> shapeInfo.add(builder.shallowCopy().where('C', coil.getValue().get()).build()));
             return shapeInfo;
@@ -459,7 +460,7 @@ public abstract class GTMachinesMixin {
                 .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.EAST)
                 .where('H', MUFFLER_HATCH[GTValues.LV], Direction.UP)
                 .where('M', MAINTENANCE_HATCH, Direction.NORTH);
-            ALL_COILS.entrySet().stream()
+            GTCEuAPI.HEATING_COILS.entrySet().stream()
                 .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
                 .forEach(coil -> shapeInfo.add(builder.shallowCopy().where('C', coil.getValue().get()).build()));
             return shapeInfo;

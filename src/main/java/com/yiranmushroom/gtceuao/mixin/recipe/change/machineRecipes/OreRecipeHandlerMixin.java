@@ -32,7 +32,7 @@ import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 @Mixin(OreRecipeHandler.class)
 public class OreRecipeHandlerMixin {
 
-    @Inject(method = "init", at = @At("HEAD"), remap = false, cancellable = true)
+/*    @Inject(method = "init", at = @At("HEAD"), remap = false, cancellable = true)
     private static void init(Consumer<FinishedRecipe> provider, CallbackInfo ci) {
 
 //        LOGGER.info("Patching OreRecipeHandler...");
@@ -58,7 +58,7 @@ public class OreRecipeHandlerMixin {
 
             ci.cancel();
         }
-    }
+    }*/
 
     @Shadow(remap = false)
     private static boolean doesMaterialUseNormalFurnace(Material material) {

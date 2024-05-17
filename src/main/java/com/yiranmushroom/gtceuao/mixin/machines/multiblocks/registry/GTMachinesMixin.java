@@ -179,7 +179,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition CRACKER = REGISTRATE.multiblock("cracker", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.CRACKING_RECIPES)
-        .recipeModifier(GTRecipeModifiers::crackerOverclock)
+        .recipeModifier(AORecipeModifier::crackerOverclock)
         .appearanceBlock(CASING_STAINLESS_CLEAN)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("HCHCH", "HCHCH", "HCHCH")

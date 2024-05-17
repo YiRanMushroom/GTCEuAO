@@ -5,6 +5,7 @@ import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.longs.LongIntMutablePair;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -40,7 +41,7 @@ public abstract class OverclockingLogicMixin {
      */
     @Nonnull
     @Overwrite(remap = false)
-    public static LongIntPair heatingCoilOverclockingLogic(long recipeEUt, long maximumVoltage, int recipeDuration, int maxOverclocks, int currentTemp, int recipeRequiredTemp) {
+    public static @NotNull LongIntPair heatingCoilOverclockingLogic(long recipeEUt, long maximumVoltage, int recipeDuration, int maxOverclocks, int currentTemp, int recipeRequiredTemp) {
         int amountEUDiscount = Math.max(0, (currentTemp - recipeRequiredTemp) / 900);
         int amountPerfectOC = amountEUDiscount;
         recipeEUt = (long) ((double) recipeEUt * Math.min(1.0, Math.pow(0.95, (double) amountEUDiscount)));

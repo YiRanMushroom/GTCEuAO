@@ -15,6 +15,8 @@ import lombok.val;
 
 import javax.annotation.Nonnull;
 
+import java.util.Objects;
+
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
 import static com.yiranmushroom.gtceuao.mixin.recipe.logics.OverclockingLogicMixin.PERFECT_OVERCLOCK;
@@ -60,13 +62,16 @@ public class AORecipeModifier {
     public static GTRecipe perfectMachineParallel(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
 
-            var result = accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.multiblockParallelAmount, false);
-            recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
+            // apply parallel first
+            var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
+                machine, recipe, AOConfigHolder.INSTANCE.machines.multiblockParallelAmount, false));
 
+            recipe = parallel.getFirst();
+
+            // apply overclock afterward
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, workableMachine.getOverclockVoltage());
 
             return recipe;
-
         }
         return null;
     }

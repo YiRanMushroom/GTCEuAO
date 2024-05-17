@@ -1,5 +1,6 @@
 package com.yiranmushroom.gtceuao.recovery;
 
+import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.capability.recipe.IO;
 import com.gregtechceu.gtceu.api.capability.recipe.ItemRecipeCapability;
@@ -17,10 +18,12 @@ import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
+import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.registry.GTRegistries;
 import com.gregtechceu.gtceu.common.data.GTBlocks;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
+import com.gregtechceu.gtceu.data.recipe.builder.GTRecipeBuilder;
 import com.gregtechceu.gtceu.utils.GTUtil;
 import com.lowdragmc.lowdraglib.gui.widget.SlotWidget;
 import com.lowdragmc.lowdraglib.gui.widget.Widget;
@@ -44,6 +47,7 @@ import com.gregtechceu.gtceu.api.machine.feature.IRecipeLogicMachine;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -172,12 +176,36 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
      */
     @Override
     public int getTier() {
+        if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
+            return GTUtil.getFloorTierByVoltage(this.getMaxVoltage());
+        }
         var definition = getMachineDefinition();
         return definition == null ? 0 : definition.getTier();
     }
 
     @Override
+    public long getMaxVoltage() {
+        return this.getEnergyContainer().getInputVoltage();
+        /*if (this.energyContainer == null) {
+            this.energyContainer = this.getEnergyContainer();
+        }
+        long highestVoltage;
+
+        highestVoltage = this.energyContainer.getHighestInputVoltage();
+
+        if (this.energyContainer.getNumHighestInputContainers() > 1) {
+            int tier = GTUtil.getTierByVoltage(highestVoltage);
+            return GTValues.V[Math.min(tier + 1, 14)];
+        } else {
+            return highestVoltage;
+        }*/
+    }
+
+    @Override
     public int getOverclockTier() {
+        if (AOConfigHolder.INSTANCE.machines.PAIgnoreTier) {
+            return GTUtil.getFloorTierByVoltage(this.getMaxVoltage());
+        }
         MachineDefinition machineDefinition = getMachineDefinition();
         int machineTier = machineDefinition == null ? getDefinition().getTier() : Math.min(getDefinition().getTier(), machineDefinition.getTier());
         return Math.min(machineTier, GTUtil.getTierByVoltage(getMaxVoltage()));
@@ -199,6 +227,12 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
             if (RecipeHelper.getRecipeEUtTier(recipe) > processingArray.getTier())
                 return null;
 
+            if (AOConfigHolder.INSTANCE.machines.PAHasOPChance) {
+                for (var content : recipe.getOutputContents(ItemRecipeCapability.CAP)) {
+                    content.chance = 1.0F;
+                }
+            }
+
             int parallelLimit = Math.min(
                 processingArray.machineStorage.storage.getStackInSlot(0).getCount(),
                 (int) (processingArray.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))
@@ -207,29 +241,31 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
             if (parallelLimit <= 0)
                 return null;
 
+            parallelLimit *= AOConfigHolder.INSTANCE.machines.PAPMultiplier;
+
             // apply parallel first
             var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
-                machine, recipe, Math.min(parallelLimit, getMachineLimit(machine.getDefinition().getTier())), false
+                machine, recipe, parallelLimit, false
             ));
             int parallelCount = parallel.getSecond();
             recipe = parallel.getFirst();
 
             // apply overclock afterward
             long maxVoltage = Math.min(processingArray.getOverclockVoltage() * parallelCount, processingArray.getMaxVoltage());
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.NON_PERFECT_OVERCLOCK, recipe, maxVoltage);
+            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, maxVoltage);
 
             return recipe;
         }
         return null;
     }
 
-    @Override
-    public Map<RecipeCapability<?>, Integer> getOutputLimits() {
-        if (getMachineDefinition() != null) {
-            return getMachineDefinition().getRecipeOutputLimits();
-        }
-        return GTRegistries.RECIPE_CAPABILITIES.values().stream().map(key -> Map.entry(key, 0)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
+//    @Override
+//    public Map<RecipeCapability<?>, Integer> getOutputLimits() {
+//        if (getMachineDefinition() != null) {
+//            return getMachineDefinition().getRecipeOutputLimits();
+//        }
+//        return GTRegistries.RECIPE_CAPABILITIES.values().stream().map(key -> Map.entry(key, 0)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+//    }
 
     //////////////////////////////////////
     //********        Gui       ********//
@@ -260,9 +296,9 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
     //////////////////////////////////////
     public static Block getCasingState(int tier) {
         if (tier <= GTValues.IV) {
-            return GTBlocks.CASING_TUNGSTENSTEEL_ROBUST.get();
+            return GTBlocks.CASING_STEEL_SOLID.get();
         } else {
-            return GTBlocks.CASING_HSSE_STURDY.get();
+            return GTBlocks.CASING_TUNGSTENSTEEL_ROBUST.get();
         }
     }
 

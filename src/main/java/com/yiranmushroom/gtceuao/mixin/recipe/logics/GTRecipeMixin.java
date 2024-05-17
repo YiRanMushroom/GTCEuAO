@@ -91,7 +91,6 @@ public class GTRecipeMixin implements Recipe<Container> {
      * @author YiranMushroom
      * @reason Overwrite the copy method to make it not modify the voltage*/
 
-
     @Overwrite(remap = false)
     public GTRecipe copy(ContentModifier modifier, boolean modifyDuration) {
         var copied = new GTRecipe(recipeType, id, copyContents(inputs, modifier), copyContents(outputs, modifier),

@@ -27,6 +27,7 @@
     "recipe.logics.GTRecipeMixin",
     "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
+    "recipe.logics.WorkableElectricMultiblockMachineMixin",
     "registries.CommonProxyMixin"
   ],
   "client": [

@@ -6,14 +6,18 @@ import com.gregtechceu.gtceu.api.capability.recipe.IRecipeCapabilityHolder;
 import com.gregtechceu.gtceu.api.capability.recipe.RecipeCapability;
 import com.gregtechceu.gtceu.api.machine.feature.IOverclockMachine;
 import com.gregtechceu.gtceu.api.machine.feature.ITieredMachine;
+import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
 import com.gregtechceu.gtceu.api.recipe.content.IContentSerializer;
 import com.gregtechceu.gtceu.api.recipe.content.SerializerLong;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import com.yiranmushroom.gtceuao.gtceuao;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
+import static com.gregtechceu.gtceu.GTCEu.LOGGER;
 
 @Mixin(EURecipeCapability.class)
 public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
@@ -22,9 +26,10 @@ public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
         super("eu", 0xFFFFFF00, false, 2, SerializerLong.INSTANCE);
     }
 
-/**
+    /**
      * @author YiranMushroom
-     * @reason Overwrite the limitParallel method to make it check if the voltage should be limited*/
+     * @reason Overwrite the limitParallel method to make it check if the voltage should be limited
+     */
 
 
     @Overwrite(remap = false)
@@ -33,7 +38,6 @@ public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
         if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
             return Integer.MAX_VALUE;
         }
-
 
         long maxVoltage = Long.MAX_VALUE;
         if (holder instanceof IOverclockMachine overclockMachine) {

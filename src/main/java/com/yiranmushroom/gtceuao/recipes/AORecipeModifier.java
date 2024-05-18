@@ -53,8 +53,9 @@ public class AORecipeModifier {
             recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
             recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, coilMachine.getOverclockVoltage());
             return recipe;
+        } else {
+            return perfectMachineParallel(machine, recipe);
         }
-        return null;
     }
 
     public static GTRecipe perfectMachineParallel(MetaMachine machine, @Nonnull GTRecipe recipe) {
@@ -118,23 +119,23 @@ public class AORecipeModifier {
 
     public static int getParallelAmountByCoilType(ICoilType coilType) {
         if (coilType.equals(CUPRONICKEL)) {
-            return 4;
-        } else if (coilType.equals(KANTHAL)) {
             return 16;
+        } else if (coilType.equals(KANTHAL)) {
+            return 32;
         } else if (coilType.equals(NICHROME)) {
             return 64;
         } else if (coilType.equals(RTMALLOY)) {
-            return 256;
+            return 128;
         } else if (coilType.equals(HSSG)) {
-            return 1024;
+            return 256;
         } else if (coilType.equals(NAQUADAH)) {
-            return 4096;
+            return 512;
         } else if (coilType.equals(TRINIUM)) {
-            return 16384;
+            return 1024;
         } else if (coilType.equals(TRITANIUM)) {
-            return 65536;
+            return 2048;
         }
-        return 1;
+        return 16;
     }
 
 }

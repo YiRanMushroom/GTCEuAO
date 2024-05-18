@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GlassBlock;
 import org.apache.commons.lang3.ArrayUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -275,7 +276,7 @@ public class MetaTileEntityLoaderMixin {
 
         if (ConfigHolder.INSTANCE.machines.doProcessingArray) {
             if (AOConfigHolder.INSTANCE.recipes.EasierPARecipes) {
-                VanillaRecipeHelper.addShapedRecipe(provider, true, "processing_array", GTMachines.PROCESSING_ARRAY[GTValues.IV].asStack(4), "CRC", "RHR", "CPC", 'C', CustomTags.MV_CIRCUITS, 'R', GTItems.ROBOT_ARM_LV.asStack(), 'P', GTBlocks.FLUID_PIPE_BLOCKS.get(TagPrefix.pipeLargeFluid, GTMaterials.Aluminium), 'H', GTMachines.HULL[GTValues.MV].asStack());
+                VanillaRecipeHelper.addShapedRecipe(provider, true, "processing_array", GTMachines.PROCESSING_ARRAY[GTValues.IV].asStack(4), "CRC", "GHG", "CPC", 'C', CustomTags.LV_CIRCUITS,'G', Items.GLASS, 'R', GTItems.ELECTRIC_MOTOR_LV.asStack(), 'P', GTBlocks.FLUID_PIPE_BLOCKS.get(TagPrefix.pipeLargeFluid, GTMaterials.Steel), 'H', GTMachines.HULL[GTValues.LV].asStack());
                 VanillaRecipeHelper.addShapedRecipe(provider, true, "advanced_processing_array", GTMachines.PROCESSING_ARRAY[GTValues.LuV].asStack(), "CPC", "RHR", "CTC", 'R', GTItems.ROBOT_ARM_EV.asStack(), 'C', CustomTags.IV_CIRCUITS, 'P', GTMachines.PROCESSING_ARRAY[IV].asStack(), 'H', GTMachines.HULL[GTValues.MV].asStack(), 'T', new UnificationEntry(TagPrefix.pipeLargeFluid, GTMaterials.Titanium));
             }
         }

@@ -13,5 +13,6 @@ public class RecipeRegistry {
         MiscRecipes.register(provider);
         ExNihiloRecipe.register(provider);
         EasyOreProcessing.register(provider);
+        OPNaquadahLineRecipes.register(provider);
     }
 }

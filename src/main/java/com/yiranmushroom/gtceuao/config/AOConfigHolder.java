@@ -75,7 +75,7 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"In what amount should be non-coilblock multiblock machines parallel.", "Default: 4096"})
-        public int multiblockParallelAmount = 4096;
+        public int multiblockParallelAmount = 16;
 
         @Configurable
         @Configurable.Comment({"Do bedrock drills deplete resources.", "Default: false"})
@@ -135,6 +135,10 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Are ore yield being strongly buffed?.","Tends to fix original gregtech ore processing issues.", "Default: true"})
         public boolean buffOreYield = true;
+
+        @Configurable
+        @Configurable.Comment({"Do Naquadah Line have overpowered output.", "Default: true"})
+        public boolean OPNaquadahLine = true;
     }
 
     public static class MiscConfigs {

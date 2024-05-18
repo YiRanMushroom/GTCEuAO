@@ -27,6 +27,4 @@ public abstract class GTRegistryMixin<K, V> implements Iterable<V> {
         ((GTRegistry<K, V>) (Object) this).remove(key);
         ((GTRegistry<K, V>) (Object) this).registerOrOverride(key, value);
     }
-
-
 }

@@ -8,7 +8,6 @@ import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMa
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
-import com.gregtechceu.gtceu.common.block.CoilBlock;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import lombok.val;
@@ -19,7 +18,6 @@ import java.util.Objects;
 
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
-import static com.yiranmushroom.gtceuao.mixin.recipe.logics.OverclockingLogicMixin.PERFECT_OVERCLOCK;
 
 public class AORecipeModifier {
 

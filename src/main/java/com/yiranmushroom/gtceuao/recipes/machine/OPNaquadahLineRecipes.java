@@ -1,5 +1,8 @@
 package com.yiranmushroom.gtceuao.recipes.machine;
 
+import com.gregtechceu.gtceu.common.data.GTMaterials;
+import com.jozufozu.flywheel.api.Material;
+import com.jozufozu.flywheel.core.Materials;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -22,8 +25,8 @@ public class OPNaquadahLineRecipes {
             .inputItems(dust, Naquadria, 1)
             .inputItems(dust, NaquadahEnriched, 1)
             .circuitMeta(14)
-            .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(2000))
-            .outputFluids(ImpureNaquadriaSolution.getFluid(2000))
+            .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(4000))
+            .outputFluids(ImpureNaquadriaSolution.getFluid(4000))
             .outputItems(dust, TitaniumTrifluoride, 8)
             .save(provider);
 
@@ -94,5 +97,7 @@ public class OPNaquadahLineRecipes {
             .outputItems(nugget, Rhodium, 2)
             .outputFluids(HydrofluoricAcid.getFluid(3000))
             .save(provider);
+
+
     }
 }

@@ -139,6 +139,18 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do Naquadah Line have overpowered output.", "Default: true"})
         public boolean OPNaquadahLine = true;
+
+        @Configurable
+        @Configurable.Comment({"Do certain ingots need EBF to cook.", "Default: true"})
+        public boolean ingotNeedEBF = true;
+
+        @Configurable
+        @Configurable.Comment({"Do certain hot ingots need Liquid Helium to cool down.", "Default: false"})
+        public boolean hotIngotNeedLiquidHelium = false;
+
+        @Configurable
+        @Configurable.Comment({"Do molten metal need Vacuum Freezer to cool down.", "Default: false"})
+        public boolean moltenCoolDownNeedFreezer = false;
     }
 
     public static class MiscConfigs {

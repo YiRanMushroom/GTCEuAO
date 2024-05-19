@@ -301,20 +301,20 @@ public class CircuitRecipes {
 
 
     private static void registerCircuits(Consumer<FinishedRecipe> provider) {
-        VanillaRecipeHelper.addShapedRecipe(provider, "electronic_circuit_lv", ELECTRONIC_CIRCUIT_LV.asStack(2),
+        VanillaRecipeHelper.addShapedRecipe(provider, "electronic_circuit_lv", ELECTRONIC_CIRCUIT_LV.asStack(4),
                 "RPR", "VBV", "CCC",
                 'R', RESISTOR.asStack(),
                 'P', new UnificationEntry(plate, Steel),
                 'V', VACUUM_TUBE.asStack(),
                 'B', BASIC_CIRCUIT_BOARD.asStack(),
-                'C', new UnificationEntry(cableGtSingle, RedAlloy));
+                'C', new UnificationEntry(cableGtSingle, Tin));
 
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("electronic_circuit_lv").EUt(16).duration(200)
                 .inputItems(BASIC_CIRCUIT_BOARD)
                 .inputItems(CustomTags.RESISTORS, 2)
-                .inputItems(wireGtSingle, RedAlloy, 2)
+                .inputItems(wireGtSingle, Tin, 2)
                 .inputItems(CustomTags.ULV_CIRCUITS, 2)
-                .outputItems(ELECTRONIC_CIRCUIT_LV, 4)
+                .outputItems(ELECTRONIC_CIRCUIT_LV, 8)
                 .save(provider);
 
         // MV
@@ -344,7 +344,7 @@ public class CircuitRecipes {
                 .inputItems(CustomTags.DIODES, 2)
                 .inputItems(wireFine, Copper, 2)
                 .inputItems(bolt, Tin, 2)
-                .outputItems(INTEGRATED_CIRCUIT_LV, 8)
+                .outputItems(INTEGRATED_CIRCUIT_LV, 12)
                 .save(provider);
 
         // MV
@@ -396,7 +396,7 @@ public class CircuitRecipes {
                 .inputItems(CustomTags.CAPACITORS, 2)
                 .inputItems(CustomTags.TRANSISTORS, 2)
                 .inputItems(wireFine, Copper, 2)
-                .outputItems(MICROPROCESSOR_LV, 6)
+                .outputItems(MICROPROCESSOR_LV, 12)
                 .save(provider);
 
         // Microprocessor LV SoC
@@ -405,7 +405,7 @@ public class CircuitRecipes {
                 .inputItems(SYSTEM_ON_CHIP)
                 .inputItems(wireFine, Copper, 2)
                 .inputItems(bolt, Tin, 2)
-                .outputItems(MICROPROCESSOR_LV, 12)
+                .outputItems(MICROPROCESSOR_LV, 24)
                 .cleanroom(CleanroomType.CLEANROOM)
                 .save(provider);
 

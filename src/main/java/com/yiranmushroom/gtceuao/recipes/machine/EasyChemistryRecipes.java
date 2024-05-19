@@ -1,6 +1,7 @@
 package com.yiranmushroom.gtceuao.recipes.machine;
 
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
+import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.data.recipe.CustomTags;
 import com.gregtechceu.gtceu.data.recipe.VanillaRecipeHelper;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
@@ -29,6 +30,8 @@ public class EasyChemistryRecipes {
     private static void registerEasierWroughtIronAndSteel(Consumer<FinishedRecipe> provider) {
         VanillaRecipeHelper.addSmeltingRecipe(provider, "wrought_iron_ingot", ChemicalHelper.getTag(ingot, Iron), ChemicalHelper.get(ingot, WroughtIron));
 
+        VanillaRecipeHelper.addShapelessRecipe(provider, "easy_rubber_plate", ChemicalHelper.get(plate, Rubber), 'h', ChemicalHelper.get(ingot, Rubber));
+
         BLAST_RECIPES.recipeBuilder("steel_from_iron").duration(1000).EUt(VA[LV]).inputItems(ingot, Iron).inputFluids(Oxygen.getFluid(200)).outputItems(ingot, Steel).outputItems(dustTiny, Ash).blastFurnaceTemp(1000).save(provider);
         BLAST_RECIPES.recipeBuilder("steel_from_wrought_iron").duration(600).EUt(VA[LV]).inputItems(ingot, WroughtIron).inputFluids(Oxygen.getFluid(200)).outputItems(ingot, Steel).outputItems(dustTiny, Ash).blastFurnaceTemp(1000).save(provider);
 
@@ -37,55 +40,55 @@ public class EasyChemistryRecipes {
 
     private static void registerEasierPolymers(Consumer<FinishedRecipe> provider) {
         CHEMICAL_RECIPES.recipeBuilder("ethanol_to_polyethylene")
-                .inputFluids(Ethanol.getFluid(1000))
-                .outputFluids(Polyethylene.getFluid(1440))
-                .duration(1200)
-                .EUt(VA[LV])
-                .circuitMeta(14)
-                .save(provider);
+            .inputFluids(Ethanol.getFluid(1000))
+            .outputFluids(Polyethylene.getFluid(1440))
+            .duration(1200)
+            .EUt(VA[LV])
+            .circuitMeta(14)
+            .save(provider);
 
         CHEMICAL_RECIPES.recipeBuilder("polyethylene_to_polyvinyl_chloride")
-                .inputFluids(Polyethylene.getFluid(1440))
-                .inputFluids(Chlorine.getFluid(1000))
-                .outputFluids(PolyvinylChloride.getFluid(2160))
-                .duration(1200)
-                .EUt(VA[LV])
-                .circuitMeta(14)
-                .save(provider);
+            .inputFluids(Polyethylene.getFluid(1440))
+            .inputFluids(Chlorine.getFluid(1000))
+            .outputFluids(PolyvinylChloride.getFluid(2160))
+            .duration(1200)
+            .EUt(VA[LV])
+            .circuitMeta(14)
+            .save(provider);
 
         CHEMICAL_RECIPES.recipeBuilder("polyethylene_to_polytetrafluoroethylene")
-                .inputFluids(Polyethylene.getFluid(1440))
-                .inputFluids(Fluorine.getFluid(1000))
-                .outputFluids(Polytetrafluoroethylene.getFluid(2160))
-                .duration(1200)
-                .EUt(VA[LV])
-                .circuitMeta(14)
-                .save(provider);
+            .inputFluids(Polyethylene.getFluid(1440))
+            .inputFluids(Fluorine.getFluid(1000))
+            .outputFluids(Polytetrafluoroethylene.getFluid(2160))
+            .duration(1200)
+            .EUt(VA[LV])
+            .circuitMeta(14)
+            .save(provider);
 
         CHEMICAL_RECIPES.recipeBuilder("bio_chaff_to_ethanol")
-                .inputItems(BIO_CHAFF)
-                .inputFluids(Water.getFluid(500))
-                .outputFluids(Ethanol.getFluid(500))
-                .duration(160)
-                .EUt(VA[LV])
-                .circuitMeta(14)
-                .save(provider);
+            .inputItems(BIO_CHAFF)
+            .inputFluids(Water.getFluid(500))
+            .outputFluids(Ethanol.getFluid(500))
+            .duration(160)
+            .EUt(VA[LV])
+            .circuitMeta(14)
+            .save(provider);
 
         ASSEMBLER_RECIPES.recipeBuilder("cover_infinite_water")
-                .inputItems(ELECTRIC_PUMP_LV)
-                .inputItems(new ItemStack(Items.CAULDRON))
-                .inputItems(CustomTags.LV_CIRCUITS)
-                .outputItems(COVER_INFINITE_WATER, 4)
-                .EUt(VA[LV]).duration(100)
-                .save(provider);
+            .inputItems(ELECTRIC_PUMP_LV)
+            .inputItems(new ItemStack(Items.CAULDRON))
+            .inputItems(CustomTags.LV_CIRCUITS)
+            .outputItems(COVER_INFINITE_WATER, 4)
+            .EUt(VA[LV]).duration(100)
+            .save(provider);
 
         CHEMICAL_RECIPES.recipeBuilder("pure_rubber")
-                .inputItems(dust, RawRubber, 10)
-                .outputFluids(Rubber.getFluid(1440))
-                .EUt(VA[ULV])
-                .duration(1200)
-                .circuitMeta(14)
-                .save(provider);
+            .inputItems(dust, RawRubber, 10)
+            .outputFluids(Rubber.getFluid(1440))
+            .EUt(VA[ULV])
+            .duration(1200)
+            .circuitMeta(14)
+            .save(provider);
 
     }
 }

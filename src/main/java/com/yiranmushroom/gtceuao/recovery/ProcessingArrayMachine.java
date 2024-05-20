@@ -222,8 +222,11 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
     }
 
     @Nullable
-    public static GTRecipe recipeModifier(MetaMachine machine, @NotNull GTRecipe recipe) {
+    public static GTRecipe recipeModifier(MetaMachine machine, @NotNull GTRecipe recipeOriginal) {
         if (machine instanceof ProcessingArrayMachine processingArray && processingArray.machineStorage.storage.getStackInSlot(0).getCount() > 0) {
+
+            GTRecipe recipe = recipeOriginal.copy();
+
             if (RecipeHelper.getRecipeEUtTier(recipe) > processingArray.getTier())
                 return null;
 

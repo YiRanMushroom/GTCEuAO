@@ -35,7 +35,7 @@ public class CircuitRecipes {
     }
 
     private static void registerBoards(Consumer<FinishedRecipe> provider) {
-        VanillaRecipeHelper.addShapedRecipe(provider, "coated_board", COATED_BOARD.asStack(3),
+        VanillaRecipeHelper.addShapedRecipe(provider, "coated_board", COATED_BOARD.asStack(6),
                 "RRR", "PPP", "RRR",
                 'R', STICKY_RESIN.asStack(),
                 'P', new UnificationEntry(plate, Wood));

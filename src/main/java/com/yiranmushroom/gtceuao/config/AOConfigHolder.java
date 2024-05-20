@@ -80,6 +80,11 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do bedrock drills deplete resources.", "Default: false"})
         public boolean bedrockDrillsDepleteResources = false;
+
+        @Configurable
+        @Configurable.Comment({"Do use faster and less buggy logic for parallel, which may reduce maximum parallel amount",
+            "Default: false"})
+        public boolean fastParallelLogicForNonGenerator = false;
     }
 
     public static class RecipeConfigs {

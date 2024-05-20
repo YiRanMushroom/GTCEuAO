@@ -198,6 +198,14 @@ public class AERecipes {
             .outputItems(AEBlocks.CREATIVE_ENERGY_CELL.stack())
             .duration(24000).EUt(VA[ULV]).save(provider);
 
+        // canceling clock, now need circuit 4
+        ASSEMBLER_RECIPES.recipeBuilder("clock")
+            .inputItems(dust, Redstone)
+            .inputItems(plate, Gold, 4)
+            .circuitMeta(1)
+            .outputItems(new ItemStack(Items.CLOCK))
+            .duration(100).EUt(4).save(provider);
+
         // Components
         Material[] materialTierList = {Iron, WroughtIron, Steel, Aluminium, StainlessSteel, Titanium, TungstenSteel};
         for (int i = 0; i < materialTierList.length; i++) {

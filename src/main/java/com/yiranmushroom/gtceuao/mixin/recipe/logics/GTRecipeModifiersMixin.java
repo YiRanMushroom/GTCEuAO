@@ -1,6 +1,7 @@
 package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
 import com.gregtechceu.gtceu.api.capability.IParallelHatch;
+import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.IRecipeCapabilityHolder;
 import com.gregtechceu.gtceu.api.machine.MetaMachine;
 import com.gregtechceu.gtceu.api.machine.feature.multiblock.IMultiController;
@@ -20,18 +21,27 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Optional;
 
+import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
+
 @Mixin(GTRecipeModifiers.class)
 public class GTRecipeModifiersMixin {
     @Unique
     private static Pair<GTRecipe, Integer> gtceuao$fastParallelNonGenerator(MetaMachine machine, GTRecipe recipe, int maxParallel, boolean modifyDuration) {
+        // We want to use binary search to find the maximum amount.
         if (machine instanceof IRecipeCapabilityHolder holder) {
-            while (maxParallel > 0) {
-                var copied = recipe.copy(ContentModifier.multiplier(maxParallel), modifyDuration);
+            int left = 1, right = maxParallel, mid;
+            while (left < right) {
+                mid = left + (right - left + 1) / 2;
+                var copied = recipe.copy(ContentModifier.multiplier(mid), modifyDuration);
                 if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
-                    return Pair.of(copied, maxParallel);
-                }
-                maxParallel /= 2;
+                    left = mid;
+                } else right = mid - 1;
+                LOGGER.info("Binary search: {} {} {}", left, mid, right);
             }
+            LOGGER.info("Found parallel amount: {}", left);
+            var res = Pair.of(recipe.copy(ContentModifier.multiplier(left), modifyDuration), left);
+            LOGGER.info("Recipe parallel: {},tickInputs is : {}", left, RecipeHelper.getInputEUt(res.getFirst()));
+            return res;
         }
         return Pair.of(recipe, 1);
     }
@@ -67,7 +77,7 @@ public class GTRecipeModifiersMixin {
         if (maxParallel == 1) {
             return Pair.of(recipe, 1);
         }
-        if (AOConfigHolder.INSTANCE.machines.fastParallelLogicForNonGenerator) {
+        if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
             return gtceuao$fastParallelNonGenerator(machine, recipe, maxParallel, modifyDuration);
         }
         if (machine instanceof WorkableElectricMultiblockMachine workableMachine)
@@ -90,7 +100,7 @@ public class GTRecipeModifiersMixin {
             if (optional.isPresent()) {
                 IParallelHatch hatch = optional.get();
                 if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
-                    if (AOConfigHolder.INSTANCE.machines.fastParallelLogicForNonGenerator) {
+                    if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
                         return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
                     }
                     return ParallelLogic.applyParallel(machine, recipe,

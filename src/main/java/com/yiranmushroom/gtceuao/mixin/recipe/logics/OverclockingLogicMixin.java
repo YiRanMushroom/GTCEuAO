@@ -69,7 +69,7 @@ public abstract class OverclockingLogicMixin {
      */
     @Overwrite(remap = false)
     @Nonnull
-    public static LongIntPair standardOverclockingLogic(long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor, double voltageMultiplier) {
+    public static @NotNull LongIntPair standardOverclockingLogic(long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor, double voltageMultiplier) {
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 

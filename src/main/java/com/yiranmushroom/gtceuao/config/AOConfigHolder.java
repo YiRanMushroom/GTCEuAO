@@ -82,9 +82,9 @@ public class AOConfigHolder {
         public boolean bedrockDrillsDepleteResources = false;
 
         @Configurable
-        @Configurable.Comment({"Do use faster and less buggy logic for parallel, which may reduce maximum parallel amount",
+        @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: false"})
-        public boolean fastParallelLogicForNonGenerator = false;
+        public boolean legacyParallelLogic = true;
     }
 
     public static class RecipeConfigs {

@@ -82,6 +82,10 @@ public class AOConfigHolder {
         public boolean bedrockDrillsDepleteResources = false;
 
         @Configurable
+        @Configurable.Comment({"Do rock breaker don't need to satisfy conditions.", "Default: true"})
+        public boolean rockBreakerIgnoreConditions = true;
+
+        @Configurable
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: false"})
         public boolean legacyParallelLogic = true;
@@ -156,6 +160,10 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do molten metal need Vacuum Freezer to cool down.", "Default: false"})
         public boolean moltenCoolDownNeedFreezer = false;
+
+        @Configurable
+        @Configurable.Comment({"Autoclave process any gem dust.", "Default: true"})
+        public boolean autoclaveProcessAllDust = true;
     }
 
     public static class MiscConfigs {

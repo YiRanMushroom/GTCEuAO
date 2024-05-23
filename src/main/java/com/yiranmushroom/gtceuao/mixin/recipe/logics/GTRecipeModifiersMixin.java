@@ -36,12 +36,11 @@ public class GTRecipeModifiersMixin {
                 if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
                     left = mid;
                 } else right = mid - 1;
-                LOGGER.info("Binary search: {} {} {}", left, mid, right);
+//                LOGGER.info("Binary search: {} {} {}", left, mid, right);
             }
-            LOGGER.info("Found parallel amount: {}", left);
-            var res = Pair.of(recipe.copy(ContentModifier.multiplier(left), modifyDuration), left);
-            LOGGER.info("Recipe parallel: {},tickInputs is : {}", left, RecipeHelper.getInputEUt(res.getFirst()));
-            return res;
+//            LOGGER.info("Found parallel amount: {}", left);
+            //            LOGGER.info("Recipe parallel: {},tickInputs is : {}", left, RecipeHelper.getInputEUt(res.getFirst()));
+            return Pair.of(recipe.copy(ContentModifier.multiplier(left), modifyDuration), left);
         }
         return Pair.of(recipe, 1);
     }

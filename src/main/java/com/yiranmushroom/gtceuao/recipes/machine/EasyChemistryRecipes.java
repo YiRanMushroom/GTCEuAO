@@ -115,6 +115,18 @@ public class EasyChemistryRecipes {
             .circuitMeta(14)
             .save(provider);
 
+        if (AOConfigHolder.INSTANCE.recipes.buffOreYield) {
+
+            CENTRIFUGE_RECIPES.recipeBuilder("pgs_separation").duration(500).EUt(VA[HV])
+                .inputItems(dust, PlatinumGroupSludge, 1)
+                .inputFluids(AquaRegia.getFluid(250))
+                .outputItems(dust, PlatinumRaw, 3) // PtCl2
+                .outputItems(dust, PalladiumRaw, 3) // PdNH3
+                .outputItems(dust, InertMetalMixture, 2) // RhRuO4
+                .outputItems(dust, RarestMetalMixture) // IrOsO4(H2O)
+                .outputItems(dust, PlatinumSludgeResidue, 2)
+                .save(provider);
+        }
     }
 }
 

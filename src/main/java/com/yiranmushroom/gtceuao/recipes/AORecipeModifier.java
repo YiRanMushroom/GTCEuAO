@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
+import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 public class AORecipeModifier {
 

@@ -19,6 +19,15 @@ public class OPNaquadahLineRecipes {
         if (!AOConfigHolder.INSTANCE.recipes.OPNaquadahLine)
             return;
 
+        LARGE_CHEMICAL_RECIPES.recipeBuilder("naquadah_separation").EUt(VA[LuV]).duration(600)
+            .inputFluids(FluoroantimonicAcid.getFluid(1000))
+            .inputItems(dust, Naquadah, 6)
+            .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(2000))
+            .outputFluids(ImpureNaquadriaSolution.getFluid(2000))
+            .outputItems(dust, TitaniumTrifluoride, 4)
+            .circuitMeta(1)
+            .save(provider);
+
         LARGE_CHEMICAL_RECIPES.recipeBuilder("naquadah_separation_2").EUt(VA[HV]).duration(20 * 60 * 30)
             .inputFluids(FluoroantimonicAcid.getFluid(2000))
             .inputItems(dust, Naquadah, 1)
@@ -28,6 +37,7 @@ public class OPNaquadahLineRecipes {
             .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(4000))
             .outputFluids(ImpureNaquadriaSolution.getFluid(4000))
             .outputItems(dust, TitaniumTrifluoride, 8)
+            .circuitMeta(2)
             .save(provider);
 
         CENTRIFUGE_RECIPES.recipeBuilder("impure_enriched_naquadah_solution_separation").EUt(VA[EV]).duration(400)

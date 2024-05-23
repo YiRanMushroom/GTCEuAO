@@ -17,6 +17,7 @@ import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.world.item.Items;
 
@@ -37,23 +38,31 @@ public class ExNihiloRecipe {
             return;
 
         CHEMICAL_BATH_RECIPES.recipeBuilder("sand_to_clay")
-                .inputItems(Items.SAND)
-                .inputFluids(Water.getFluid(100))
-                .circuitMeta(1)
-                .outputItems(block, Clay)
-                .EUt(VA[LV]).duration(100).save(provider);
+            .inputItems(Items.SAND)
+            .inputFluids(Water.getFluid(100))
+            .circuitMeta(1)
+            .outputItems(block, Clay)
+            .EUt(VA[LV]).duration(100).save(provider);
 
         CHEMICAL_BATH_RECIPES.recipeBuilder("sand_to_clay_dust")
-                .inputItems(Items.SAND)
-                .inputFluids(Water.getFluid(100))
-                .circuitMeta(2)
-                .outputItems(dust, Clay, 4)
-                .EUt(VA[LV]).duration(100).save(provider);
+            .inputItems(Items.SAND)
+            .inputFluids(Water.getFluid(100))
+            .circuitMeta(2)
+            .outputItems(dust, Clay, 4)
+            .EUt(VA[LV]).duration(100).save(provider);
 
-        DISTILLATION_RECIPES.recipeBuilder("water_to_brain")
-                .inputFluids(Water.getFluid(4000))
-                .outputFluids(SaltWater.getFluid(1000))
-                .circuitMeta(14)
-                .EUt(VA[LV]).duration(100).save(provider);
+        FLUID_HEATER_RECIPES.recipeBuilder("water_to_salt_water")
+            .inputFluids(Water.getFluid(4000))
+            .outputFluids(SaltWater.getFluid(1000))
+            .circuitMeta(14)
+            .EUt(VA[LV]).duration(100).save(provider);
+
+        MACERATOR_RECIPES.recipeBuilder("macerate_granite")
+            .inputItems(Blocks.GRANITE.asItem())
+            .outputItems(dust, Granite)
+            .chancedOutput(dust, Stone, 100, 50)
+            .chancedOutput(dust, Uranium238, 10, 5)
+            .duration(150).EUt(2)
+            .save(provider);
     }
 }

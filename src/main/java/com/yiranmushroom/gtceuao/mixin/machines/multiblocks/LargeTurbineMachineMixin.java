@@ -96,15 +96,10 @@ public abstract class LargeTurbineMachineMixin extends WorkableElectricMultibloc
                 // get the amount of parallel required to match the desired output voltage
                 var maxParallel = (int) ((turbineMaxVoltage - excessVoltageField.getInt(turbineMachine)) / (EUt * holderEfficiency));
 
-                // this is necessary to prevent over-consumption of fuel
-//                turbineMachine.excessVoltage += (int) (maxParallel * EUt * holderEfficiency - turbineMaxVoltage);
-
                 excessVoltageField.setInt(turbineMachine, (int) (excessVoltageField.getInt(turbineMachine) + (maxParallel * EUt * holderEfficiency - turbineMaxVoltage)));
 
                 var parallelResult = GTRecipeModifiers.fastParallel(turbineMachine, recipe, Math.max(1, maxParallel), false);
                 recipe = parallelResult.getFirst() == recipe ? recipe.copy() : parallelResult.getFirst();
-
-//                long eut = turbineMachine.boostProduction((long) (EUt * holderEfficiency * parallelResult.getSecond()));
 
                 long eut = (long) boostProductionMethod.invoke(turbineMachine, (long) (EUt * holderEfficiency * parallelResult.getSecond()));
 

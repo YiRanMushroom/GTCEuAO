@@ -37,14 +37,14 @@ public class ExNihiloRecipe {
         if (!AOConfigHolder.INSTANCE.recipes.exNihiloLikeRecipesAndMaterials)
             return;
 
-        CHEMICAL_BATH_RECIPES.recipeBuilder("sand_to_clay")
+        CHEMICAL_RECIPES.recipeBuilder("sand_to_clay")
             .inputItems(Items.SAND)
             .inputFluids(Water.getFluid(100))
             .circuitMeta(1)
             .outputItems(block, Clay)
             .EUt(VA[LV]).duration(100).save(provider);
 
-        CHEMICAL_BATH_RECIPES.recipeBuilder("sand_to_clay_dust")
+        CHEMICAL_RECIPES.recipeBuilder("sand_to_clay_dust")
             .inputItems(Items.SAND)
             .inputFluids(Water.getFluid(100))
             .circuitMeta(2)

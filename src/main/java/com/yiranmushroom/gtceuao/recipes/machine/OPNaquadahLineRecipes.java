@@ -1,5 +1,7 @@
 package com.yiranmushroom.gtceuao.recipes.machine;
 
+import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
+import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.jozufozu.flywheel.api.Material;
 import com.jozufozu.flywheel.core.Materials;
@@ -33,18 +35,25 @@ public class OPNaquadahLineRecipes {
             .inputItems(dust, Naquadah, 1)
             .inputItems(dust, Naquadria, 1)
             .inputItems(dust, NaquadahEnriched, 1)
-            .circuitMeta(14)
             .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(4000))
             .outputFluids(ImpureNaquadriaSolution.getFluid(4000))
             .outputItems(dust, TitaniumTrifluoride, 8)
-            .circuitMeta(2)
+            .save(provider);
+
+        LARGE_CHEMICAL_RECIPES.recipeBuilder("naquadah_separation_3").EUt(VA[LV]).duration(20 * 60 * 30 * 60 * 60)
+            .inputFluids(FluoroantimonicAcid.getFluid(2000))
+            .chancedInput(ChemicalHelper.get(crushedPurified, Naquadah), 10, -1)
+            .outputFluids(ImpureEnrichedNaquadahSolution.getFluid(4000))
+            .outputFluids(ImpureNaquadriaSolution.getFluid(4000))
+            .outputItems(dust, TitaniumTrifluoride, 8)
+            .circuitMeta(3)
             .save(provider);
 
         CENTRIFUGE_RECIPES.recipeBuilder("impure_enriched_naquadah_solution_separation").EUt(VA[EV]).duration(400)
             .inputFluids(ImpureEnrichedNaquadahSolution.getFluid(2000))
             .outputItems(dust, TriniumSulfide, 2)
             .outputItems(dust, AntimonyTrifluoride, 2)
-            .outputItems(dustSmall, Tungsten)
+            .outputItems(dust, Tungsten)
             .outputFluids(EnrichedNaquadahSolution.getFluid(1000))
             .save(provider);
 
@@ -53,7 +62,7 @@ public class OPNaquadahLineRecipes {
             .outputItems(dust, Indium)
             .outputItems(dust, Sulfur)
             .outputItems(dust, AntimonyTrifluoride, 2)
-            .outputItems(dustSmall, Gallium)
+            .outputItems(dust, Gallium)
             .outputFluids(NaquadriaSolution.getFluid(1000))
             .save(provider);
 
@@ -86,7 +95,7 @@ public class OPNaquadahLineRecipes {
             .inputFluids(Hydrogen.getFluid(2000))
             .outputItems(ingot, Naquadria)
             .outputItems(nugget, Neutronium)
-            .outputItems(nugget, Samarium, 3)
+            .outputItems(nugget, Europium, 3)
             .outputFluids(SulfuricAcid.getFluid(1000))
             .save(provider);
 
@@ -95,7 +104,7 @@ public class OPNaquadahLineRecipes {
             .inputFluids(Hydrogen.getFluid(2000))
             .outputItems(ingot, NaquadahEnriched)
             .outputItems(nugget, Darmstadtium)
-            .outputItems(nugget, Platinum, 3)
+            .outputItems(nugget, Duranium, 3)
             .outputFluids(SulfuricAcid.getFluid(1000))
             .save(provider);
 
@@ -104,10 +113,8 @@ public class OPNaquadahLineRecipes {
             .inputFluids(Hydrogen.getFluid(3000))
             .outputItems(ingot, Titanium)
             .outputItems(nugget, Niobium, 2)
-            .outputItems(nugget, Rhodium, 2)
+            .outputItems(nugget, Tritanium, 2)
             .outputFluids(HydrofluoricAcid.getFluid(3000))
             .save(provider);
-
-
     }
 }

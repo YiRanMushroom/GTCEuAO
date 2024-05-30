@@ -55,6 +55,22 @@ public class AERecipes {
         ItemStack meInterface = AEParts.INTERFACE.stack(1);
 //        ItemStack accelerationCard = AEItems.SPEED_CARD.stack(2);
 
+        MACERATOR_RECIPES.recipeBuilder("skystone_to_skystone_dust")
+            .inputItems(AEBlocks.SKY_STONE_BLOCK.stack())
+            .outputItems(AEItems.SKY_DUST.stack())
+            .duration(100).EUt(VA[ULV]).save(provider);
+
+        // Convert to AE2 material
+        CENTRIFUGE_RECIPES.recipeBuilder("convert_certus_quartz_crystal")
+            .inputItems(gem, CertusQuartz, 16)
+            .outputItems(AEItems.CERTUS_QUARTZ_CRYSTAL.stack(16))
+            .duration(1).EUt(VA[ULV]).save(provider);
+
+        CENTRIFUGE_RECIPES.recipeBuilder("convert_certus_dust")
+            .inputItems(dust, CertusQuartz, 16)
+            .outputItems(AEItems.CERTUS_QUARTZ_DUST.stack(16))
+            .duration(1).EUt(VA[ULV]).save(provider);
+
         ASSEMBLER_RECIPES.recipeBuilder("me_export_hatch")
             .inputItems(FLUID_EXPORT_HATCH[MV])
             .inputItems(meInterface.copy())
@@ -103,12 +119,6 @@ public class AERecipes {
             .outputItems(AEItems.ENGINEERING_PROCESSOR_PRINT.stack(4))
             .circuitMeta(14)
             .duration(160).EUt(VA[LV]).save(provider);
-
-        /*BENDER_RECIPES.recipeBuilder("certus_circuit")
-                .inputItems(AEItems.CERTUS_QUARTZ_CRYSTAL.stack())
-                .outputItems(AEItems.CALCULATION_PROCESSOR_PRINT.stack(4))
-                .circuitMeta(14)
-                .duration(160).EUt(VA[LV]).save(provider);*/
 
         // From GregTech
         BENDER_RECIPES.recipeBuilder("silicon_circuit_g")

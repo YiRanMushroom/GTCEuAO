@@ -1,7 +1,6 @@
 package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
 import com.gregtechceu.gtceu.api.capability.IParallelHatch;
-import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.capability.recipe.IRecipeCapabilityHolder;
 import com.gregtechceu.gtceu.api.machine.MetaMachine;
 import com.gregtechceu.gtceu.api.machine.feature.multiblock.IMultiController;
@@ -21,8 +20,6 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Optional;
 
-import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
-
 @Mixin(GTRecipeModifiers.class)
 public class GTRecipeModifiersMixin {
     @Unique
@@ -36,10 +33,7 @@ public class GTRecipeModifiersMixin {
                 if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
                     left = mid;
                 } else right = mid - 1;
-//                LOGGER.info("Binary search: {} {} {}", left, mid, right);
             }
-//            LOGGER.info("Found parallel amount: {}", left);
-            //            LOGGER.info("Recipe parallel: {},tickInputs is : {}", left, RecipeHelper.getInputEUt(res.getFirst()));
             return Pair.of(recipe.copy(ContentModifier.multiplier(left), modifyDuration), left);
         }
         return Pair.of(recipe, 1);
@@ -99,14 +93,17 @@ public class GTRecipeModifiersMixin {
             if (optional.isPresent()) {
                 IParallelHatch hatch = optional.get();
                 if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
+                    int multiplier = AOConfigHolder.INSTANCE.machines.ParallelMultiplier;
                     if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
-                        return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
+                        return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel() * multiplier, modifyDuration);
                     }
                     return ParallelLogic.applyParallel(machine, recipe,
-                        AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min(hatch.getCurrentParallel(),
-                            (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : hatch.getCurrentParallel(),
+                        AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min((long) hatch.getCurrentParallel() * multiplier,
+                            (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : hatch.getCurrentParallel() * multiplier,
                         modifyDuration);
                 }
+            } else {
+                return accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.ParallelMultiplier, modifyDuration);
             }
         }
         return Pair.of(recipe, 1);

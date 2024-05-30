@@ -49,10 +49,9 @@ public class Register {
         Clay = new Material.Builder(GTCEu.id("clay"))
             .dust(1)
             .color(0xbec9e8).secondaryColor(0x373944).iconSet(ROUGH)
-            .flags(MORTAR_GRINDABLE, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
-            .components(Sodium, 2, Lithium, 1, Potassium, 1, Aluminium, 2, Silicon, 2, Iron, 2, Water, 2)
+            .flags(MORTAR_GRINDABLE, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, DECOMPOSITION_BY_ELECTROLYZING)
+            .components(Sodium, 2, Lithium, 1, Potassium, 1, Aluminium, 2, Silicon, 2, Iron, 2)
             .buildAndRegister();
-
 
 
         LeadZincSolution = new Material.Builder(GTCEu.id("lead_zinc_solution"))

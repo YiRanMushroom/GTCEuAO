@@ -62,10 +62,11 @@ public class AlloyBlastRecipeProducerMixin {
             }
         } else
             freezerBuilder = FLUID_SOLIDFICATION_RECIPES.recipeBuilder(material.getName())
-                .inputFluids(FluidStack.create(molten, GTValues.L))
+                .inputFluids(FluidStack.create(molten, L))
                 .duration((int) material.getMass() * 3)
                 .notConsumable(GTItems.SHAPE_MOLD_INGOT.asStack())
-                .outputItems(TagPrefix.ingot, material);
+                .outputItems(ingot, material)
+                .EUt(VA[MV]);
         freezerBuilder.save(provider);
     }
 }

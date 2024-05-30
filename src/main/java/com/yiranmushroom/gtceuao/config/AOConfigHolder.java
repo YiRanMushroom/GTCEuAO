@@ -43,9 +43,9 @@ public class AOConfigHolder {
         public int bonusOfOCs = 1;
 
         @Configurable
-        @Configurable.Comment({"Multiplier of Processing Array Parallel Amount.", "Default: 16"})
+        @Configurable.Comment({"Multiplier of Parallel Amount, this will affect Processing Array and Parallel Hatches", "Default: 16"})
         @Configurable.DecimalRange(min = 1, max = 4096)
-        public int PAPMultiplier = 16;
+        public int ParallelMultiplier = 16;
 
         @Configurable
         @Configurable.Comment({"Is Processing Arrays Have OP Chance of Output.", "Default: true"})
@@ -53,24 +53,24 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"Is Processing Arrays Ignoring Machine Tier.",
-                "This Will Affect Both Recipe Tier Check, and Tier That Recipes can Be Overclocked to.",
-                "Default: true"})
+            "This Will Affect Both Recipe Tier Check, and Tier That Recipes can Be Overclocked to.",
+            "Default: true"})
         public boolean PAIgnoreTier = true;
 
         @Configurable
         @Configurable.Comment({"Do Parallel Need More Power to Operate, Rather than Use Original Recipe Power.",
-                "Only Affect Input Energy",
-                "Default: false"})
+            "Only Affect Input Energy",
+            "Default: false"})
         public boolean ParallelNeedMorePower = false;
 
         @Configurable
-        @Configurable.Comment({"Do Buff Buses and Hatches","Because of bug of gregtech itself, the item slot cannot be too large, may fix in the future", "Default: true"})
+        @Configurable.Comment({"Do Buff Buses and Hatches", "Because of bug of gregtech itself, the item slot cannot be too large, may fix in the future", "Default: true"})
         public boolean buffBusesAndHatches = true;
 
         @Configurable
         @Configurable.Comment({"Do Multiblocks Be Strongly Buffed, most of them would become parallelable.",
-                "Due to technical issues, this will always be true, even if you set it to false.",
-                "Default: true"})
+            "Due to technical issues, this will always be true, even if you set it to false.",
+            "Default: true"})
         public boolean buffMultiblocks = true;
 
         @Configurable
@@ -89,12 +89,27 @@ public class AOConfigHolder {
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: false"})
         public boolean legacyParallelLogic = true;
+
+        @Configurable
+        @Configurable.Comment({"Turbines are buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",
+            "Default: false"})
+        public boolean buffTurbines = true;
+
+        @Configurable
+        @Configurable.Comment({"Amount of ME Output Bus reserved slots, please do not change unless you know what you are doing.",
+            "Default: 16384"})
+        public int MEOutputBusReservedAmount = 16384;
+
+        @Configurable
+        @Configurable.Comment({"Do make RecipeModifier not lazy, which may significantly reduce performance",
+            "But may improve machine processing speed","Default: false"})
+        public boolean notLazyRecipeModifier = true;
     }
 
     public static class RecipeConfigs {
         @Configurable
         @Configurable.Comment({"Is Processing Arrays Have Easier Recipes.",
-                "Default: true"})
+            "Default: true"})
         public boolean EasierPARecipes = true;
 
         @Configurable
@@ -142,7 +157,7 @@ public class AOConfigHolder {
         public boolean easierOreProcessing = true;
 
         @Configurable
-        @Configurable.Comment({"Are ore yield being strongly buffed?.","Tends to fix original gregtech ore processing issues.", "Default: true"})
+        @Configurable.Comment({"Are ore yield being strongly buffed?.", "Tends to fix original gregtech ore processing issues.", "Default: true"})
         public boolean buffOreYield = true;
 
         @Configurable
@@ -168,7 +183,7 @@ public class AOConfigHolder {
 
     public static class MiscConfigs {
         @Configurable
-        @Configurable.Comment({"Is fly always enabled. (even in survival mode)","Currently working not well.","Default: false"})
+        @Configurable.Comment({"Is fly always enabled. (even in survival mode)", "Currently working not well.", "Default: false"})
         public boolean flyAlwaysEnabled = false;
 
     }

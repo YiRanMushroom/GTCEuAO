@@ -76,7 +76,6 @@ public class EasyOreProcessing {
                 .notConsumable(dust, Aluminium)
                 .inputFluids(IndiumConcentrate.getFluid(4000))
                 .outputItems(dust, Indium, 4)
-                .outputItems(dust, AluminiumSulfite, 16)
                 .outputFluids(LeadZincSolution.getFluid(4000))
                 .duration(200).EUt(600).save(provider);
     }

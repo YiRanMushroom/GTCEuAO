@@ -4,7 +4,7 @@ import com.gregtechceu.gtceu.api.data.RotationState;
 import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
 import com.gregtechceu.gtceu.common.data.machines.GTAEMachines;
-import com.yiranmushroom.gtceuao.recovery.MyMEOutputBusPartMachine;
+//import com.yiranmushroom.gtceuao.recovery.MyMEOutputBusPartMachine;
 import com.gregtechceu.gtceu.integration.ae2.machine.*;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.*;
@@ -17,7 +17,7 @@ import static com.gregtechceu.gtceu.common.registry.GTRegistration.REGISTRATE;
 
 @Mixin(GTAEMachines.class)
 public class GTAEMachinesMixin {
-    @Final
+/*    @Final
     @Shadow(remap = false)
     @Mutable
     public static MachineDefinition ITEM_EXPORT_BUS;
@@ -35,8 +35,8 @@ public class GTAEMachinesMixin {
     @Final
     @Shadow(remap = false)
     @Mutable
-    public static MachineDefinition FLUID_EXPORT_HATCH;
-
+    public static MachineDefinition FLUID_EXPORT_HATCH;*/
+/*
     @Inject(method = "<clinit>", at = @At("HEAD"), remap = false, cancellable = true)
     private static void init(CallbackInfo ci){
         ITEM_IMPORT_BUS = REGISTRATE.machine("me_input_bus", MEInputBusPartMachine::new)
@@ -83,5 +83,5 @@ public class GTAEMachinesMixin {
             .register();
 
         ci.cancel();
-    }
+    }*/
 }

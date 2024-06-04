@@ -95,10 +95,10 @@ public class AOConfigHolder {
             "Default: false"})
         public boolean buffTurbines = true;
 
-        @Configurable
+/*        @Configurable
         @Configurable.Comment({"Amount of ME Output Bus reserved slots, please do not change unless you know what you are doing.",
             "Default: 16384"})
-        public int MEOutputBusReservedAmount = 16384;
+        public int MEOutputBusReservedAmount = 16384;*/
 
         @Configurable
         @Configurable.Comment({"Do make RecipeModifier not lazy, which may significantly reduce performance",

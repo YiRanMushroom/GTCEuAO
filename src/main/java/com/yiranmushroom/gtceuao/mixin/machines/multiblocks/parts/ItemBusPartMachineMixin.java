@@ -15,6 +15,5 @@ public class ItemBusPartMachineMixin {
             int sizeRoot = Math.min(1 + 2 * Math.min(9, ((ItemBusPartMachine) (Object) this).getTier()), 10);
             cir.setReturnValue(sizeRoot * sizeRoot);
         }
-
     }
 }

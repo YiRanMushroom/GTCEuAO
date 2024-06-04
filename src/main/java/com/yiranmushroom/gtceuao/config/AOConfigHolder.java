@@ -88,7 +88,7 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: false"})
-        public boolean legacyParallelLogic = true;
+        public boolean legacyParallelLogic = false;
 
         @Configurable
         @Configurable.Comment({"Turbines are buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",

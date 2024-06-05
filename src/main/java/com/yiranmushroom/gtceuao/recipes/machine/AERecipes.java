@@ -13,6 +13,7 @@ import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.machines.GTAEMachines;
 import com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityMachineRecipeLoader;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEBusPartMachine;
+import com.gregtechceu.gtceu.utils.GTUtil;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.TagKey;
@@ -30,13 +31,24 @@ import java.util.function.Consumer;
 import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.common.data.GTMachines.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeTypes.*;
+import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 public class AERecipes {
     public static void register(Consumer<FinishedRecipe> provider) {
         if (AOConfigHolder.INSTANCE.recipes.AE2RecipeSupport && GTCEu.isAE2Loaded())
             registerAE2(provider);
-
     }
+
+    private static boolean doesFieldExist(Class<?> clazz, String fieldName) {
+        try {
+            clazz.getDeclaredField(fieldName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
+    }
+
+    public static boolean AE2BusAndHatchLoaded = false;
 
     private static void registerAE2(Consumer<FinishedRecipe> provider) {
         ROCK_BREAKER_RECIPES.recipeBuilder("create_certus_flawless")
@@ -51,9 +63,6 @@ public class AERecipes {
             .outputItems(AEBlocks.FLAWLESS_BUDDING_QUARTZ.asItem())
             .duration(2400).EUt(VA[LV]).save(provider);
         // Use Tag<Item> in the future
-
-        ItemStack meInterface = AEParts.INTERFACE.stack(1);
-//        ItemStack accelerationCard = AEItems.SPEED_CARD.stack(2);
 
         MACERATOR_RECIPES.recipeBuilder("skystone_to_skystone_dust")
             .inputItems(AEBlocks.SKY_STONE_BLOCK.stack())
@@ -71,29 +80,40 @@ public class AERecipes {
             .outputItems(AEItems.CERTUS_QUARTZ_DUST.stack(16))
             .duration(1).EUt(VA[ULV]).save(provider);
 
-        ASSEMBLER_RECIPES.recipeBuilder("me_export_hatch")
+
+        if(AE2BusAndHatchLoaded) {
+
+            ItemStack meInterface = AEParts.INTERFACE.stack(1);
+
+            ASSEMBLER_RECIPES.recipeBuilder("me_export_hatch")
             .inputItems(FLUID_EXPORT_HATCH[MV])
             .inputItems(meInterface.copy())
             .outputItems(GTAEMachines.FLUID_EXPORT_HATCH.asStack())
             .duration(300).EUt(VA[MV]).save(provider);
 
-        ASSEMBLER_RECIPES.recipeBuilder("me_import_hatch")
-            .inputItems(FLUID_IMPORT_HATCH[MV])
-            .inputItems(meInterface.copy())
-            .outputItems(GTAEMachines.FLUID_IMPORT_HATCH.asStack())
-            .duration(300).EUt(VA[MV]).save(provider);
 
-        ASSEMBLER_RECIPES.recipeBuilder("me_export_bus")
-            .inputItems(ITEM_EXPORT_BUS[MV])
-            .inputItems(meInterface.copy())
-            .outputItems(GTAEMachines.ITEM_EXPORT_BUS.asStack())
-            .duration(300).EUt(VA[MV]).save(provider);
+            ASSEMBLER_RECIPES.recipeBuilder("me_import_hatch")
+                .inputItems(FLUID_IMPORT_HATCH[MV])
+                .inputItems(meInterface.copy())
+                .outputItems(GTAEMachines.FLUID_IMPORT_HATCH.asStack())
+                .duration(300).EUt(VA[MV]).save(provider);
 
-        ASSEMBLER_RECIPES.recipeBuilder("me_import_bus")
-            .inputItems(ITEM_IMPORT_BUS[MV])
-            .inputItems(meInterface.copy())
-            .outputItems(GTAEMachines.ITEM_IMPORT_BUS.asStack())
-            .duration(300).EUt(VA[MV]).save(provider);
+            ASSEMBLER_RECIPES.recipeBuilder("me_export_bus")
+                .inputItems(ITEM_EXPORT_BUS[MV])
+                .inputItems(meInterface.copy())
+                .outputItems(GTAEMachines.ITEM_EXPORT_BUS.asStack())
+                .duration(300).EUt(VA[MV]).save(provider);
+
+            ASSEMBLER_RECIPES.recipeBuilder("me_import_bus")
+                .inputItems(ITEM_IMPORT_BUS[MV])
+                .inputItems(meInterface.copy())
+                .outputItems(GTAEMachines.ITEM_IMPORT_BUS.asStack())
+                .duration(300).EUt(VA[MV]).save(provider);
+
+        } else{
+            // Fix something that may happen because we might be loading a unofficial version of GTM.
+            LOGGER.warn("Encountered an error while registering AE2 recipes. This is likely due to an unofficial version of GTM being loaded.");
+        }
 
         MACERATOR_RECIPES.recipeBuilder("quartz_sand_to_silicon")
             .inputItems(new UnificationEntry(dust, QuartzSand))

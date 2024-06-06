@@ -133,6 +133,10 @@ public class AOConfigHolder {
         public boolean easierBoardRecipes = true;
 
         @Configurable
+        @Configurable.Comment({"Do make wetware board cheaper, please disable this if you encountered bug that make the recipe cannot run", "Default: true"})
+        public boolean cheaperWetwareBoard = true;
+
+        @Configurable
         @Configurable.Comment({"Are AE2 buses and hatches have easier recipes. This will also add GTRecipes for AE2 components", "Default: true"})
         public boolean AE2RecipeSupport = true;
 

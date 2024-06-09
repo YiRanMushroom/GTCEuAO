@@ -24,6 +24,10 @@ public class AOConfigHolder {
     public MiscConfigs misc = new MiscConfigs();
 
     public static class MachineConfigs {
+        @Configurable
+        @Configurable.Comment({"Is Native Platform Energy to EU enabled. Disable this may cause some unknown bugs.",
+            "Default: true"})
+        public boolean nativePEToEU = true;
 
         @Configurable
         @Configurable.Comment({"Multiplier for Recipe Power Consumption per Overclock.", "Default: 1.0"})
@@ -91,14 +95,14 @@ public class AOConfigHolder {
         public boolean legacyParallelLogic = true;
 
         @Configurable
-        @Configurable.Comment({"Turbines are buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",
+        @Configurable.Comment({"Are turbines buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",
             "Default: false"})
         public boolean buffTurbines = true;
 
-/*        @Configurable
-        @Configurable.Comment({"Amount of ME Output Bus reserved slots, please do not change unless you know what you are doing.",
-            "Default: 16384"})
-        public int MEOutputBusReservedAmount = 16384;*/
+        @Configurable
+        @Configurable.Comment({"Whether to disable rotor damage from running.",
+            "Default: false"})
+        public boolean disableRotorDamage = true;
 
         @Configurable
         @Configurable.Comment({"Do make RecipeModifier not lazy, which may significantly reduce performance",

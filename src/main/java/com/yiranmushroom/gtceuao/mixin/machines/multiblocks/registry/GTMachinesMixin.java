@@ -21,6 +21,7 @@ import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
+import com.yiranmushroom.gtceuao.machines.AOMachines;
 import com.yiranmushroom.gtceuao.recovery.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.common.data.*;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.BedrockOreMinerMachine;
@@ -489,6 +490,9 @@ public abstract class GTMachinesMixin {
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lcom/gregtechceu/gtceu/GTCEu;isKubeJSLoaded()Z"), remap = false)
     private static void init(CallbackInfo ci) {
         LOGGER.info("GTCEU-AO: Registering Multiblocks");
+
+        AOMachines.init();
+
         if ((ConfigHolder.INSTANCE.machines.doBedrockOres || Platform.isDevEnv()))
             BEDROCK_ORE_MINER = registerTieredMultis("bedrock_ore_miner", BedrockOreMinerMachine::new, (tier, builder) -> builder
                     .rotationState(RotationState.NON_Y_AXIS)

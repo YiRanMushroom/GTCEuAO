@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(GTRecipe.class)
-public class GTRecipeMixin implements Recipe<Container> {
+public abstract class GTRecipeMixin implements Recipe<Container> {
     @Mutable
     @Final
     @Shadow(remap = false)
@@ -101,40 +101,5 @@ public class GTRecipeMixin implements Recipe<Container> {
             copied.duration = modifier.apply(this.duration).intValue();
         }
         return copied;
-    }
-
-    @Shadow(remap = false)
-    public boolean matches(Container container, Level level) {
-        return false;
-    }
-
-    @Shadow(remap = false)
-    public ItemStack assemble(Container container, RegistryAccess registryAccess) {
-        return null;
-    }
-
-    @Shadow(remap = false)
-    public boolean canCraftInDimensions(int width, int height) {
-        return false;
-    }
-
-    @Shadow(remap = false)
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
-        return null;
-    }
-
-    @Shadow(remap = false)
-    public ResourceLocation getId() {
-        return null;
-    }
-
-    @Shadow(remap = false)
-    public RecipeSerializer<?> getSerializer() {
-        return null;
-    }
-
-    @Shadow(remap = false)
-    public RecipeType<?> getType() {
-        return null;
     }
 }

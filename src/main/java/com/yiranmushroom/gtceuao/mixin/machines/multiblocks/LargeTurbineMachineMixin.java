@@ -27,11 +27,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static com.gregtechceu.gtceu.utils.GTUtil.getTierByVoltage;
-
 @Mixin(LargeTurbineMachine.class)
 public abstract class LargeTurbineMachineMixin extends WorkableElectricMultiblockMachine implements ITieredMachine {
-    @Shadow
+    @Shadow(remap = false)
     public abstract int getTier();
 
     public LargeTurbineMachineMixin(IMachineBlockEntity holder, Object... args) {
@@ -89,7 +87,7 @@ public abstract class LargeTurbineMachineMixin extends WorkableElectricMultibloc
                     cir.setReturnValue(null);
                 }
 
-                double holderEfficiency = rotorHolder.getTotalEfficiency() / 100.0 * Math.pow(4.0, rotorHolder.getTierDifference() + 1);
+                double holderEfficiency = rotorHolder.getTotalEfficiency() / 100.0;
 
                 if (holderEfficiency <= 1) holderEfficiency = 1;
 

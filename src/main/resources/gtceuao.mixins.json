@@ -12,6 +12,7 @@
     "energy.PEToEu.NotifiableEnergyContainerMixin",
     "machines.logic.IRecipeLogicMachineMixin",
     "machines.multiblocks.LargeTurbineMachineMixin",
+    "machines.multiblocks.RotorHolderPartMachineMixin",
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.parts.PredicatesMixin",
@@ -36,6 +37,7 @@
     "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
     "recipe.logics.WorkableElectricMultiblockMachineMixin",
+    "recipe.recipeTypes.GTRecipeTypesMixin",
     "registries.CommonProxyMixin"
   ],
   "client": [

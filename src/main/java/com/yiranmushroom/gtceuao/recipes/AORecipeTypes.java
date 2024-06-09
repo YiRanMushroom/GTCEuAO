@@ -18,14 +18,14 @@ import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 public class AORecipeTypes {
     public static void registerRecipeTypes() {
-        ADVANCED_PRECISION_ASSEMBLY = register("advanced_precision_assembly", MULTIBLOCK).setMaxIOSize(18, 6, 6, 0).setEUIO(IO.IN)
+        ADVANCED_PRECISION_ASSEMBLY_Recipe = register("advanced_precision_assembly", MULTIBLOCK).setMaxIOSize(18, 6, 6, 0).setEUIO(IO.IN)
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, LEFT_TO_RIGHT)
             .setSound(GTSoundEntries.ASSEMBLER)
             .setMaxTooltips(4);
     }
 
     public static void registerAdvancedPrecisionAssemblyFromAssemblyLine(GTRecipeBuilder originalRecipeBuilder, Consumer<FinishedRecipe> provider) {
-        GTRecipeBuilder recipeBuilder = ADVANCED_PRECISION_ASSEMBLY.recipeBuilder(new ResourceLocation(originalRecipeBuilder.id.toString() + "_advanced"));
+        GTRecipeBuilder recipeBuilder = ADVANCED_PRECISION_ASSEMBLY_Recipe.recipeBuilder(new ResourceLocation(originalRecipeBuilder.id.toString() + "_advanced"));
         LOGGER.info("Registering advanced precision assembly recipe: {}", recipeBuilder.id);
         recipeBuilder.input.putAll(originalRecipeBuilder.input);
         recipeBuilder.tickInput.putAll(originalRecipeBuilder.tickInput);
@@ -34,5 +34,5 @@ public class AORecipeTypes {
         recipeBuilder.duration(originalRecipeBuilder.duration).save(provider);
     }
 
-    public static GTRecipeType ADVANCED_PRECISION_ASSEMBLY;
+    public static GTRecipeType ADVANCED_PRECISION_ASSEMBLY_Recipe;
 }

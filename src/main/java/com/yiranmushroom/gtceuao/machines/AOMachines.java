@@ -3,19 +3,14 @@ package com.yiranmushroom.gtceuao.machines;
 import com.gregtechceu.gtceu.GTCEu;
 import com.gregtechceu.gtceu.api.data.RotationState;
 import com.gregtechceu.gtceu.api.machine.MultiblockMachineDefinition;
-import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.common.data.GTCompassSections;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
-import com.gregtechceu.gtceu.common.data.GTRecipeTypes;
 import com.yiranmushroom.gtceuao.recipes.AORecipeTypes;
-import net.minecraft.network.chat.Component;
-import net.minecraftforge.event.level.PistonEvent;
 
-import static com.gregtechceu.gtceu.api.GTValues.IV;
 import static com.gregtechceu.gtceu.api.GTValues.UV;
 import static com.gregtechceu.gtceu.api.pattern.Predicates.blocks;
 import static com.gregtechceu.gtceu.api.pattern.util.RelativeDirection.*;
@@ -29,7 +24,7 @@ public class AOMachines {
 
     public static final MultiblockMachineDefinition ADVANCED_PRECISION_ASSEMBLY = REGISTRATE.multiblock("advanced_precision_assembly", WorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
-        .recipeType(AORecipeTypes.ADVANCED_PRECISION_ASSEMBLY)
+        .recipeType(AORecipeTypes.ADVANCED_PRECISION_ASSEMBLY_Recipe)
         .recipeModifiers(GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT) // 7 * 7 * 11

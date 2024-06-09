@@ -31,7 +31,7 @@ public class AOMachines {
             .aisle("XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX") // first layer
             .aisle("XXXXXXX","RTTTTTR","RAAAAAR", "GTTTTTG", "RAAAAAR", "RTTTTTR", "XXXXXXX").setRepeatable(4)
             // middle:
-            .aisle("XXXXXXS","RTTTTTR","RAAAAAR", "GTTTTTG", "RAAAAAR", "RTTTTTR", "XXXXXXX")
+            .aisle("SXXXXXX","RTTTTTR","RAAAAAR", "GTTTTTG", "RAAAAAR", "RTTTTTR", "XXXXXXX")
             .aisle("XXXXXXX","RTTTTTR","RAAAAAR", "GTTTTTG", "RAAAAAR", "RTTTTTR", "XXXXXXX").setRepeatable(4)
             .aisle("XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX") // last layer
             .where('S', Predicates.controller(blocks(definition.getBlock())))

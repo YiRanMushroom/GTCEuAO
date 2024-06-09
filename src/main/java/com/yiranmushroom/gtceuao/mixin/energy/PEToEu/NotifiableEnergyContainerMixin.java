@@ -42,7 +42,7 @@ public abstract class NotifiableEnergyContainerMixin extends NotifiableRecipeHan
     public long insert(long maxReceive, boolean simulate) {
 //        if (handlerIO == IO.NONE || handlerIO == IO.OUT) return 0;
         if (maxReceive <= 0) return 0;
-        long received = Math.min(getCapacity() - getAmount(), Math.min(maxReceive, PlatformEnergyCompat.toNative(getInputAmperage() * getInputVoltage(), PlatformEnergyCompat.ratio(true))));
+        long received = Math.min(getCapacity() - getAmount(), Math.min(maxReceive, PlatformEnergyCompat.toNativeLong(getInputAmperage() * getInputVoltage(), PlatformEnergyCompat.ratio(true))));
         received -= received % PlatformEnergyCompat.ratio(true); // avoid rounding issues
         if (!simulate) {
             addEnergy(PlatformEnergyCompat.toEu(received, PlatformEnergyCompat.ratio(true)));
@@ -54,7 +54,7 @@ public abstract class NotifiableEnergyContainerMixin extends NotifiableRecipeHan
     public long extract(long maxExtract, boolean simulate) {
 //        if (handlerIO == IO.NONE || handlerIO == IO.IN) return 0;
         if (maxExtract <= 0) return 0;
-        long sent = Math.min(getAmount(), Math.min(maxExtract, PlatformEnergyCompat.toNative(getOutputAmperage() * getOutputVoltage(), PlatformEnergyCompat.ratio(false))));
+        long sent = Math.min(getAmount(), Math.min(maxExtract, PlatformEnergyCompat.toNativeLong(getOutputAmperage() * getOutputVoltage(), PlatformEnergyCompat.ratio(false))));
         sent -= sent % PlatformEnergyCompat.ratio(true); // avoid rounding issues
         if (!simulate) {
             addEnergy(-PlatformEnergyCompat.toEu(sent, PlatformEnergyCompat.ratio(false)));

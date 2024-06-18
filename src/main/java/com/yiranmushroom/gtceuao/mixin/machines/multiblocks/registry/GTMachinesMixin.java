@@ -258,7 +258,7 @@ public abstract class GTMachinesMixin {
                 .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
                 .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.NORTH)
                 .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.NORTH)
-                .where('H', MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
+                .where('H', GTMachines.MUFFLER_HATCH[GTValues.LV], Direction.SOUTH)
                 .where('M', MAINTENANCE_HATCH, Direction.NORTH)
                 .where('#', Blocks.AIR.defaultBlockState());
             GTCEuAPI.HEATING_COILS.entrySet().stream()
@@ -375,7 +375,7 @@ public abstract class GTMachinesMixin {
         .register();
     @Final
     @Shadow(remap = false)
-    public final static MultiblockMachineDefinition[] PROCESSING_ARRAY = ConfigHolder.INSTANCE.machines.doProcessingArray ? registerTieredMultis("processing_array", ProcessingArrayMachine::new,
+    public static MultiblockMachineDefinition[] PROCESSING_ARRAY = ConfigHolder.INSTANCE.machines.doProcessingArray ? registerTieredMultis("processing_array", ProcessingArrayMachine::new,
         (tier, builder) -> builder
             .langValue(VNF[tier] + " Processing Array")
             .rotationState(RotationState.NON_Y_AXIS)
@@ -385,38 +385,15 @@ public abstract class GTMachinesMixin {
             .recipeType(DUMMY_RECIPES)
             .recipeModifier(ProcessingArrayMachine::recipeModifier, true)
             .pattern(definition -> FactoryBlockPattern.start()
-                .aisle("XXX", "ECE", "EEE")
-                .aisle("XXX", "C#C", "EEE")
-                .aisle("XSX", "ECE", "EEE")
+                .aisle("XXX", "XXX", "XXX")
+                .aisle("XXX", "X#X", "XXX")
+                .aisle("XSX", "XXX", "XXX")
                 .where('S', Predicates.controller(blocks(definition.getBlock())))
                 .where('X', blocks(ProcessingArrayMachine.getCasingState(tier))
-                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
-                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
-                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
-                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
-                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
-                    .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
+                    .or(autoAbilities(definition.getRecipeTypes()))
                     .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
                     .or(tier == IV ? blocks(CASING_TUNGSTENSTEEL_ROBUST.get()) : blocks(CASING_HSSE_STURDY.get()))
-                    .or(Predicates.autoAbilities(true, false, false)))
-                .where('C', blocks(CLEANROOM_GLASS.get(), Blocks.GLASS)
-                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS))
-                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
-                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
-                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
-                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
-                    .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
-                )
-                .where('E',
-                    Predicates.abilities(PartAbility.IMPORT_ITEMS)
-                        .or(Predicates.abilities(PartAbility.EXPORT_ITEMS))
-                        .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS))
-                        .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS))
-                        .or(Predicates.abilities(PartAbility.INPUT_ENERGY))
-                        .or(Predicates.abilities(PartAbility.OUTPUT_ENERGY))
-                        .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
-                        .or(tier == IV ? blocks(CASING_TUNGSTENSTEEL_ROBUST.get()) : blocks(CASING_HSSE_STURDY.get()))
-                        .or(blocks(ProcessingArrayMachine.getCasingState(tier)))
+                    .or(Predicates.autoAbilities(true, false, false))
                 )
                 .where('#', air())
                 .build())
@@ -445,8 +422,9 @@ public abstract class GTMachinesMixin {
             .where('X', blocks(CASING_INVAR_HEATPROOF.get())
                 .or(autoAbilities(definition.getRecipeTypes()))
                 .or(autoAbilities(true, false, false)))
-            .where('M', Predicates.abilities(PartAbility.MUFFLER).or(abilities()
-                .or(blocks(CASING_INVAR_HEATPROOF.get()))))
+            .where('M',
+                Predicates.abilities(PartAbility.MUFFLER)
+            )
             .where('C', heatingCoils())
             .where('#', air())
             .build())
@@ -464,7 +442,7 @@ public abstract class GTMachinesMixin {
                 .where('O', ITEM_EXPORT_BUS[GTValues.LV], Direction.NORTH)
                 .where('F', FLUID_IMPORT_HATCH[GTValues.LV], Direction.WEST)
                 .where('D', FLUID_EXPORT_HATCH[GTValues.LV], Direction.EAST)
-                .where('H', MUFFLER_HATCH[GTValues.LV], Direction.UP)
+                .where('H', GTMachines.MUFFLER_HATCH[GTValues.LV], Direction.UP)
                 .where('M', MAINTENANCE_HATCH, Direction.NORTH);
             GTCEuAPI.HEATING_COILS.entrySet().stream()
                 .sorted(Comparator.comparingInt(entry -> entry.getKey().getTier()))
@@ -529,7 +507,6 @@ public abstract class GTMachinesMixin {
                                                                      int... tiers) {
         return null;
     }
-
 
     @Unique
     private static MachineDefinition[] gtceuao$registerTieredMachines(String name,

@@ -39,11 +39,13 @@ public abstract class ConfigHolderMixin {
     @Mixin(ConfigHolder.CompatibilityConfigs.AE2CompatConfig.class)
     public abstract static class ae2CompatConfigMixin {
         @Shadow(remap = false)
+        @Configurable
         @Configurable.Comment({"The interval between ME Hatch/Bus interact ME network.", "It may cause lag if the interval is too small.", "Default: 2 sec"})
         @Configurable.Range(min = 1, max = 80)
-        public int updateIntervals = 20;
+        public int updateIntervals = 5;
 
         @Shadow(remap = false)
+        @Configurable
         @Configurable.Comment({"The energy consumption of ME Hatch/Bus.", "Default: 1.0AE/t"})
         @Configurable.DecimalRange(min = 0.0, max = 10.0)
         public double meHatchEnergyUsage = 0.0;

@@ -11,6 +11,7 @@ import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
 import com.gregtechceu.gtceu.api.data.tag.TagPrefix;
 import com.gregtechceu.gtceu.common.data.GTMaterials;
 import com.gregtechceu.gtceu.common.data.machines.GTAEMachines;
+import com.gregtechceu.gtceu.data.recipe.CustomTags;
 import com.gregtechceu.gtceu.data.recipe.misc.MetaTileEntityMachineRecipeLoader;
 import com.gregtechceu.gtceu.integration.ae2.machine.MEBusPartMachine;
 import com.gregtechceu.gtceu.utils.GTUtil;
@@ -235,6 +236,47 @@ public class AERecipes {
             .circuitMeta(1)
             .outputItems(new ItemStack(Items.CLOCK))
             .duration(100).EUt(4).save(provider);
+
+        // storage components, use circuit assembler
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("storage_component_1k")
+            .inputItems(CustomTags.LV_CIRCUITS, 16)
+            .inputItems(AEItems.LOGIC_PROCESSOR.stack(4))
+            .inputItems(plate, Steel, 4)
+            .outputItems(AEItems.CELL_COMPONENT_1K.stack(64))
+            .solderMultiplier(4)
+            .duration(1200).EUt(VA[LV]).save(provider);
+
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("storage_component_4k")
+            .inputItems(CustomTags.MV_CIRCUITS, 16)
+            .inputItems(AEItems.CALCULATION_PROCESSOR.stack(4))
+            .inputItems(plate, Aluminium, 4)
+            .outputItems(AEItems.CELL_COMPONENT_4K.stack(64))
+            .solderMultiplier(4)
+            .duration(1200).EUt(VA[MV]).save(provider);
+
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("storage_component_16k")
+            .inputItems(CustomTags.HV_CIRCUITS, 16)
+            .inputItems(AEItems.CALCULATION_PROCESSOR.stack(4))
+            .inputItems(plate, StainlessSteel, 4)
+            .outputItems(AEItems.CELL_COMPONENT_16K.stack(64))
+            .solderMultiplier(16)
+            .duration(1200).EUt(VA[HV]).save(provider);
+
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("storage_component_64k")
+            .inputItems(CustomTags.EV_CIRCUITS, 16)
+            .inputItems(AEItems.CALCULATION_PROCESSOR.stack(4))
+            .inputItems(plate, Titanium, 4)
+            .outputItems(AEItems.CELL_COMPONENT_64K.stack(64))
+            .solderMultiplier(16)
+            .duration(1200).EUt(VA[EV]).save(provider);
+
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder("storage_component_256k")
+            .inputItems(CustomTags.IV_CIRCUITS, 16)
+            .inputItems(AEItems.ENGINEERING_PROCESSOR.stack(4))
+            .inputItems(plate, TungstenSteel, 4)
+            .outputItems(AEItems.CELL_COMPONENT_256K.stack(64))
+            .solderMultiplier(64)
+            .duration(1200).EUt(VA[IV]).save(provider);
 
         // Components
         Material[] materialTierList = {Iron, WroughtIron, Steel, Aluminium, StainlessSteel, Titanium, TungstenSteel};

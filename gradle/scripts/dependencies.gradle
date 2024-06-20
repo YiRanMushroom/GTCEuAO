@@ -77,5 +77,7 @@ dependencies {
     // Runtime only testing mods
     //modRuntimeOnly(forge.worldStripper)
 
-    implementation files('dependency/gtceu-1.20.1-1.2.3.a-build_741.jar')
+//    implementation files('dependency/gtceu-1.20.1-1.2.3.a-build_741.jar')
+    modImplementation("curse.maven:gtm-890405:5446778")
+    modImplementation("curse.maven:gteng-1028337:5392339")
 }

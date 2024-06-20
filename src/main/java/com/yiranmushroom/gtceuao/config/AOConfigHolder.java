@@ -141,7 +141,9 @@ public class AOConfigHolder {
         public boolean cheaperWetwareBoard = true;
 
         @Configurable
-        @Configurable.Comment({"Are AE2 buses and hatches have easier recipes. This will also add GTRecipes for AE2 components", "Default: true"})
+        @Configurable.Comment({"Are AE2 buses and hatches have easier recipes. This will also add GTRecipes for AE2 components",
+            "And will overwrite some GERecipes if applicable.",
+            "Default: true"})
         public boolean AE2RecipeSupport = true;
 
         @Configurable

@@ -14,13 +14,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class FluidHatchPartMachineMixin {
     @Final
     @Shadow(remap = false)
-    public static final long INITIAL_TANK_CAPACITY_1X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 8) * FluidHelper.getBucket();
+    public static long INITIAL_TANK_CAPACITY_1X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 8) * FluidHelper.getBucket();
     @Final
     @Shadow(remap = false)
-    public static final long INITIAL_TANK_CAPACITY_4X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 2) * FluidHelper.getBucket();
+    public static long INITIAL_TANK_CAPACITY_4X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 2) * FluidHelper.getBucket();
     @Final
     @Shadow(remap = false)
-    public static final long INITIAL_TANK_CAPACITY_9X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 1) * FluidHelper.getBucket();
+    public static long INITIAL_TANK_CAPACITY_9X = (AOConfigHolder.INSTANCE.machines.buffBusesAndHatches ? 4 : 1) * FluidHelper.getBucket();
 
     @Inject(method = "getTankCapacity", at = @At("HEAD"), cancellable = true, remap = false)
     private static void getTankCapacity(long initialCapacity, int tier, CallbackInfoReturnable<Long> cir) {

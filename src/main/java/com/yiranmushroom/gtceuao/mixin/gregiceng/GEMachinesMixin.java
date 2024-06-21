@@ -8,6 +8,7 @@ import com.gregtechceu.gtceu.api.data.RotationState;
 import com.gregtechceu.gtceu.api.machine.MachineDefinition;
 import com.gregtechceu.gtceu.api.machine.multiblock.PartAbility;
 import com.gregtechceu.gtceu.common.machine.multiblock.part.FluidHatchPartMachine;
+import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,10 +16,11 @@ import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.epimorphismmc.gregiceng.common.data.GEMachines.registerTieredGEMachines;
-import static com.gregtechceu.gtceu.api.GTValues.VNF;
+import static com.gregtechceu.gtceu.api.GTValues.*;
 import static com.gregtechceu.gtceu.common.data.GTMachines.MULTI_HATCH_TIERS;
 
 @Mixin(value = GEMachines.class, remap = false)
@@ -56,4 +58,10 @@ public class GEMachinesMixin {
                 .register(),
             MULTI_HATCH_TIERS);
     }*/
+
+    @ModifyArg(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/gregtechceu/gtceu/api/registry/registrate/MachineBuilder;tier(I)Lcom/gregtechceu/gtceu/api/registry/registrate/MachineBuilder;"), index = 0, remap = false)
+    private static int modifyTier(int tier) {
+        if (tier == LuV && AOConfigHolder.INSTANCE.recipes.AE2RecipeSupport) return MV;
+        return tier;
+    }
 }

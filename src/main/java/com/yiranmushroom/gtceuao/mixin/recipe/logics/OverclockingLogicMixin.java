@@ -81,7 +81,8 @@ public abstract class OverclockingLogicMixin {
     @Overwrite(remap = false)
     @Nonnull
     public static @NotNull LongIntPair standardOverclockingLogic(long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor, double voltageMultiplier) {
-        if (recipeEUt < 0) return gtceuao$standardGeneratorOverclockingLogic(-recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
+        if (recipeEUt < 0)
+            return gtceuao$standardGeneratorOverclockingLogic(-recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 
@@ -118,11 +119,15 @@ public abstract class OverclockingLogicMixin {
             // it is important to do voltage first,
             // so overclocking voltage does not go above the limit before changing duration
 
-            double potentialVoltage = resultVoltage * durationDivisor;
+            double potentialVoltage = resultVoltage * 4;
             // do not allow voltage to go above maximum
-            if (potentialVoltage > maxVoltage) break;
+            if (potentialVoltage > maxVoltage) {
+                resultVoltage = maxVoltage;
+                resultDuration = resultDuration / voltageMultiplier * voltageMultiplier;
+                break;
+            }
 
-            double potentialDuration = resultDuration / voltageMultiplier;
+            double potentialDuration = resultDuration / voltageMultiplier * voltageMultiplier;
             // do not allow duration to go below one tick
             if (potentialDuration < 1) {
                 potentialDuration = 1;

@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 @Mixin(ResearchManager.class)
 public class ResearchManagerMixin {
-    @Inject(method = "createDefaultResearchRecipe(Lcom/gregtechceu/gtceu/data/recipe/builder/GTRecipeBuilder;Ljava/util/function/Consumer;)V", at = @At("RETURN"))
+    @Inject(method = "createDefaultResearchRecipe(Lcom/gregtechceu/gtceu/data/recipe/builder/GTRecipeBuilder;Ljava/util/function/Consumer;)V", at = @At("RETURN"), remap = false)
     private static void createDefaultResearchRecipeInj(@NotNull GTRecipeBuilder builder, Consumer<FinishedRecipe> provider, CallbackInfo ci) {
         AORecipeTypes.registerAdvancedPrecisionAssemblyFromAssemblyLine(builder, provider);
     }

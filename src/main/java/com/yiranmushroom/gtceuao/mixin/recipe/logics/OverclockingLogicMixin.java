@@ -32,7 +32,7 @@ public abstract class OverclockingLogicMixin {
     @Shadow(remap = false)
     public static final OverclockingLogic NON_PERFECT_OVERCLOCK = new OverclockingLogic(STANDARD_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
 
-    @Shadow
+    @Shadow(remap = false)
     protected OverclockingLogic.Logic logic;
 
     @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)

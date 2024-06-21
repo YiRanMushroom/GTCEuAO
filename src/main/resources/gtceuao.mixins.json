@@ -23,6 +23,7 @@
     "machines.multiblocks.registry.GTMachinesMixin",
     "machines.multiblocks.registry.GTRegistryMixin",
     "machines.multiblocks.registry.MultiblockMachineBuilderMixin",
+    "machines.multiblocks.registry.ResearchManagerMixin",
     "material.RegisterMaterials",
     "misc.GameTypeMixin",
     "misc.bedrockDrills.BedrockFluidVeinSavedDataMixin",

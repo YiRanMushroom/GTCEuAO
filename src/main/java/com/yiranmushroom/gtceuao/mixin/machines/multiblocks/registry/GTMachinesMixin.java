@@ -17,6 +17,7 @@ import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMa
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
+import com.gregtechceu.gtceu.api.pattern.TraceabilityPredicate;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
@@ -33,6 +34,7 @@ import com.gregtechceu.gtceu.utils.FormattingUtil;
 import com.lowdragmc.lowdraglib.Platform;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
+import lombok.experimental.Accessors;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -97,25 +99,33 @@ public abstract class GTMachinesMixin {
 
     @Final
     @Shadow(remap = false)
-    public final static MultiblockMachineDefinition ASSEMBLY_LINE = REGISTRATE.multiblock("assembly_line", WorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+    public static final MultiblockMachineDefinition ASSEMBLY_LINE = REGISTRATE
+        .multiblock("assembly_line", WorkableElectricMultiblockMachine::new)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.ASSEMBLY_LINE_RECIPES)
-        .recipeModifier(AORecipeModifier::perfectMachineParallel)
+        .alwaysTryModifyRecipe(true)
+        .recipeModifiers(GTRecipeModifiers.DEFAULT_ENVIRONMENT_REQUIREMENT,
+            GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT)
             .aisle("FIF", "RTR", "SAG", "#Y#")
-            .aisle("FIF", "RTR", "GAG", "#Y#").setRepeatable(3, 15)
-            .aisle("FOF", "RTR", "GAG", "#Y#")
+            .aisle("FIF", "RTR", "DAG", "#Y#").setRepeatable(3, 15)
+            .aisle("FOF", "RTR", "DAG", "#Y#")
             .where('S', Predicates.controller(blocks(definition.getBlock())))
             .where('F', blocks(CASING_STEEL_SOLID.get())
                 .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(4)))
-            .where('O', Predicates.abilities(PartAbility.EXPORT_ITEMS).addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))
-            .where('Y', blocks(CASING_STEEL_SOLID.get()).or(Predicates.abilities(PartAbility.INPUT_ENERGY).setMinGlobalLimited(1)))
-            .where('I', Predicates.abilities(PartAbility.IMPORT_ITEMS))
+            .where('O',
+                Predicates.abilities(PartAbility.EXPORT_ITEMS)
+                    .addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))
+            .where('Y',
+                blocks(CASING_STEEL_SOLID.get()).or(Predicates.abilities(PartAbility.INPUT_ENERGY)
+                    .setMinGlobalLimited(1).setMaxGlobalLimited(2)))
+            .where('I', blocks(ITEM_IMPORT_BUS[0].getBlock()))
             .where('G', blocks(CASING_GRATE.get()))
             .where('A', blocks(CASING_ASSEMBLY_CONTROL.get()))
             .where('R', blocks(CASING_LAMINATED_GLASS.get()))
             .where('T', blocks(CASING_ASSEMBLY_LINE.get()))
+            .where('D', dataHatchPredicate(blocks(CASING_GRATE.get())))
             .where('#', Predicates.any())
             .build())
         .workableCasingRenderer(GTCEu.id("block/casings/solid/machine_casing_solid_steel"),
@@ -123,6 +133,11 @@ public abstract class GTMachinesMixin {
         .compassSections(GTCompassSections.TIER[IV])
         .compassNodeSelf()
         .register();
+
+    @Shadow(remap = false)
+    private static TraceabilityPredicate dataHatchPredicate(TraceabilityPredicate def) {
+        return ConfigHolder.INSTANCE.machines.enableResearch ? Predicates.abilities(new PartAbility[]{PartAbility.DATA_ACCESS, PartAbility.OPTICAL_DATA_RECEPTION}).setExactLimit(1).or(def) : def;
+    }
 
     @Final
     @Shadow(remap = false)
@@ -375,7 +390,7 @@ public abstract class GTMachinesMixin {
         .register();
     @Final
     @Shadow(remap = false)
-    public static MultiblockMachineDefinition[] PROCESSING_ARRAY = ConfigHolder.INSTANCE.machines.doProcessingArray ? registerTieredMultis("processing_array", ProcessingArrayMachine::new,
+    public static MultiblockMachineDefinition[] PROCESSING_ARRAY = registerTieredMultis("processing_array", ProcessingArrayMachine::new,
         (tier, builder) -> builder
             .langValue(VNF[tier] + " Processing Array")
             .rotationState(RotationState.NON_Y_AXIS)
@@ -390,11 +405,13 @@ public abstract class GTMachinesMixin {
                 .aisle("XSX", "XXX", "XXX")
                 .where('S', Predicates.controller(blocks(definition.getBlock())))
                 .where('X', blocks(ProcessingArrayMachine.getCasingState(tier))
-                    .or(autoAbilities(definition.getRecipeTypes()))
-                    .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS))
-                    .or(tier == IV ? blocks(CASING_TUNGSTENSTEEL_ROBUST.get()) : blocks(CASING_HSSE_STURDY.get()))
+                    .or(Predicates.abilities(PartAbility.IMPORT_ITEMS).setPreviewCount(1))
+                    .or(Predicates.abilities(PartAbility.EXPORT_ITEMS).setPreviewCount(1))
+                    .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS).setPreviewCount(1))
+                    .or(Predicates.abilities(PartAbility.EXPORT_FLUIDS).setPreviewCount(1))
+                    .or(Predicates.abilities(PartAbility.INPUT_ENERGY).setPreviewCount(1))
                     .or(Predicates.autoAbilities(true, false, false))
-                )
+                    .or(blocks(CLEANROOM_GLASS.get(), Blocks.GLASS)))
                 .where('#', air())
                 .build())
             .tooltips(Component.translatable("gtceu.universal.tooltip.parallel", ProcessingArrayMachine.getMachineLimit(tier)))
@@ -405,7 +422,7 @@ public abstract class GTMachinesMixin {
             .compassSections(GTCompassSections.TIER[IV])
             .compassNode("processing_array")
             .register(),
-        IV, LuV) : null;
+        IV, LuV);
 
     @Final
     @Shadow(remap = false)

@@ -26,9 +26,9 @@ public class GTRecipeTypesMixin {
     private static void clinitInj(CallbackInfo ci) {
         AORecipeTypes.registerRecipeTypes();
 
-        ASSEMBLY_LINE_RECIPES.onRecipeBuild((recipeBuilder, provider) -> {
+/*        ASSEMBLY_LINE_RECIPES.onRecipeBuild((recipeBuilder, provider) -> {
             ResearchManager.createDefaultResearchRecipe(recipeBuilder, provider);
             AORecipeTypes.registerAdvancedPrecisionAssemblyFromAssemblyLine(recipeBuilder, provider);
-        });
+        });*/
     }
 }

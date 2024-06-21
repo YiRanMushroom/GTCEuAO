@@ -2,19 +2,16 @@ package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.config.ConfigHolder;
-import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.longs.LongIntMutablePair;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
-
-import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 @Mixin(OverclockingLogic.class)
 public abstract class OverclockingLogicMixin {
@@ -34,6 +31,20 @@ public abstract class OverclockingLogicMixin {
     @Final
     @Shadow(remap = false)
     public static final OverclockingLogic NON_PERFECT_OVERCLOCK = new OverclockingLogic(STANDARD_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
+
+    @Shadow
+    protected OverclockingLogic.Logic logic;
+
+    @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)
+    private void initInj(double durationDivisor, double voltageMultiplier, CallbackInfo ci) {
+        this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) -> standardOverclockingLogic(
+            recipeEUt,
+            maxVoltage,
+            duration,
+            amountOC,
+            durationDivisor,
+            voltageMultiplier);
+    }
 
     /**
      * @author YiRanMushroom
@@ -70,6 +81,7 @@ public abstract class OverclockingLogicMixin {
     @Overwrite(remap = false)
     @Nonnull
     public static @NotNull LongIntPair standardOverclockingLogic(long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor, double voltageMultiplier) {
+        if (recipeEUt < 0) return gtceuao$standardGeneratorOverclockingLogic(-recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 
@@ -82,6 +94,35 @@ public abstract class OverclockingLogicMixin {
             if (potentialVoltage > maxVoltage) break;
 
             double potentialDuration = resultDuration / durationDivisor;
+            // do not allow duration to go below one tick
+            if (potentialDuration < 1) {
+                potentialDuration = 1;
+                resultDuration = potentialDuration;
+                break;
+            }
+            // update the voltage for the next iteration after everything else
+            resultDuration = potentialDuration;
+            // in case duration overclocking would waste energy
+            resultVoltage = potentialVoltage;
+        }
+
+        return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
+    }
+
+    @Unique
+    private static @NotNull LongIntPair gtceuao$standardGeneratorOverclockingLogic(Long recipeEUt, Long maxVoltage, int recipeDuration, int maxOverclocks, double durationDivisor, double voltageMultiplier) {
+        double resultDuration = recipeDuration;
+        double resultVoltage = recipeEUt;
+
+        for (; maxOverclocks > 0; maxOverclocks--) {
+            // it is important to do voltage first,
+            // so overclocking voltage does not go above the limit before changing duration
+
+            double potentialVoltage = resultVoltage * durationDivisor;
+            // do not allow voltage to go above maximum
+            if (potentialVoltage > maxVoltage) break;
+
+            double potentialDuration = resultDuration / voltageMultiplier;
             // do not allow duration to go below one tick
             if (potentialDuration < 1) {
                 potentialDuration = 1;

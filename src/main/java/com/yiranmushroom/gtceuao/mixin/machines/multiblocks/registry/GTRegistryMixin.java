@@ -22,6 +22,7 @@ public abstract class GTRegistryMixin<K, V> implements Iterable<V> {
      * @author YiranMushroom
      * @reason Overwrite the register method to overwrite static final values.
      */
+    @SuppressWarnings({"all"})
     @Overwrite(remap = false)
     public void register(K key, V value) {
         ((GTRegistry<K, V>) (Object) this).remove(key);

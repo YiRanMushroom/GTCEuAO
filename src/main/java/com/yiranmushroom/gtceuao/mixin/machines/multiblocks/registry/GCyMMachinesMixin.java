@@ -50,7 +50,7 @@ import net.minecraft.core.Direction;
 @Mixin(GCyMMachines.class)
 public class GCyMMachinesMixin {
     @Mutable
-    @Shadow
+    @Shadow(remap = false)
     @Final
     public static MultiblockMachineDefinition BLAST_ALLOY_SMELTER;
 

@@ -20,6 +20,7 @@
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.parts.PredicatesMixin",
+    "machines.multiblocks.registry.GCyMMachinesMixin",
     "machines.multiblocks.registry.GTAEMachinesMixin",
     "machines.multiblocks.registry.GTMachinesMixin",
     "machines.multiblocks.registry.GTRegistryMixin",

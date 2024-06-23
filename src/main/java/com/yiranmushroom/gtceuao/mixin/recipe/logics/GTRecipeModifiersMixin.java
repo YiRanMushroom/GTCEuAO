@@ -86,37 +86,30 @@ public class GTRecipeModifiersMixin {
             modifyDuration);
     }
 
-    @Inject(method = "hatchParallel", at = @At("RETURN"), cancellable = true, remap = false)
-    private static void hatchParallelInj(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration, CallbackInfoReturnable<Pair<GTRecipe, Integer>> cir){
-        if (cir.getReturnValue().getSecond() == 1)
-            cir.setReturnValue(Pair.of(cir.getReturnValue().getFirst(),
-                AOConfigHolder.INSTANCE.machines.ParallelMultiplier));
-    }
-
-//    /**
-//     * @author YiranMushroom
-//     * @reason Trying to fix the parallel logic for hatch parallel
-//     */
-//    @Overwrite(remap = false)
-//    public static Pair<GTRecipe, Integer> hatchParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
-//        if (machine instanceof IMultiController controller && controller.isFormed()) {
-//            Optional<IParallelHatch> optional = controller.getParts().stream().filter(IParallelHatch.class::isInstance).map(IParallelHatch.class::cast).findAny();
-//            if (optional.isPresent()) {
-//                IParallelHatch hatch = optional.get();
-//                if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
-//                    int multiplier = AOConfigHolder.INSTANCE.machines.ParallelMultiplier;
-//                    if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
-//                        return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel() * multiplier, modifyDuration);
-//                    }
-//                    return ParallelLogic.applyParallel(machine, recipe,
-//                        AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min((long) hatch.getCurrentParallel() * multiplier,
-//                            (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : hatch.getCurrentParallel() * multiplier,
-//                        modifyDuration);
-//                }
-//            } else {
-//                return accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.ParallelMultiplier, modifyDuration);
-//            }
-//        }
-//        return Pair.of(recipe, 1);
+//    @Inject(method = "hatchParallel", at = @At("RETURN"), cancellable = true, remap = false)
+//    private static void hatchParallelInj(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration, CallbackInfoReturnable<Pair<GTRecipe, Integer>> cir){
+//        if (cir.getReturnValue().getSecond() == 1)
+//            cir.setReturnValue(Pair.of(cir.getReturnValue().getFirst(),
+//                AOConfigHolder.INSTANCE.machines.ParallelMultiplier));
 //    }
+
+    /**
+     * @author YiranMushroom
+     * @reason Trying to fix the parallel logic for hatch parallel
+     */
+    @Overwrite(remap = false)
+    public static Pair<GTRecipe, Integer> hatchParallel(MetaMachine machine, @NotNull GTRecipe recipe,
+                                                        boolean modifyDuration) {
+        if (machine instanceof IMultiController controller && controller.isFormed()) {
+            Optional<IParallelHatch> optional = controller.getParts().stream().filter(IParallelHatch.class::isInstance)
+                .map(IParallelHatch.class::cast).findAny();
+            if (optional.isPresent()) {
+                IParallelHatch hatch = optional.get();
+                return ParallelLogic.applyParallel(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
+            } else
+                return ParallelLogic.applyParallel(machine, recipe, AOConfigHolder.INSTANCE
+                    .machines.ParallelMultiplier, modifyDuration);
+        }
+        return Pair.of(recipe, 1);
+    }
 }

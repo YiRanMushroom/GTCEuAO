@@ -14,6 +14,7 @@ import lombok.val;
 
 import javax.annotation.Nonnull;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
@@ -118,25 +119,11 @@ public class AORecipeModifier {
         return null;
     }
 
+//    private static final HashMap<ICoilType, Integer> coilParallelMapper = new HashMap<>();
+
     public static int getParallelAmountByCoilType(ICoilType coilType) {
-        if (coilType.equals(CUPRONICKEL)) {
-            return 16;
-        } else if (coilType.equals(KANTHAL)) {
-            return 32;
-        } else if (coilType.equals(NICHROME)) {
-            return 64;
-        } else if (coilType.equals(RTMALLOY)) {
-            return 128;
-        } else if (coilType.equals(HSSG)) {
-            return 256;
-        } else if (coilType.equals(NAQUADAH)) {
-            return 512;
-        } else if (coilType.equals(TRINIUM)) {
-            return 1024;
-        } else if (coilType.equals(TRITANIUM)) {
-            return 2048;
-        }
-        return 16;
+        return AOConfigHolder.INSTANCE.machines.ParallelMultiplier *
+            coilType.getLevel() * coilType.getEnergyDiscount();
     }
 
 }

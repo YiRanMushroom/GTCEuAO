@@ -13,10 +13,14 @@ import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 
+import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
@@ -80,6 +84,13 @@ public class GTRecipeModifiersMixin {
         else return ParallelLogic.applyParallel(machine, recipe,
             maxParallel,
             modifyDuration);
+    }
+
+    @Inject(method = "hatchParallel", at = @At("RETURN"), cancellable = true, remap = false)
+    private static void hatchParallelInj(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration, CallbackInfoReturnable<Pair<GTRecipe, Integer>> cir){
+        if (cir.getReturnValue().getSecond() == 1)
+            cir.setReturnValue(Pair.of(cir.getReturnValue().getFirst(),
+                AOConfigHolder.INSTANCE.machines.ParallelMultiplier));
     }
 
 //    /**

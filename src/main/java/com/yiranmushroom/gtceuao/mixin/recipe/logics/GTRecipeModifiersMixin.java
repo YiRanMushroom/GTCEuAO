@@ -86,13 +86,6 @@ public class GTRecipeModifiersMixin {
             modifyDuration);
     }
 
-//    @Inject(method = "hatchParallel", at = @At("RETURN"), cancellable = true, remap = false)
-//    private static void hatchParallelInj(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration, CallbackInfoReturnable<Pair<GTRecipe, Integer>> cir){
-//        if (cir.getReturnValue().getSecond() == 1)
-//            cir.setReturnValue(Pair.of(cir.getReturnValue().getFirst(),
-//                AOConfigHolder.INSTANCE.machines.ParallelMultiplier));
-//    }
-
     /**
      * @author YiranMushroom
      * @reason Trying to fix the parallel logic for hatch parallel

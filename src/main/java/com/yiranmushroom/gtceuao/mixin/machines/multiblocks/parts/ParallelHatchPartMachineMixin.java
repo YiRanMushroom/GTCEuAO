@@ -12,11 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ParallelHatchPartMachine.class)
 public class ParallelHatchPartMachineMixin extends TieredPartMachine {
-/*    @Inject(method = "getCurrentParallel", remap = false, at = @At("RETURN"), cancellable = true)
-    private void getCurrentParallelInj(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue((int) Math.min((long) cir.getReturnValue() *
-            AOConfigHolder.INSTANCE.machines.ParallelMultiplier, Integer.MAX_VALUE));
-    }*/
 
     @Mutable
     @Shadow(remap = false)

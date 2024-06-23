@@ -30,8 +30,6 @@ public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
      * @author YiranMushroom
      * @reason Overwrite the limitParallel method to make it check if the voltage should be limited
      */
-
-
     @Overwrite(remap = false)
     public int limitParallel(GTRecipe recipe, IRecipeCapabilityHolder holder, int multiplier) {
 
@@ -52,5 +50,14 @@ public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
         }
 
         return Math.abs((int) (maxVoltage / recipeEUt));
+    }
+
+    /**
+     * @author YiranMushroom
+     * @reason try to fix parallel issues
+     */
+    @Overwrite(remap = false)
+    public int getMaxParallelRatio(IRecipeCapabilityHolder holder, GTRecipe recipe, int parallelAmount) {
+        return this.limitParallel(recipe, holder, parallelAmount);
     }
 }

@@ -19,6 +19,7 @@
     "machines.multiblocks.RotorHolderPartMachineMixin",
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
+    "machines.multiblocks.parts.ParallelHatchPartMachineMixin",
     "machines.multiblocks.parts.PredicatesMixin",
     "machines.multiblocks.registry.GCyMMachinesMixin",
     "machines.multiblocks.registry.GTAEMachinesMixin",

@@ -82,30 +82,30 @@ public class GTRecipeModifiersMixin {
             modifyDuration);
     }
 
-    /**
-     * @author YiranMushroom
-     * @reason Trying to fix the parallel logic for hatch parallel
-     */
-    @Overwrite(remap = false)
-    public static Pair<GTRecipe, Integer> hatchParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
-        if (machine instanceof IMultiController controller && controller.isFormed()) {
-            Optional<IParallelHatch> optional = controller.getParts().stream().filter(IParallelHatch.class::isInstance).map(IParallelHatch.class::cast).findAny();
-            if (optional.isPresent()) {
-                IParallelHatch hatch = optional.get();
-                if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
-                    int multiplier = AOConfigHolder.INSTANCE.machines.ParallelMultiplier;
-                    if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
-                        return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel() * multiplier, modifyDuration);
-                    }
-                    return ParallelLogic.applyParallel(machine, recipe,
-                        AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min((long) hatch.getCurrentParallel() * multiplier,
-                            (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : hatch.getCurrentParallel() * multiplier,
-                        modifyDuration);
-                }
-            } else {
-                return accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.ParallelMultiplier, modifyDuration);
-            }
-        }
-        return Pair.of(recipe, 1);
-    }
+//    /**
+//     * @author YiranMushroom
+//     * @reason Trying to fix the parallel logic for hatch parallel
+//     */
+//    @Overwrite(remap = false)
+//    public static Pair<GTRecipe, Integer> hatchParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
+//        if (machine instanceof IMultiController controller && controller.isFormed()) {
+//            Optional<IParallelHatch> optional = controller.getParts().stream().filter(IParallelHatch.class::isInstance).map(IParallelHatch.class::cast).findAny();
+//            if (optional.isPresent()) {
+//                IParallelHatch hatch = optional.get();
+//                if (machine instanceof WorkableElectricMultiblockMachine workableMachine) {
+//                    int multiplier = AOConfigHolder.INSTANCE.machines.ParallelMultiplier;
+//                    if (AOConfigHolder.INSTANCE.machines.legacyParallelLogic) {
+//                        return gtceuao$fastParallelNonGenerator(machine, recipe, hatch.getCurrentParallel() * multiplier, modifyDuration);
+//                    }
+//                    return ParallelLogic.applyParallel(machine, recipe,
+//                        AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min((long) hatch.getCurrentParallel() * multiplier,
+//                            (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : hatch.getCurrentParallel() * multiplier,
+//                        modifyDuration);
+//                }
+//            } else {
+//                return accurateParallel(machine, recipe, AOConfigHolder.INSTANCE.machines.ParallelMultiplier, modifyDuration);
+//            }
+//        }
+//        return Pair.of(recipe, 1);
+//    }
 }

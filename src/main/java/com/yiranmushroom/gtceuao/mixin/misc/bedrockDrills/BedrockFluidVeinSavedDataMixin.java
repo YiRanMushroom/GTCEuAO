@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BedrockFluidVeinSavedDataMixin {
     @Inject(method = "depleteVein", at = @At("HEAD"), cancellable = true, remap = false)
     private void depleteVein(int chunkX, int chunkZ, int amount, boolean ignoreVeinStats, CallbackInfo ci){
-        if (AOConfigHolder.INSTANCE.machines.bedrockDrillsDepleteResources)
+        if (!AOConfigHolder.INSTANCE.machines.bedrockDrillsDepleteResources)
             ci.cancel();
     }
 }

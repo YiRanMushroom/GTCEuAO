@@ -25,10 +25,5 @@ public class GTRecipeTypesMixin {
     @Inject(method = "<clinit>", at = @At("RETURN"), remap = false)
     private static void clinitInj(CallbackInfo ci) {
         AORecipeTypes.registerRecipeTypes();
-
-/*        ASSEMBLY_LINE_RECIPES.onRecipeBuild((recipeBuilder, provider) -> {
-            ResearchManager.createDefaultResearchRecipe(recipeBuilder, provider);
-            AORecipeTypes.registerAdvancedPrecisionAssemblyFromAssemblyLine(recipeBuilder, provider);
-        });*/
     }
 }

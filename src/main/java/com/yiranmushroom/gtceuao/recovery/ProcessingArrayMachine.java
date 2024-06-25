@@ -27,7 +27,10 @@ import com.lowdragmc.lowdraglib.misc.ItemStackTransfer;
 import com.lowdragmc.lowdraglib.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib.syncdata.annotation.Persisted;
 import com.lowdragmc.lowdraglib.syncdata.field.ManagedFieldHolder;
+import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
+import it.unimi.dsi.fastutil.longs.LongIntPair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.network.chat.Component;
@@ -225,26 +228,29 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
                 }
             }
 
-            int parallelLimit = processingArray.machineStorage.storage.getStackInSlot(0).getCount();
+            /*return RecipeHelper.applyOverclock(
+                new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
+                    var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
+                        Math.abs(recipeEUt),
+                        maxVoltage,
+                        duration,
+                        amountOC,
+                        (int)Math.pow( OverclockingLogic.STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
+                            .machines.ExpPerfect),
+                        OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
 
-
-            if (parallelLimit <= 0)
-                return null;
-
-            parallelLimit *= AOConfigHolder.INSTANCE.machines.ParallelMultiplier;
-
-            // apply parallel first
-            var parallel = Objects.requireNonNull(GTRecipeModifiers.accurateParallel(
-                machine, recipe, parallelLimit, false
-            ));
-            int parallelCount = parallel.getSecond();
-            recipe = parallel.getFirst();
-
-            // apply overclock afterward
-            long maxVoltage = Math.min(processingArray.getOverclockVoltage() * parallelCount, processingArray.getMaxVoltage());
-            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, maxVoltage);
-
-            return recipe;
+                    result[0] = GTRecipeModifiers.accurateParallel(machine, recipe, (long)parallel.getRight()
+                            * ((long) processingArray.machineStorage.storage.getStackInSlot(0).getCount()
+                            * AOConfigHolder.INSTANCE.machines.ParallelMultiplier) > Integer.MAX_VALUE?
+                        Integer.MAX_VALUE: parallel.getRight()
+                            * (processingArray.machineStorage.storage.getStackInSlot(0).getCount()
+                            * AOConfigHolder.INSTANCE.machines.ParallelMultiplier),
+                        false);
+                    return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
+                }), recipe, processingArray.getOverclockVoltage());*/
+            return AORecipeModifier.prefectSubtickParallel(processingArray,recipe,false, (it) ->
+                ((ProcessingArrayMachine)it).machineStorage.storage.getStackInSlot(0).getCount() *
+                AOConfigHolder.INSTANCE.machines.ParallelMultiplier);
         }
         return null;
     }

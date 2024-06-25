@@ -4,6 +4,7 @@ import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import it.unimi.dsi.fastutil.longs.LongIntMutablePair;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.*;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
@@ -108,6 +109,49 @@ public abstract class OverclockingLogicMixin {
         }
 
         return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
+    }
+
+    /**
+     * @author YiranMushroom
+     * @reason Change some logic to make this reasonable
+     */
+    @Overwrite(remap = false)
+    @NotNull
+    public static ImmutableTriple<Long, Integer, Integer>
+        standardOverclockingLogicWithSubTickParallelCount(long recipeEUt,
+                                                          long maxVoltage,
+                                                          int recipeDuration,
+                                                          int numberOfOCs,
+                                                          double durationDivisor,
+                                                          double voltageMultiplier) {
+        double resultDuration = recipeDuration;
+        double resultVoltage = recipeEUt;
+        double resultParallel = 1;
+
+        for (; numberOfOCs > (-AOConfigHolder.INSTANCE.machines.bonusOfOCs); numberOfOCs--) {
+            // it is important to do voltage first,
+            // so overclocking voltage does not go above the limit before changing duration
+
+            double potentialVoltage = resultVoltage * voltageMultiplier;
+            // do not allow voltage to go above maximum
+            if (potentialVoltage > maxVoltage) break;
+
+            double potentialDuration = resultDuration / durationDivisor;
+            // do not allow duration to go below one tick
+            if (potentialDuration < 1) resultParallel *= durationDivisor;
+            // update the duration for the next iteration
+            resultDuration = resultParallel > 1 ? 1 : potentialDuration;
+
+            // update the voltage for the next iteration after everything else
+            // in case duration overclocking would waste energy
+            resultVoltage = potentialVoltage;
+
+            if (resultParallel > Integer.MAX_VALUE) {
+                resultParallel = Integer.MAX_VALUE;
+                break;
+            }
+        }
+        return ImmutableTriple.of((long) resultVoltage, (int) resultDuration, (int) resultParallel);
     }
 
     @Unique

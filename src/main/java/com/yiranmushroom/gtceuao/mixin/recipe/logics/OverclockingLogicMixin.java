@@ -127,13 +127,6 @@ public abstract class OverclockingLogicMixin {
                                                           int numberOfOCs,
                                                           double durationDivisor,
                                                           double voltageMultiplier) {
-
-        var result = OverclockingLogic.standardOverclockingLogic(recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
-//        return ImmutableTriple.of(result.leftLong(), result.rightInt(), 1);
-        LOGGER.info("recipeEUt: {} maxVoltage: {} recipeDuration: {} numberOfOCs: {} durationDivisor: " +
-            "{} voltageMultiplier: {}", recipeEUt, maxVoltage,
-            recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
-
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
         double resultParallel = 1;
@@ -161,8 +154,6 @@ public abstract class OverclockingLogicMixin {
                 break;
             }
         }
-
-        LOGGER.info("resultVoltage: {} resultDuration: {} resultParallel: {}", resultVoltage, resultDuration, resultParallel);
 
         return ImmutableTriple.of((long) resultVoltage, (int) resultDuration, (int) resultParallel);
     }

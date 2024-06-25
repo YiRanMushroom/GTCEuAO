@@ -228,26 +228,6 @@ public class ProcessingArrayMachine extends TieredWorkableElectricMultiblockMach
                 }
             }
 
-            /*return RecipeHelper.applyOverclock(
-                new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
-                    var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
-                        Math.abs(recipeEUt),
-                        maxVoltage,
-                        duration,
-                        amountOC,
-                        (int)Math.pow( OverclockingLogic.STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
-                            .machines.ExpPerfect),
-                        OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
-
-                    result[0] = GTRecipeModifiers.accurateParallel(machine, recipe, (long)parallel.getRight()
-                            * ((long) processingArray.machineStorage.storage.getStackInSlot(0).getCount()
-                            * AOConfigHolder.INSTANCE.machines.ParallelMultiplier) > Integer.MAX_VALUE?
-                        Integer.MAX_VALUE: parallel.getRight()
-                            * (processingArray.machineStorage.storage.getStackInSlot(0).getCount()
-                            * AOConfigHolder.INSTANCE.machines.ParallelMultiplier),
-                        false);
-                    return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
-                }), recipe, processingArray.getOverclockVoltage());*/
             return AORecipeModifier.prefectSubtickParallel(processingArray,recipe,false, (it) ->
                 ((ProcessingArrayMachine)it).machineStorage.storage.getStackInSlot(0).getCount() *
                 AOConfigHolder.INSTANCE.machines.ParallelMultiplier);

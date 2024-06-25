@@ -3,17 +3,20 @@ package com.yiranmushroom.gtceuao.recipes;
 import com.google.errorprone.annotations.Var;
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.block.ICoilType;
+import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.machine.MetaMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.CoilWorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
+import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.Function;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
 import kroppeb.stareval.function.Type;
@@ -25,8 +28,10 @@ import javax.annotation.Nonnull;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import static com.gregtechceu.gtceu.api.recipe.OverclockingLogic.STANDARD_OVERCLOCK_DURATION_DIVISOR;
+import static com.gregtechceu.gtceu.api.recipe.RecipeHelper.*;
 import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
 import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
@@ -104,7 +109,7 @@ public class AORecipeModifier {
 //            recipe = RecipeHelper.applyOverclock(OverclockingLogic.PERFECT_OVERCLOCK, recipe, coilMachine.getOverclockVoltage());
 //            return recipe;
             return prefectSubtickParallel(coilMachine,recipe,false, (it) ->
-                getParallelAmountByCoilType((ICoilType) it));
+                getParallelAmountByCoilType(((CoilWorkableElectricMultiblockMachine) it).getCoilType()));
         } else {
             return null;
         }
@@ -230,17 +235,65 @@ public class AORecipeModifier {
             coilType.getLevel() * coilType.getEnergyDiscount();
     }
 
-    public static GTRecipe prefectSubtickParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
+    public static GTRecipe applyOverclock(OverclockingLogic logic, Supplier<GTRecipe> recipeSupplier, long maxOverclockVoltage) {
+        GTRecipe recipe = null;
+        long EUt = getInputEUt(recipeSupplier.get());
+        if (EUt > 0) {
+            var overclockResult = performOverclocking(logic, recipeSupplier.get(), EUt, maxOverclockVoltage);
+            if (overclockResult.leftLong() != EUt || recipeSupplier.get().duration != overclockResult.rightInt()) {
+                recipe = recipeSupplier.get().copy();
+                recipe.duration = overclockResult.rightInt();
+                for (Content content : recipe.getTickInputContents(EURecipeCapability.CAP)) {
+                    content.content = overclockResult.leftLong();
+                }
+            }
+        }
+/*        EUt = getOutputEUt(recipe);
+        if (EUt > 0) {
+            var overclockResult = performOverclocking(logic, recipe, EUt, maxOverclockVoltage);
+            if (overclockResult.leftLong() != EUt || recipe.duration != overclockResult.rightInt()) {
+                recipe = recipe.copy();
+                recipe.duration = overclockResult.rightInt();
+                for (Content content : recipe.getTickOutputContents(EURecipeCapability.CAP)) {
+                    content.content = overclockResult.leftLong();
+                }
+            }
+        }*/
+        return recipe;
+    }
+
+    public static GTRecipe subtickParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
         if (machine instanceof WorkableElectricMultiblockMachine electricMachine) {
             final Pair<GTRecipe, Integer>[] result = new Pair[] { null };
-            RecipeHelper.applyOverclock(
+            return applyOverclock(
                 new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
                     var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
                         Math.abs(recipeEUt),
                         maxVoltage,
                         duration,
                         amountOC,
-                        (int)Math.pow( STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
+                        OverclockingLogic.STANDARD_OVERCLOCK_DURATION_DIVISOR,
+                        OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
+
+                    result[0] = GTRecipeModifiers.accurateParallel(machine, recipe, parallel.getRight(),
+                        modifyDuration);
+                    return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
+                }), () -> result[0] == null ? recipe : result[0].getFirst(), electricMachine.getOverclockVoltage());
+        }
+        return null;
+    }
+
+    public static GTRecipe prefectSubtickParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
+        if (machine instanceof WorkableElectricMultiblockMachine electricMachine) {
+            final Pair<GTRecipe, Integer>[] result = new Pair[] { null };
+            return applyOverclock(
+                new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
+                    var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
+                        Math.abs(recipeEUt),
+                        maxVoltage,
+                        duration,
+                        amountOC,
+                        (int)Math.pow(STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
                             .machines.ExpPerfect),
                         OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
 
@@ -249,8 +302,7 @@ public class AORecipeModifier {
                         parallel.getRight() * AOConfigHolder.INSTANCE.machines.ParallelMultiplier,
                         modifyDuration);
                     return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
-                }), recipe, electricMachine.getOverclockVoltage());
-            return result[0].getFirst();
+                }), () -> result[0] == null? recipe : result[0].getFirst(), electricMachine.getOverclockVoltage());
         }
         return null;
     }
@@ -258,9 +310,8 @@ public class AORecipeModifier {
     public static <T extends WorkableElectricMultiblockMachine> GTRecipe prefectSubtickParallel(T machine, @NotNull GTRecipe recipe,
                                                   boolean modifyDuration,
                                                   Function<T, Integer> function) {
-
         final Pair<GTRecipe, Integer>[] result = new Pair[] { null };
-        RecipeHelper.applyOverclock(
+        return applyOverclock(
             new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
                 var parallel = OverclockingLogic.
                     standardOverclockingLogicWithSubTickParallelCount(
@@ -268,7 +319,7 @@ public class AORecipeModifier {
                     maxVoltage,
                     duration,
                     amountOC,
-                    (int)Math.pow( STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
+                    (int)Math.pow(STANDARD_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE
                         .machines.ExpPerfect),
                     OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
 
@@ -279,8 +330,7 @@ public class AORecipeModifier {
                         parallel.getRight() * bonus,
                     modifyDuration);
                 return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
-            }), recipe, machine.getOverclockVoltage());
-        return result[0].getFirst();
+            }), () -> result[0] == null? recipe : result[0].getFirst(), machine.getOverclockVoltage());
     }
 
     public static final RecipeModifier PERFECT_SUBTICK_PARALLEL = (machine, recipe) -> AORecipeModifier

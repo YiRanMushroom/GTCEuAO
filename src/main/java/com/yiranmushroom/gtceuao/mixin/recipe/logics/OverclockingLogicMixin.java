@@ -2,6 +2,7 @@ package com.yiranmushroom.gtceuao.mixin.recipe.logics;
 
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.config.ConfigHolder;
+import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.longs.LongIntMutablePair;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
+
+import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 @Mixin(OverclockingLogic.class)
 public abstract class OverclockingLogicMixin {
@@ -55,7 +58,7 @@ public abstract class OverclockingLogicMixin {
     @Overwrite(remap = false)
     public static @NotNull LongIntPair heatingCoilOverclockingLogic(long recipeEUt, long maximumVoltage, int recipeDuration, int maxOverclocks, int currentTemp, int recipeRequiredTemp) {
         int amountEUDiscount = Math.max(0, (currentTemp - recipeRequiredTemp) / 900);
-        int amountPerfectOC = amountEUDiscount;
+        int amountPerfectOC = amountEUDiscount / 2;
         recipeEUt = (long) ((double) recipeEUt * Math.min(1.0, Math.pow(0.95, (double) amountEUDiscount)));
         if (amountPerfectOC > 0) {
             LongIntPair overclock = standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, amountPerfectOC, PERFECT_OVERCLOCK_DURATION_DIVISOR, STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
@@ -124,6 +127,13 @@ public abstract class OverclockingLogicMixin {
                                                           int numberOfOCs,
                                                           double durationDivisor,
                                                           double voltageMultiplier) {
+
+        var result = OverclockingLogic.standardOverclockingLogic(recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
+//        return ImmutableTriple.of(result.leftLong(), result.rightInt(), 1);
+        LOGGER.info("recipeEUt: {} maxVoltage: {} recipeDuration: {} numberOfOCs: {} durationDivisor: " +
+            "{} voltageMultiplier: {}", recipeEUt, maxVoltage,
+            recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
+
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
         double resultParallel = 1;
@@ -151,6 +161,9 @@ public abstract class OverclockingLogicMixin {
                 break;
             }
         }
+
+        LOGGER.info("resultVoltage: {} resultDuration: {} resultParallel: {}", resultVoltage, resultDuration, resultParallel);
+
         return ImmutableTriple.of((long) resultVoltage, (int) resultDuration, (int) resultParallel);
     }
 

@@ -1,12 +1,7 @@
 package com.yiranmushroom.gtceuao.recipes.machine;
 
 import com.gregtechceu.gtceu.api.data.chemical.ChemicalHelper;
-import com.gregtechceu.gtceu.api.data.chemical.material.stack.UnificationEntry;
-import com.gregtechceu.gtceu.common.data.GTMaterials;
-import com.jozufozu.flywheel.api.Material;
-import com.jozufozu.flywheel.core.Materials;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
-import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
 import net.minecraft.data.recipes.FinishedRecipe;
 
 import java.util.function.Consumer;

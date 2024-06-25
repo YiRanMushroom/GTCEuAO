@@ -11,7 +11,7 @@ import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.common.data.GTCompassSections;
 import com.gregtechceu.gtceu.common.data.machines.GCyMMachines;
-import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
+import com.yiranmushroom.gtceuao.recipes.AORecipeModifiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 import org.spongepowered.asm.mixin.Final;
@@ -53,7 +53,7 @@ public class GCyMMachinesMixin {
                 Component.translatable("gtceu.alloy_blast_smelter")))
             .rotationState(RotationState.ALL)
             .recipeType(ALLOY_BLAST_RECIPES)
-            .recipeModifier(AORecipeModifier::ebfOverclock)
+            .recipeModifier(AORecipeModifiers::ebfOverclock)
             .appearanceBlock(CASING_HIGH_TEMPERATURE_SMELTING)
             .pattern(definition -> FactoryBlockPattern.start()
                 .aisle("#XXX#", "#CCC#", "#GGG#", "#CCC#", "#XXX#")

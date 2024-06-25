@@ -7,10 +7,9 @@ import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMa
 import com.gregtechceu.gtceu.api.pattern.FactoryBlockPattern;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
-import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
 import com.gregtechceu.gtceu.common.data.GTCompassSections;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
-import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
+import com.yiranmushroom.gtceuao.recipes.AORecipeModifiers;
 import com.yiranmushroom.gtceuao.recipes.AORecipeTypes;
 
 import static com.gregtechceu.gtceu.api.GTValues.UV;
@@ -27,7 +26,7 @@ public class AOMachines {
     public static final MultiblockMachineDefinition ADVANCED_PRECISION_ASSEMBLY = REGISTRATE.multiblock("advanced_precision_assembly", WorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(AORecipeTypes.ADVANCED_PRECISION_ASSEMBLY_Recipe)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT) // 7 * 7 * 11
             .aisle("XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX") // first layer

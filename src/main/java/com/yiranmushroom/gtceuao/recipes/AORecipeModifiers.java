@@ -1,43 +1,29 @@
 package com.yiranmushroom.gtceuao.recipes;
 
-import com.google.errorprone.annotations.Var;
 import com.gregtechceu.gtceu.api.GTValues;
 import com.gregtechceu.gtceu.api.block.ICoilType;
-import com.gregtechceu.gtceu.api.capability.recipe.EURecipeCapability;
 import com.gregtechceu.gtceu.api.machine.MetaMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.CoilWorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.machine.multiblock.WorkableElectricMultiblockMachine;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
-import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
-import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
-import com.yiranmushroom.gtceuao.gtceuao;
-import it.unimi.dsi.fastutil.Function;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
-import kroppeb.stareval.function.Type;
 import lombok.val;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 
-import java.util.HashMap;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-import static com.gregtechceu.gtceu.api.recipe.OverclockingLogic.STANDARD_OVERCLOCK_DURATION_DIVISOR;
-import static com.gregtechceu.gtceu.api.recipe.RecipeHelper.*;
-import static com.gregtechceu.gtceu.common.block.CoilBlock.CoilType.*;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
-import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.subtickParallel;
-import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
-public class AORecipeModifier {
+public class AORecipeModifiers {
 
     public static GTRecipe ebfOverclock(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof CoilWorkableElectricMultiblockMachine coilMachine) {

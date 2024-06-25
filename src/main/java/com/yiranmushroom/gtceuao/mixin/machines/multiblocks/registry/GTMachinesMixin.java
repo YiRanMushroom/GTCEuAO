@@ -19,7 +19,6 @@ import com.gregtechceu.gtceu.api.pattern.MultiblockShapeInfo;
 import com.gregtechceu.gtceu.api.pattern.Predicates;
 import com.gregtechceu.gtceu.api.pattern.TraceabilityPredicate;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
-import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.AssemblyLineMachine;
@@ -29,13 +28,11 @@ import com.gregtechceu.gtceu.common.data.*;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.BedrockOreMinerMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.electric.FluidDrillMachine;
 import com.gregtechceu.gtceu.common.machine.multiblock.part.ItemBusPartMachine;
-import com.gregtechceu.gtceu.common.registry.GTRegistration;
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import com.gregtechceu.gtceu.utils.FormattingUtil;
 import com.lowdragmc.lowdraglib.Platform;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
-import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
-import lombok.experimental.Accessors;
+import com.yiranmushroom.gtceuao.recipes.AORecipeModifiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -105,8 +102,8 @@ public abstract class GTMachinesMixin {
         .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.ASSEMBLY_LINE_RECIPES)
         .alwaysTryModifyRecipe(true)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.DEFAULT_ENVIRONMENT_REQUIREMENT,
-            AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::perfectCoilMachineParallel)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.DEFAULT_ENVIRONMENT_REQUIREMENT,
+            AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT)
             .aisle("FIF", "RTR", "SAG", "#Y#")
@@ -147,7 +144,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition VACUUM_FREEZER = REGISTRATE.multiblock("vacuum_freezer", WorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.VACUUM_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL, AORecipeModifier::perfectCoilMachineParallel)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_ALUMINIUM_FROSTPROOF)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("XXX", "XXX", "XXX")
@@ -170,7 +167,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition DISTILLATION_TOWER = REGISTRATE.multiblock("distillation_tower", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.DISTILLATION_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::perfectCoilMachineParallel)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_STAINLESS_CLEAN)
         .pattern(definition -> FactoryBlockPattern.start(RIGHT, BACK, UP)
             .aisle("YSY", "YMY", "YYY")
@@ -200,7 +197,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition CRACKER = REGISTRATE.multiblock("cracker", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.CRACKING_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::crackerOverclock)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::crackerOverclock)
         .appearanceBlock(CASING_STAINLESS_CLEAN)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("HCHCH", "HCHCH", "HCHCH")
@@ -249,7 +246,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition PYROLYSE_OVEN = REGISTRATE.multiblock("pyrolyse_oven", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.PYROLYSE_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::pyrolyseOvenOverclock)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::pyrolyseOvenOverclock)
         .appearanceBlock(MACHINE_CASING_ULV)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("XXX", "XXX", "XXX")
@@ -300,7 +297,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition IMPLOSION_COMPRESSOR = REGISTRATE.multiblock("implosion_compressor", WorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.IMPLOSION_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::perfectCoilMachineParallel)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("XXX", "XXX", "XXX")
@@ -323,7 +320,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition LARGE_CHEMICAL_REACTOR = REGISTRATE.multiblock("large_chemical_reactor", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.LARGE_CHEMICAL_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::perfectCoilMachineParallel)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_PTFE_INERT)
         .pattern(definition -> {
             var casing = blocks(CASING_PTFE_INERT.get());
@@ -401,7 +398,7 @@ public abstract class GTMachinesMixin {
             .shape(Shapes.box(0.001, 0.001, 0.001, 0.999, 0.999, 0.999))
             .appearanceBlock(() -> ProcessingArrayMachine.getCasingState(tier))
             .recipeType(DUMMY_RECIPES)
-            .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,ProcessingArrayMachine::recipeModifier)
+            .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,ProcessingArrayMachine::recipeModifier)
             .pattern(definition -> FactoryBlockPattern.start()
                 .aisle("XXX", "XXX", "XXX")
                 .aisle("XXX", "X#X", "XXX")
@@ -432,7 +429,7 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition ELECTRIC_BLAST_FURNACE = REGISTRATE.multiblock("electric_blast_furnace", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(GTRecipeTypes.BLAST_RECIPES)
-        .recipeModifiers(AORecipeModifier.PERFECT_SUBTICK_PARALLEL,AORecipeModifier::ebfOverclock)
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::ebfOverclock)
         .appearanceBlock(CASING_INVAR_HEATPROOF)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("XXX", "CCC", "CCC", "XXX")

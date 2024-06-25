@@ -13,6 +13,7 @@
     "gregiceng.BufferPartMachineMixin",
     "gregiceng.GEMachineRecipeLoaderMixin",
     "gregiceng.GEMachinesMixin",
+    "kjs.GregTechKubeJSPluginMixin",
     "machines.logic.IRecipeLogicMachineMixin",
     "machines.multiblocks.FusionReactorMachineMixin",
     "machines.multiblocks.LargeTurbineMachineMixin",

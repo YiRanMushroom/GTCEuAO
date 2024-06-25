@@ -13,14 +13,10 @@ import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 
-import com.yiranmushroom.gtceuao.recipes.AORecipeModifier;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 

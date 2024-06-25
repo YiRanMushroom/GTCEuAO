@@ -78,8 +78,12 @@ public class AOConfigHolder {
         public boolean buffMultiblocks = true;
 
         @Configurable
-        @Configurable.Comment({"In what amount should be non-coilblock multiblock machines parallel.", "Default: 4096"})
+        @Configurable.Comment({"In what amount should be non-coilblock multiblock machines parallel.", "Default: 16"})
         public int multiblockParallelAmount = 16;
+
+        @Configurable
+        @Configurable.Comment({"In what amount should be subtick parallel goto, too large may cause severe tps drop", "Default: 256"})
+        public int subtickParallelLimit = 256;
 
         @Configurable
         @Configurable.Comment({"Do bedrock drills deplete resources.", "Default: false"})

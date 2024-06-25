@@ -26,7 +26,7 @@ public class AOMachines {
     public static final MultiblockMachineDefinition ADVANCED_PRECISION_ASSEMBLY = REGISTRATE.multiblock("advanced_precision_assembly", WorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.NON_Y_AXIS)
         .recipeType(AORecipeTypes.ADVANCED_PRECISION_ASSEMBLY_Recipe)
-        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT) // 7 * 7 * 11
             .aisle("XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX","XXXXXXX") // first layer

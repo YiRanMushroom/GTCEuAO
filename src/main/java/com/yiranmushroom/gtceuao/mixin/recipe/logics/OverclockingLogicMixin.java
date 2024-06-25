@@ -156,8 +156,8 @@ public abstract class OverclockingLogicMixin {
             // in case duration overclocking would waste energy
             resultVoltage = potentialVoltage;
 
-            if (resultParallel > Integer.MAX_VALUE) {
-                resultParallel = Integer.MAX_VALUE;
+            if (resultParallel > AOConfigHolder.INSTANCE.machines.subtickParallelLimit) {
+                resultParallel = AOConfigHolder.INSTANCE.machines.subtickParallelLimit;
                 break;
             }
         }

@@ -22,6 +22,7 @@ import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.OverclockingLogic;
 import com.gregtechceu.gtceu.api.registry.registrate.MachineBuilder;
 import com.gregtechceu.gtceu.api.registry.registrate.MultiblockMachineBuilder;
+import com.gregtechceu.gtceu.common.machine.multiblock.electric.AssemblyLineMachine;
 import com.yiranmushroom.gtceuao.machines.AOMachines;
 import com.yiranmushroom.gtceuao.recovery.ProcessingArrayMachine;
 import com.gregtechceu.gtceu.common.data.*;
@@ -100,7 +101,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public static final MultiblockMachineDefinition ASSEMBLY_LINE = REGISTRATE
-        .multiblock("assembly_line", WorkableElectricMultiblockMachine::new)
+        .multiblock("assembly_line", AssemblyLineMachine::new)
         .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.ASSEMBLY_LINE_RECIPES)
         .alwaysTryModifyRecipe(true)
@@ -113,7 +114,9 @@ public abstract class GTMachinesMixin {
             .aisle("FOF", "RTR", "DAG", "#Y#")
             .where('S', Predicates.controller(blocks(definition.getBlock())))
             .where('F', blocks(CASING_STEEL_SOLID.get())
-                .or(Predicates.abilities(PartAbility.IMPORT_FLUIDS).setMaxGlobalLimited(4)))
+            .or(ConfigHolder.INSTANCE.machines.orderedAssemblyLineFluids ?
+                Predicates.abilities(PartAbility.IMPORT_FLUIDS) :
+                Predicates.abilities(PartAbility.IMPORT_FLUIDS_1X).setMaxGlobalLimited(4)))
             .where('O',
                 Predicates.abilities(PartAbility.EXPORT_ITEMS)
                     .addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))

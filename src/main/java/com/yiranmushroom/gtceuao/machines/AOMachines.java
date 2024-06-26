@@ -24,7 +24,7 @@ public class AOMachines {
     }
 
     public static final MultiblockMachineDefinition ADVANCED_PRECISION_ASSEMBLY = REGISTRATE.multiblock("advanced_precision_assembly", WorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(AORecipeTypes.ADVANCED_PRECISION_ASSEMBLY_Recipe)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, GTRecipeModifiers.PARALLEL_HATCH, GTRecipeModifiers.ELECTRIC_OVERCLOCK.apply(OverclockingLogic.PERFECT_OVERCLOCK))
         .appearanceBlock(CASING_STEEL_SOLID)

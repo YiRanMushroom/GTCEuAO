@@ -94,11 +94,8 @@ public class GTRecipeModifiersMixin {
                 .map(IParallelHatch.class::cast).findAny();
             if (optional.isPresent()) {
                 IParallelHatch hatch = optional.get();
-//                return ParallelLogic.applyParallel(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
                 return GTRecipeModifiers.accurateParallel(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
             } else
-/*                return ParallelLogic.applyParallel(machine, recipe, AOConfigHolder.INSTANCE
-                    .machines.ParallelMultiplier, modifyDuration);*/
                 return GTRecipeModifiers.accurateParallel(machine, recipe, AOConfigHolder.INSTANCE
                     .machines.ParallelMultiplier, modifyDuration);
         }

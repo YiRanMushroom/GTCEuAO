@@ -24,6 +24,8 @@ import java.util.Optional;
 public class GTRecipeModifiersMixin {
     @Unique
     private static Pair<GTRecipe, Integer> gtceuao$fastParallelNonGenerator(MetaMachine machine, GTRecipe recipe, int maxParallel, boolean modifyDuration) {
+        if (AOConfigHolder.INSTANCE.machines.fastParallelLogic)
+            return fastParallel(machine, recipe, maxParallel, modifyDuration);
         // We want to use binary search to find the maximum amount.
         if (machine instanceof IRecipeCapabilityHolder holder) {
             int left = 1, right = maxParallel, mid;

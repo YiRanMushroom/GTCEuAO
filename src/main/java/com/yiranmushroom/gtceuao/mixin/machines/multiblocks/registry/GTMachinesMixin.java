@@ -142,7 +142,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition VACUUM_FREEZER = REGISTRATE.multiblock("vacuum_freezer", WorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.VACUUM_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_ALUMINIUM_FROSTPROOF)
@@ -195,7 +195,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition CRACKER = REGISTRATE.multiblock("cracker", CoilWorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.CRACKING_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::crackerOverclock)
         .appearanceBlock(CASING_STAINLESS_CLEAN)
@@ -244,7 +244,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition PYROLYSE_OVEN = REGISTRATE.multiblock("pyrolyse_oven", CoilWorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.PYROLYSE_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::pyrolyseOvenOverclock)
         .appearanceBlock(MACHINE_CASING_ULV)
@@ -295,7 +295,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition IMPLOSION_COMPRESSOR = REGISTRATE.multiblock("implosion_compressor", WorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.IMPLOSION_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_STEEL_SOLID)
@@ -318,7 +318,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition LARGE_CHEMICAL_REACTOR = REGISTRATE.multiblock("large_chemical_reactor", CoilWorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.LARGE_CHEMICAL_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_PTFE_INERT)
@@ -393,7 +393,7 @@ public abstract class GTMachinesMixin {
     public static MultiblockMachineDefinition[] PROCESSING_ARRAY = registerTieredMultis("processing_array", ProcessingArrayMachine::new,
         (tier, builder) -> builder
             .langValue(VNF[tier] + " Processing Array")
-            .rotationState(RotationState.NON_Y_AXIS)
+            .rotationState(RotationState.ALL)
             .blockProp(p -> p.noOcclusion().isViewBlocking((state, level, pos) -> false))
             .shape(Shapes.box(0.001, 0.001, 0.001, 0.999, 0.999, 0.999))
             .appearanceBlock(() -> ProcessingArrayMachine.getCasingState(tier))
@@ -427,7 +427,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     public final static MultiblockMachineDefinition ELECTRIC_BLAST_FURNACE = REGISTRATE.multiblock("electric_blast_furnace", CoilWorkableElectricMultiblockMachine::new)
-        .rotationState(RotationState.NON_Y_AXIS)
+        .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.BLAST_RECIPES)
         .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::ebfOverclock)
         .appearanceBlock(CASING_INVAR_HEATPROOF)

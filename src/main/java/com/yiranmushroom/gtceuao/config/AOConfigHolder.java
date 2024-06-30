@@ -118,6 +118,11 @@ public class AOConfigHolder {
         @Configurable.Comment({"Do make RecipeModifier not lazy, which may significantly reduce performance",
             "But may improve machine processing speed","Default: false"})
         public boolean notLazyRecipeModifier = true;
+
+        @Configurable
+        @Configurable.Comment({"Random Factor for a recipe not been modified, the bigger the value, the less likely the recipe will be modified.",
+            "Default: 5"})
+        public int randomFactor = 5;
     }
 
     public static class RecipeConfigs {

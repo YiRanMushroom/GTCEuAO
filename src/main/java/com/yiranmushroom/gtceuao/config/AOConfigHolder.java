@@ -83,7 +83,7 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"In what amount should be subtick parallel goto, too large may cause severe tps drop", "Default: 64"})
-        public int subtickParallelLimit = 64;
+        public int subtickParallelLimit = 262144;
 
         @Configurable
         @Configurable.Comment({"Do bedrock drills deplete resources.", "Default: false"})
@@ -96,13 +96,13 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: true"})
-        public boolean legacyParallelLogic = true;
+        public boolean legacyParallelLogic = false;
 
         @Configurable
         @Configurable.Comment({"Do fast logic for parallel, which will make parallel not accurate, but way faster",
             "This will only be effective if legacy parallel logic is disabled.",
             "Default: true"})
-        public boolean fastParallelLogic = true;
+        public boolean fastParallelLogic = false;
 
         @Configurable
         @Configurable.Comment({"Are turbines buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",
@@ -122,7 +122,7 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Random Factor for a recipe not been modified, the bigger the value, the less likely the recipe will be modified.",
             "Default: 5"})
-        public int randomFactor = 5;
+        public int randomFactor = 2;
     }
 
     public static class RecipeConfigs {

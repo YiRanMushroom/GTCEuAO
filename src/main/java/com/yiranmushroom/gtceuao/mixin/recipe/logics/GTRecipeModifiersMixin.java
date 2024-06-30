@@ -24,9 +24,6 @@ import java.util.Optional;
 public class GTRecipeModifiersMixin {
     @Unique
     private static Pair<GTRecipe, Integer> gtceuao$fastParallelNonGenerator(MetaMachine machine, GTRecipe recipe, int maxParallel, boolean modifyDuration) {
-        if (AOConfigHolder.INSTANCE.machines.fastParallelLogic)
-            return fastParallel(machine, recipe, maxParallel, modifyDuration);
-        // We want to use binary search to find the maximum amount.
         if (machine instanceof IRecipeCapabilityHolder holder) {
             int left = 1, right = maxParallel, mid;
             while (left < right) {
@@ -37,28 +34,6 @@ public class GTRecipeModifiersMixin {
                 } else right = mid - 1;
             }
             return Pair.of(recipe.copy(ContentModifier.multiplier(left), modifyDuration), left);
-        }
-        return Pair.of(recipe, 1);
-    }
-
-    /**
-     * @author YiranMushroom
-     * @reason Use this to determine if the generator should use more fuel, false if ParallelNeedMorePower is false
-     */
-    @Overwrite(remap = false)
-    public static Pair<GTRecipe, Integer> fastParallel(MetaMachine machine, @NotNull GTRecipe recipe, int maxParallel, boolean modifyDuration) {
-        if (machine instanceof IRecipeCapabilityHolder holder) {
-            while (maxParallel > 0) {
-                var copied = recipe.copy(ContentModifier.multiplier(maxParallel), modifyDuration);
-                if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower && copied.isFuel) {
-                    copied = new GTRecipe(copied.recipeType, copied.id, recipe.inputs, copied.outputs,
-                        recipe.tickInputs, copied.tickOutputs, copied.conditions, copied.ingredientActions, copied.data, copied.duration, copied.isFuel);
-                }
-                if (copied.matchRecipe(holder).isSuccess() && copied.matchTickRecipe(holder).isSuccess()) {
-                    return Pair.of(copied, maxParallel);
-                }
-                maxParallel /= 2;
-            }
         }
         return Pair.of(recipe, 1);
     }
@@ -97,9 +72,7 @@ public class GTRecipeModifiersMixin {
             if (optional.isPresent()) {
                 IParallelHatch hatch = optional.get();
                 return GTRecipeModifiers.accurateParallel(machine, recipe, hatch.getCurrentParallel(), modifyDuration);
-            } else
-                return GTRecipeModifiers.accurateParallel(machine, recipe, AOConfigHolder.INSTANCE
-                    .machines.ParallelMultiplier, modifyDuration);
+            }
         }
         return Pair.of(recipe, 1);
     }

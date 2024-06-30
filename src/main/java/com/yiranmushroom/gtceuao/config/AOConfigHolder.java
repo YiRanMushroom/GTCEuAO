@@ -96,7 +96,7 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: true"})
-        public boolean legacyParallelLogic = false;
+        public boolean legacyParallelLogic = true;
 
         @Configurable
         @Configurable.Comment({"Do fast logic for parallel, which will make parallel not accurate, but way faster",

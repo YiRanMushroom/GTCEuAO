@@ -12,6 +12,7 @@ import com.yiranmushroom.gtceuao.config.AOConfigHolder;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nonnull;
 
@@ -114,19 +115,25 @@ public abstract class OverclockingLogicMixin {
         return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
     }
 
-    /**
-     * @author YiranMushroom
-     * @reason Change some logic to make this reasonable
-     */
-    @Overwrite(remap = false)
+    @Inject(method = "standardOverclockingLogicWithSubTickParallelCount", at = @At("HEAD")
+        , cancellable = true, remap = false, require = 0)
+    private static void standardOverclockingLogicWithSubTickParallelCountInj
+        (long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor,
+         double voltageMultiplier, CallbackInfoReturnable<ImmutableTriple<Long, Integer, Integer>> cir) {
+        cir.setReturnValue(standardOverclockingLogicWithSubTickParallelCount(recipeEUt, maxVoltage, recipeDuration,
+            numberOfOCs, durationDivisor, voltageMultiplier));
+    }
+
+    @SuppressWarnings("all")
+    @Unique
     @NotNull
-    public static ImmutableTriple<Long, Integer, Integer>
-        standardOverclockingLogicWithSubTickParallelCount(long recipeEUt,
-                                                          long maxVoltage,
-                                                          int recipeDuration,
-                                                          int numberOfOCs,
-                                                          double durationDivisor,
-                                                          double voltageMultiplier) {
+    private static ImmutableTriple<Long, Integer, Integer>
+    standardOverclockingLogicWithSubTickParallelCount(long recipeEUt,
+                                                      long maxVoltage,
+                                                      int recipeDuration,
+                                                      int numberOfOCs,
+                                                      double durationDivisor,
+                                                      double voltageMultiplier) {
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
         double resultParallel = 1;
@@ -141,7 +148,7 @@ public abstract class OverclockingLogicMixin {
 
             double potentialDuration = resultDuration / durationDivisor;
             // do not allow duration to go below one tick
-            if (potentialDuration < 1) resultParallel *= durationDivisor;
+            if (potentialDuration < 1) resultParallel /= potentialDuration;
             // update the duration for the next iteration
             resultDuration = resultParallel > 1 ? 1 : potentialDuration;
 

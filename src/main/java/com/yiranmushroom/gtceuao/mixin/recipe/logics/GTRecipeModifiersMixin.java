@@ -52,7 +52,7 @@ public class GTRecipeModifiersMixin {
         }
         if (machine instanceof WorkableElectricMultiblockMachine workableMachine)
             return ParallelLogic.applyParallel(machine, recipe,
-                AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? (int) Math.min(maxParallel, (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))) : maxParallel,
+                 (int) Math.min(maxParallel, (workableMachine.getMaxVoltage() / RecipeHelper.getInputEUt(recipe))),
                 modifyDuration);
         else return ParallelLogic.applyParallel(machine, recipe,
             maxParallel,

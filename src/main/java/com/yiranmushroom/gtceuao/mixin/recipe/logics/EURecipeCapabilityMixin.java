@@ -33,9 +33,9 @@ public class EURecipeCapabilityMixin extends RecipeCapability<Long> {
     @Overwrite(remap = false)
     public int limitParallel(GTRecipe recipe, IRecipeCapabilityHolder holder, int multiplier) {
 
-        if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
+/*        if (!AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower) {
             return Integer.MAX_VALUE;
-        }
+        }*/
 
         long maxVoltage = Long.MAX_VALUE;
         if (holder instanceof IOverclockMachine overclockMachine) {

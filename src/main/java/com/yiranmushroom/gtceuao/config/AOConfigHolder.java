@@ -63,7 +63,7 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"Do Parallel Need More Power to Operate, Rather than Use Original Recipe Power.",
-            "Only Affect Input Energy",
+            "Only Affect Input Energy, and this will not affect parallel limit calculation (or it would be very laggy)",
             "Default: false"})
         public boolean ParallelNeedMorePower = false;
 

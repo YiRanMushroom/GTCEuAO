@@ -37,6 +37,7 @@
     "recipe.change.machineRecipes.MetaTileEntityMachineRecipeLoaderMixin",
     "recipe.change.machineRecipes.OreRecipeHandlerMixin",
     "recipe.change.machineRecipes.WireRecipeHandlerMixin",
+    "recipe.condition.CleanroomConditionMixin",
     "recipe.condition.RockBreakerConditionMixin",
     "recipe.logics.EURecipeCapabilityMixin",
     "recipe.logics.GTRecipeMixin",

@@ -41,6 +41,11 @@ public class AOConfigHolder {
         public double perfectOverclockDivisor = 64.0;
 
         @Configurable
+        @Configurable.Comment({"Is Cleanroom check disabled?",
+            "Default: true"})
+        public boolean disableCleanroomCheck = true;
+
+        @Configurable
         @Configurable.Comment({"Is Native Platform Energy to EU enabled. Disable this may cause some unknown bugs.",
             "Default: true"})
         public boolean nativePEToEU = true;

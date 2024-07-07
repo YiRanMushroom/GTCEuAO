@@ -51,12 +51,12 @@ public abstract class OverclockingLogicMixin {
     @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)
     private void initInj(double durationDivisor, double voltageMultiplier, CallbackInfo ci) {
         this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) -> standardOverclockingLogic(
-            recipeEUt,
+            Math.abs(recipeEUt),
             maxVoltage,
             duration,
             amountOC,
-            durationDivisor,
-            voltageMultiplier);
+            recipeEUt > 0 ? durationDivisor : 2,
+            recipeEUt > 0 ? voltageMultiplier : 4);
     }
 
     /**
@@ -94,8 +94,6 @@ public abstract class OverclockingLogicMixin {
     @Overwrite(remap = false)
     @Nonnull
     public static @NotNull LongIntPair standardOverclockingLogic(long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor, double voltageMultiplier) {
-        if (recipeEUt < 0)
-            return gtceuao$standardGeneratorOverclockingLogic(-recipeEUt, maxVoltage, recipeDuration, numberOfOCs, durationDivisor, voltageMultiplier);
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 
@@ -162,38 +160,5 @@ public abstract class OverclockingLogicMixin {
         }
 
         return ImmutableTriple.of((long) resultVoltage, (int) resultDuration, (int) resultParallel);
-    }
-
-    @Unique
-    private static @NotNull LongIntPair gtceuao$standardGeneratorOverclockingLogic(Long recipeEUt, Long maxVoltage, int recipeDuration, int maxOverclocks, double durationDivisor, double voltageMultiplier) {
-        double resultDuration = recipeDuration;
-        double resultVoltage = recipeEUt;
-
-        for (; maxOverclocks > 0; maxOverclocks--) {
-            // it is important to do voltage first,
-            // so overclocking voltage does not go above the limit before changing duration
-
-            double potentialVoltage = resultVoltage * 4;
-            // do not allow voltage to go above maximum
-            if (potentialVoltage > maxVoltage) {
-                resultVoltage = maxVoltage;
-                resultDuration = resultDuration / voltageMultiplier * voltageMultiplier;
-                break;
-            }
-
-            double potentialDuration = resultDuration / voltageMultiplier * voltageMultiplier;
-            // do not allow duration to go below one tick
-            if (potentialDuration < 1) {
-                potentialDuration = 1;
-                resultDuration = potentialDuration;
-                break;
-            }
-            // update the voltage for the next iteration after everything else
-            resultDuration = potentialDuration;
-            // in case duration overclocking would waste energy
-            resultVoltage = potentialVoltage;
-        }
-
-        return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
     }
 }

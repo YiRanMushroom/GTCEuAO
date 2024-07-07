@@ -51,7 +51,7 @@ public class GCyMMachinesMixin {
     public static MultiblockMachineDefinition BLAST_ALLOY_SMELTER;
 
     @Mutable
-    @Shadow
+    @Shadow(remap = false)
     @Final
     public static MultiblockMachineDefinition MEGA_BLAST_FURNACE;
 

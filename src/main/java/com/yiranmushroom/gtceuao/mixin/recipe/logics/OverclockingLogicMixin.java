@@ -63,8 +63,9 @@ public abstract class OverclockingLogicMixin {
         }
     }
 
-    @Inject(method = "<init>*", at = @At("RETURN"), remap = false, cancellable = true)
-    public void OverclockingLogic(double durationDivisor, double voltageMultiplier, double reductionEUt, double reductionDuration) {
+    @Inject(method = "<init>(DDDD)V", at = @At("RETURN"), remap = false)
+    public void OverclockingLogic(double durationDivisor, double voltageMultiplier, double reductionEUt,
+                                  double reductionDuration, CallbackInfo ci) {
         this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) ->
             standardOverclockingLogic((long)((double)Math.abs(recipeEUt) * reductionEUt), maxVoltage,
                 (int)((double)duration * reductionDuration), amountOC, reductionEUt > 0 ? durationDivisor : 2,

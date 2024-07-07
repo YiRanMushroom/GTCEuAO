@@ -2,19 +2,30 @@ package com.yiranmushroom.gtceuao.mixin.config;
 
 import com.gregtechceu.gtceu.config.ConfigHolder;
 import dev.toma.configuration.config.Configurable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ConfigHolder.class)
 public abstract class ConfigHolderMixin {
+    @Inject(method = "<init>", at = @At("RETURN"), remap = false)
+    private void initInj(CallbackInfo ci) {
+
+    }
+
     @Mixin(ConfigHolder.MachineConfigs.class)
     public abstract static class machineConfigsMixin {
-        @Shadow(remap = false)
+/*        // This is used to cheat the mixin system to prevent crash
+        @Unique
+        public double A_overclockDivisorProxy = 4.0;
+
+        @Shadow(remap = false, aliases = {"overclockDivisorProxy"})
         @Configurable
         @Configurable.Comment({"Divisor for Recipe Duration per Overclock.", "Default: 4.0"})
         @Configurable.DecimalRange(min = 1.0, max = 256.0)
         @Configurable.Gui.NumberFormat("0.0#")
-        public double overclockDivisor = 4.0;
+        public double overclockDivisor = 4.0;*/
 
         @Shadow(remap = false)
         @Configurable
@@ -33,30 +44,6 @@ public abstract class ConfigHolderMixin {
             "Default: true"})
         public boolean doBedrockOres = true;
 
-
-    }
-
-    @Mixin(ConfigHolder.CompatibilityConfigs.AE2CompatConfig.class)
-    public abstract static class ae2CompatConfigMixin {
-        @Shadow(remap = false)
-        @Configurable
-        @Configurable.Comment({"The interval between ME Hatch/Bus interact ME network.", "It may cause lag if the interval is too small.", "Default: 2 sec"})
-        @Configurable.Range(min = 1, max = 80)
-        public int updateIntervals = 5;
-
-        @Shadow(remap = false)
-        @Configurable
-        @Configurable.Comment({"The energy consumption of ME Hatch/Bus.", "Default: 1.0AE/t"})
-        @Configurable.DecimalRange(min = 0.0, max = 10.0)
-        public double meHatchEnergyUsage = 0.0;
-    }
-
-    @Mixin(ConfigHolder.CompatibilityConfigs.class)
-    public abstract static class compatibilityConfigsMixin {
-        @Mixin(ConfigHolder.CompatibilityConfigs.EnergyCompatConfig.class)
-        public abstract static class energyCompatConfigMixin {
-
-        }
     }
 
     @Mixin(ConfigHolder.RecipeConfigs.class)

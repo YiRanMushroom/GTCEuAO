@@ -16,13 +16,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nonnull;
 
+import java.util.logging.Logger;
+
 import static com.yiranmushroom.gtceuao.gtceuao.LOGGER;
 
 @Mixin(OverclockingLogic.class)
 public abstract class OverclockingLogicMixin {
     @Final
     @Shadow(remap = false)
-    public static double STANDARD_OVERCLOCK_DURATION_DIVISOR = ConfigHolder.INSTANCE.machines.overclockDivisor;
+    @Mutable
+    public static double STANDARD_OVERCLOCK_DURATION_DIVISOR;
     @Final
     @Shadow(remap = false)
     public static final double STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER = AOConfigHolder.INSTANCE.machines.overclockMultiplier;
@@ -39,6 +42,11 @@ public abstract class OverclockingLogicMixin {
 
     @Shadow(remap = false)
     protected OverclockingLogic.Logic logic;
+
+    @Inject(method = "<clinit>", at = @At("HEAD"), remap = false)
+    private static void clinitInj(CallbackInfo ci) {
+        STANDARD_OVERCLOCK_DURATION_DIVISOR = AOConfigHolder.INSTANCE.machines.overclockDivisor;
+    }
 
     @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)
     private void initInj(double durationDivisor, double voltageMultiplier, CallbackInfo ci) {
@@ -115,19 +123,10 @@ public abstract class OverclockingLogicMixin {
         return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
     }
 
-    @Inject(method = "standardOverclockingLogicWithSubTickParallelCount", at = @At("HEAD")
-        , cancellable = true, remap = false, require = 0)
-    private static void standardOverclockingLogicWithSubTickParallelCountInj
-        (long recipeEUt, long maxVoltage, int recipeDuration, int numberOfOCs, double durationDivisor,
-         double voltageMultiplier, CallbackInfoReturnable<ImmutableTriple<Long, Integer, Integer>> cir) {
-        cir.setReturnValue(standardOverclockingLogicWithSubTickParallelCount(recipeEUt, maxVoltage, recipeDuration,
-            numberOfOCs, durationDivisor, voltageMultiplier));
-    }
-
     @SuppressWarnings("all")
-    @Unique
+    @Overwrite(remap = false)
     @NotNull
-    private static ImmutableTriple<Long, Integer, Integer>
+    public static ImmutableTriple<Long, Integer, Integer>
     standardOverclockingLogicWithSubTickParallelCount(long recipeEUt,
                                                       long maxVoltage,
                                                       int recipeDuration,

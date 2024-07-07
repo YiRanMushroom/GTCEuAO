@@ -25,6 +25,14 @@ public class AOConfigHolder {
 
     public static class MachineConfigs {
         @Configurable
+        @Configurable.Comment({"Divisor for Recipe Duration per Overclock. This will overwrite the GTCEu Config",
+            "This is moved here to be compatible with a fork version of GTCEu.",
+            "Default: 4.0"})
+        @Configurable.DecimalRange(min = 1.0, max = 256.0)
+        @Configurable.Gui.NumberFormat("0.0#")
+        public double overclockDivisor = 4.0;
+
+        @Configurable
         @Configurable.Comment({"Is Native Platform Energy to EU enabled. Disable this may cause some unknown bugs.",
             "Default: true"})
         public boolean nativePEToEU = true;
@@ -123,6 +131,12 @@ public class AOConfigHolder {
         @Configurable.Comment({"Random Factor for a recipe not been modified, the bigger the value, the less likely the recipe will be modified.",
             "Default: 5"})
         public int randomFactor = 2;
+
+        @Configurable
+        @Configurable.Comment({"Whether to let substation hatches has only normal hatch ability?",
+            "This would make normal hatches, substation hatches, and laser hatches compatible with each other.",
+            "Default: true"})
+        public boolean substationHatchNormalAbility = true;
     }
 
     public static class RecipeConfigs {

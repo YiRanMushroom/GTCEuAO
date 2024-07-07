@@ -4,9 +4,6 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "config.ConfigHolderMixin",
-    "config.ConfigHolderMixin$ae2CompatConfigMixin",
-    "config.ConfigHolderMixin$compatibilityConfigsMixin",
-    "config.ConfigHolderMixin$compatibilityConfigsMixin$energyCompatConfigMixin",
     "config.ConfigHolderMixin$machineConfigsMixin",
     "config.ConfigHolderMixin$recipeConfigsMixin",
     "energy.PEToEu.NotifiableEnergyContainerMixin",
@@ -21,6 +18,7 @@
     "machines.multiblocks.parts.FluidHatchPartMachineMixin",
     "machines.multiblocks.parts.ItemBusPartMachineMixin",
     "machines.multiblocks.parts.ParallelHatchPartMachineMixin",
+    "machines.multiblocks.parts.PartAbilityMixin",
     "machines.multiblocks.parts.PredicatesMixin",
     "machines.multiblocks.registry.GCyMMachinesMixin",
     "machines.multiblocks.registry.GTAEMachinesMixin",

@@ -137,7 +137,7 @@ public class AORecipeModifiers {
         if (machine instanceof WorkableElectricMultiblockMachine electricMachine) {
             Pair<GTRecipe, Integer>[] result = new Pair[]{null};
             RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
-                ImmutableTriple<Long, Integer, Integer> parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(Math.abs(recipeEUt), maxVoltage, duration, amountOC, OverclockingLogic.PERFECT_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
+                ImmutableTriple<Long, Integer, Integer> parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(Math.abs(recipeEUt), maxVoltage, duration, amountOC, AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
                 result[0] = fastParallel(machine, recipe, parallel.getRight(), modifyDuration);
                 return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
             }), recipe, electricMachine.getOverclockVoltage());

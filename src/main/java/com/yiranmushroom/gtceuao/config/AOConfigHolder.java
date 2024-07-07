@@ -28,9 +28,17 @@ public class AOConfigHolder {
         @Configurable.Comment({"Divisor for Recipe Duration per Overclock. This will overwrite the GTCEu Config",
             "This is moved here to be compatible with a fork version of GTCEu.",
             "Default: 4.0"})
-        @Configurable.DecimalRange(min = 1.0, max = 256.0)
+        @Configurable.DecimalRange(min = 1.0)
         @Configurable.Gui.NumberFormat("0.0#")
         public double overclockDivisor = 4.0;
+
+        @Configurable
+        @Configurable.Comment({"Divisor for Recipe Duration per Overclock. This will overwrite the GTCEu Config",
+            "This is moved here to be compatible with a fork version of GTCEu.",
+            "Default: 4.0"})
+        @Configurable.DecimalRange(min = 1.0)
+        @Configurable.Gui.NumberFormat("0.0#")
+        public double perfectOverclockDivisor = 64.0;
 
         @Configurable
         @Configurable.Comment({"Is Native Platform Energy to EU enabled. Disable this may cause some unknown bugs.",

@@ -129,6 +129,8 @@ public class AOConfigHolder {
             "This would make normal hatches, substation hatches, and laser hatches compatible with each other.",
             "Default: true"})
         public boolean substationHatchNormalAbility = true;
+
+        public boolean boostGeneralGenerator;
     }
 
     public static class RecipeConfigs {

@@ -4,6 +4,7 @@ import com.gregtechceu.gtceu.api.capability.recipe.RecipeCapability;
 import com.gregtechceu.gtceu.api.recipe.GTRecipe;
 import com.gregtechceu.gtceu.api.recipe.GTRecipeType;
 import com.gregtechceu.gtceu.api.recipe.RecipeCondition;
+import com.gregtechceu.gtceu.api.recipe.RecipeHelper;
 import com.gregtechceu.gtceu.api.recipe.content.Content;
 import com.gregtechceu.gtceu.api.recipe.content.ContentModifier;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
@@ -89,7 +90,10 @@ public abstract class GTRecipeMixin implements Recipe<Container> {
     @Overwrite(remap = false)
     public GTRecipe copy(ContentModifier modifier, boolean modifyDuration) {
         var copied = new GTRecipe(recipeType, id, copyContents(inputs, modifier), copyContents(outputs, modifier),
-            AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower ? copyContents(tickInputs, modifier) : tickInputs,
+            AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower
+                | RecipeHelper.getOutputEUt((GTRecipe) (Object)this) > 0
+                | RecipeHelper.getInputEUt((GTRecipe) (Object)this) < 0
+                ? copyContents(tickInputs, modifier) : tickInputs,
             copyContents(tickOutputs, modifier), new ArrayList<>(conditions), new ArrayList<>(ingredientActions),
             data, duration, isFuel);
         if (modifyDuration) {

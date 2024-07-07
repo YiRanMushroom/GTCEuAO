@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import org.checkerframework.checker.signature.qual.FullyQualifiedName;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.*;
 
@@ -23,41 +24,33 @@ import java.util.Map;
 
 @Mixin(GTRecipe.class)
 public abstract class GTRecipeMixin implements Recipe<Container> {
-    @Mutable
     @Final
     @Shadow(remap = false)
-    public final GTRecipeType recipeType;
+    public GTRecipeType recipeType;
 
-    @Mutable
     @Final
     @Shadow(remap = false)
-    public final ResourceLocation id;
-    @Mutable
+    public ResourceLocation id;
     @Shadow(remap = false)
     @Final
-    public final Map<RecipeCapability<?>, List<Content>> inputs;
-    @Mutable
+    public Map<RecipeCapability<?>, List<Content>> inputs;
     @Shadow(remap = false)
     @Final
-    public final Map<RecipeCapability<?>, List<Content>> outputs;
-    @Mutable
+    public Map<RecipeCapability<?>, List<Content>> outputs;
     @Shadow(remap = false)
     @Final
-    public final Map<RecipeCapability<?>, List<Content>> tickInputs;
-    @Mutable
+    public Map<RecipeCapability<?>, List<Content>> tickInputs;
     @Shadow(remap = false)
     @Final
-    public final Map<RecipeCapability<?>, List<Content>> tickOutputs;
-    @Mutable
+    public Map<RecipeCapability<?>, List<Content>> tickOutputs;
     @Shadow(remap = false)
     @Final
-    public final List<RecipeCondition> conditions;
+    public List<RecipeCondition> conditions;
     // for KubeJS. actual type is List<IngredientAction>.
     // Must be List<?> to not cause crashes without KubeJS.
-    @Mutable
     @Shadow(remap = false)
     @Final
-    public final List<?> ingredientActions;
+    public List<?> ingredientActions;
     @NotNull
     @Shadow(remap = false)
     public CompoundTag data;
@@ -66,17 +59,6 @@ public abstract class GTRecipeMixin implements Recipe<Container> {
     @Getter
     @Shadow(remap = false)
     public boolean isFuel;
-
-    public GTRecipeMixin(GTRecipeType recipeType, ResourceLocation id, Map<RecipeCapability<?>, List<Content>> inputs, Map<RecipeCapability<?>, List<Content>> outputs, Map<RecipeCapability<?>, List<Content>> tickInputs, Map<RecipeCapability<?>, List<Content>> tickOutputs, List<RecipeCondition> conditions, List<?> ingredientActions) {
-        this.recipeType = recipeType;
-        this.id = id;
-        this.inputs = inputs;
-        this.outputs = outputs;
-        this.tickInputs = tickInputs;
-        this.tickOutputs = tickOutputs;
-        this.conditions = conditions;
-        this.ingredientActions = ingredientActions;
-    }
 
     @Shadow(remap = false)
     public abstract Map<RecipeCapability<?>, List<Content>> copyContents(Map<RecipeCapability<?>, List<Content>> contents, @Nullable ContentModifier modifier);
@@ -91,7 +73,7 @@ public abstract class GTRecipeMixin implements Recipe<Container> {
             AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower
                 | RecipeHelper.getOutputEUt((GTRecipe) (Object)this) > 0
                 | RecipeHelper.getInputEUt((GTRecipe) (Object)this) < 0
-                ? copyContents(tickInputs, modifier) : tickInputs,
+                ? copyContents(tickInputs, modifier) : copyContents(tickInputs, null),
             copyContents(tickOutputs, modifier), new ArrayList<>(conditions), new ArrayList<>(ingredientActions),
             data, duration, isFuel);
         if (modifyDuration) {

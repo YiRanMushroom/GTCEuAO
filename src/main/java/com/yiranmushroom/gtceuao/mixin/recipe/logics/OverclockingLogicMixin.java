@@ -45,7 +45,7 @@ public abstract class OverclockingLogicMixin {
 
     @Inject(method = "<clinit>", at = @At("HEAD"), remap = false)
     private static void clinitInj(CallbackInfo ci) {
-        STANDARD_OVERCLOCK_DURATION_DIVISOR = AOConfigHolder.INSTANCE.machines.overclockDivisor;
+        STANDARD_OVERCLOCK_DURATION_DIVISOR = ConfigHolder.INSTANCE.machines.overclockDivisor;
     }
 
     @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)

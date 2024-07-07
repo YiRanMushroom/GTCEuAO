@@ -16,16 +16,12 @@ public abstract class ConfigHolderMixin {
 
     @Mixin(ConfigHolder.MachineConfigs.class)
     public abstract static class machineConfigsMixin {
-/*        // This is used to cheat the mixin system to prevent crash
-        @Unique
-        public double A_overclockDivisorProxy = 4.0;
-
-        @Shadow(remap = false, aliases = {"overclockDivisorProxy"})
+        @Shadow(remap = false)
         @Configurable
         @Configurable.Comment({"Divisor for Recipe Duration per Overclock.", "Default: 4.0"})
         @Configurable.DecimalRange(min = 1.0, max = 256.0)
         @Configurable.Gui.NumberFormat("0.0#")
-        public double overclockDivisor = 4.0;*/
+        public double overclockDivisor = 4.0;
 
         @Shadow(remap = false)
         @Configurable

@@ -68,7 +68,7 @@ public abstract class OverclockingLogicMixin {
                                   double reductionDuration, CallbackInfo ci) {
         this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) ->
             standardOverclockingLogic((long)((double)Math.abs(recipeEUt) * reductionEUt), maxVoltage,
-                (int)((double)duration * reductionDuration), amountOC, reductionEUt > 0 ? durationDivisor : 2,
+                (int)((double)duration * reductionDuration), amountOC, recipeEUt > 0 ? durationDivisor : 2,
                 recipeEUt > 0 ? voltageMultiplier : 4);
     }
 

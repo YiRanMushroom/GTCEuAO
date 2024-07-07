@@ -63,6 +63,14 @@ public abstract class OverclockingLogicMixin {
         }
     }
 
+    @Inject(method = "<init>*", at = @At("RETURN"), remap = false, cancellable = true)
+    public void OverclockingLogic(double durationDivisor, double voltageMultiplier, double reductionEUt, double reductionDuration) {
+        this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) ->
+            standardOverclockingLogic((long)((double)Math.abs(recipeEUt) * reductionEUt), maxVoltage,
+                (int)((double)duration * reductionDuration), amountOC, reductionEUt > 0 ? durationDivisor : 2,
+                recipeEUt > 0 ? voltageMultiplier : 4);
+    }
+
 
     /**
      * applies standard logic for overclocking, where each overclock modifies energy and duration

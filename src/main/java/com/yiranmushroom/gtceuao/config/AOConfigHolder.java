@@ -130,7 +130,11 @@ public class AOConfigHolder {
             "Default: true"})
         public boolean substationHatchNormalAbility = true;
 
-        public boolean boostGeneralGenerator;
+        @Configurable
+        @Configurable.Comment({"Whether to let normal generator produce more power? This will not affect those who",
+            "did not use overclocking logic",
+            "Default: true"})
+        public boolean boostGeneralGenerator = true;
     }
 
     public static class RecipeConfigs {

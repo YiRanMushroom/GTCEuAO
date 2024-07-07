@@ -48,17 +48,6 @@ public abstract class OverclockingLogicMixin {
         STANDARD_OVERCLOCK_DURATION_DIVISOR = ConfigHolder.INSTANCE.machines.overclockDivisor;
     }
 
-    @Inject(method = "<init>(DD)V", at = @At("RETURN"), remap = false)
-    private void initInj(double durationDivisor, double voltageMultiplier, CallbackInfo ci) {
-        this.logic = (recipe, recipeEUt, maxVoltage, duration, amountOC) -> standardOverclockingLogic(
-            Math.abs(recipeEUt),
-            maxVoltage,
-            duration,
-            amountOC,
-            recipeEUt > 0 ? durationDivisor : 2,
-            recipeEUt > 0 ? voltageMultiplier : 4);
-    }
-
     /**
      * @author YiRanMushroom
      * @reason Want to make it quicker

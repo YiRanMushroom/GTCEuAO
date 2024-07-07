@@ -27,10 +27,10 @@ public abstract class ConfigHolderMixin {
         @Configurable.Gui.NumberFormat("0.0#")
         public double overclockDivisor = 4.0;*/
 
-        @Shadow(remap = false)
+/*        @Shadow(remap = false)
         @Configurable
         @Configurable.Comment({"Whether to enable the cleanroom, required for various recipes.", "Default: false"})
-        public boolean enableCleanroom = false;
+        public boolean enableCleanroom = false;*/
 
         @Shadow(remap = false)
         @Configurable

@@ -43,6 +43,7 @@
     "recipe.logics.GTRecipeMixin",
     "recipe.logics.GTRecipeModifiersMixin",
     "recipe.logics.OverclockingLogicMixin",
+    "recipe.logics.RecipeHelperMixin",
     "recipe.logics.WorkableElectricMultiblockMachineMixin",
     "recipe.recipeTypes.GTRecipeTypesMixin",
     "registries.CommonProxyMixin"

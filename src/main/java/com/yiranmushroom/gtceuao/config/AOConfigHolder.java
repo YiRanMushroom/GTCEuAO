@@ -144,6 +144,12 @@ public class AOConfigHolder {
             "This would make normal hatches, substation hatches, and laser hatches compatible with each other.",
             "Default: true"})
         public boolean substationHatchNormalAbility = true;
+
+        @Configurable
+        @Configurable.Comment({"Whether to let normal generator produce more power? This will not affect those who",
+            "did not use overclocking logic",
+            "Default: true"})
+        public boolean boostGeneralGenerator = true;
     }
 
     public static class RecipeConfigs {

@@ -111,5 +111,20 @@ public class OPNaquadahLineRecipes {
             .outputItems(nugget, Tritanium, 2)
             .outputFluids(HydrofluoricAcid.getFluid(6000))
             .save(provider);
+
+        // undo changes of gtl
+        CENTRIFUGE_RECIPES.recipeBuilder("acidic_naquadria_solution_separation").EUt(VA[HV]).duration(100)
+            .inputFluids(AcidicNaquadriaSolution.getFluid(3000))
+            .outputFluids(NaquadriaWaste.getFluid(2000))
+            .outputFluids(Fluorine.getFluid(500))
+            .outputItems(dust, NaquadriaSulfate, 6)
+            .save(provider);
+
+        CENTRIFUGE_RECIPES.recipeBuilder("acidic_enriched_naquadah_separation").EUt(VA[HV]).duration(100)
+            .inputFluids(AcidicEnrichedNaquadahSolution.getFluid(3000))
+            .outputFluids(EnrichedNaquadahWaste.getFluid(2000))
+            .outputFluids(Fluorine.getFluid(500))
+            .outputItems(dust, EnrichedNaquadahSulfate, 6) // Nq+SO4
+            .save(provider);
     }
 }

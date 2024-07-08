@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.function.TriFunction;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -30,6 +31,7 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
         super(registrate, name, definitionFactory, metaMachine, blockFactory, itemFactory, blockEntityFactory);
     }
 
+    @Unique
     private static HashMap<String, Boolean> nameMap = new HashMap<>() {
         {
             this.put("electric_blast_furnace", false);
@@ -50,6 +52,7 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
             this.put("ev_bedrock_ore_miner", false);
             this.put("alloy_blast_smelter",false);
             this.put("mega_blast_furnace",false);
+            this.put("evaporation_plant", false);
         }
     };
 

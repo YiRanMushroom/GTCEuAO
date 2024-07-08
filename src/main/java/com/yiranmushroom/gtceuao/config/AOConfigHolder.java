@@ -128,10 +128,10 @@ public class AOConfigHolder {
             "But may improve machine processing speed","Default: false"})
         public boolean notLazyRecipeModifier = true;
 
-        @Configurable
+/*        @Configurable
         @Configurable.Comment({"Random Factor for a recipe not been modified, the bigger the value, the less likely the recipe will be modified.",
             "Default: 5"})
-        public int randomFactor = 2;
+        public int randomFactor = 1;*/ // Not helpful
 
         @Configurable
         @Configurable.Comment({"Whether to let substation hatches has only normal hatch ability?",

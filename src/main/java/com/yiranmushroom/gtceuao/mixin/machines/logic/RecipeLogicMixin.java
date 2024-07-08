@@ -98,8 +98,8 @@ public abstract class RecipeLogicMixin extends MachineTrait implements IEnhanced
 
     @Unique
     private boolean gtceuao$shouldTryModifyRecipe() {
-        if (new Random().nextInt(AOConfigHolder.INSTANCE.machines.randomFactor) >= lastRecipe.duration)
-            return false;
+/*        if (new Random().nextInt(AOConfigHolder.INSTANCE.machines.randomFactor) >= lastRecipe.duration)
+            return false;*/
         return machine.alwaysTryModifyRecipe();
     }
 }

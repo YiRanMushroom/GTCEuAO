@@ -57,12 +57,6 @@ public class AOConfigHolder {
         public double overclockMultiplier = 1.0;
 
         @Configurable
-        @Configurable.Comment({"Exponential of Perfect Overclocking.", "Default: 3.0"})
-        @Configurable.DecimalRange(min = 1.0, max = 5.0)
-        @Configurable.Gui.NumberFormat("0.0#")
-        public double ExpPerfect = 3.0;
-
-        @Configurable
         @Configurable.Comment({"Additional Times That Machines Are Allowed to Overclock, Still Confined by Voltage.", "Default: 1"})
         @Configurable.DecimalRange(min = 0, max = 128)
         public int bonusOfOCs = 1;

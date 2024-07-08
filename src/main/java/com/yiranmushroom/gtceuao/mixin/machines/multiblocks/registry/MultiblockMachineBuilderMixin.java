@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.lang3.function.TriFunction;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -30,7 +31,8 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
         super(registrate, name, definitionFactory, metaMachine, blockFactory, itemFactory, blockEntityFactory);
     }
 
-    private static HashMap<String, Boolean> nameMap = new HashMap<>() {
+    @Unique
+    private static HashMap<String, Boolean> gtceuao$nameMap = new HashMap<>() {
         {
             this.put("electric_blast_furnace", false);
             this.put("iv_processing_array", false);
@@ -50,14 +52,15 @@ public abstract class MultiblockMachineBuilderMixin extends MachineBuilder<Multi
             this.put("ev_bedrock_ore_miner", false);
             this.put("alloy_blast_smelter",false);
             this.put("mega_blast_furnace", false);
+            this.put("evaporation_plant", false);
         }
     };
 
     @Inject(method = "register()Lcom/gregtechceu/gtceu/api/machine/MultiblockMachineDefinition;",
             at = @At("HEAD"), cancellable = true, remap = false)
     private void newRegister(CallbackInfoReturnable<MultiblockMachineDefinition> cir) {
-        if (nameMap.containsKey(name) && !nameMap.get(name)) {
-            nameMap.put(name, true);
+        if (gtceuao$nameMap.containsKey(name) && !gtceuao$nameMap.get(name)) {
+            gtceuao$nameMap.put(name, true);
             cir.setReturnValue(null);
         }
     }

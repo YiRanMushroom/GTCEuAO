@@ -71,8 +71,6 @@ public abstract class GTRecipeMixin implements Recipe<Container> {
     public GTRecipe copy(ContentModifier modifier, boolean modifyDuration) {
         var copied = new GTRecipe(recipeType, id, copyContents(inputs, modifier), copyContents(outputs, modifier),
             AOConfigHolder.INSTANCE.machines.ParallelNeedMorePower
-                | RecipeHelper.getOutputEUt((GTRecipe) (Object)this) > 0
-                | RecipeHelper.getInputEUt((GTRecipe) (Object)this) < 0
                 ? copyContents(tickInputs, modifier) : copyContents(tickInputs, null),
             copyContents(tickOutputs, modifier), new ArrayList<>(conditions), new ArrayList<>(ingredientActions),
             data, duration, isFuel);

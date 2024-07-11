@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
 
+import static com.yiranmushroom.gtceuao.gtceuao.debugInfo;
+
 @Mixin(OverclockingLogic.class)
 public abstract class OverclockingLogicMixin {
     @Final
@@ -33,13 +35,13 @@ public abstract class OverclockingLogicMixin {
     @Inject(method = "<clinit>", at = @At("RETURN"), remap = false)
     private static void clinitInj(CallbackInfo ci) {
         NON_PERFECT_OVERCLOCK = new OverclockingLogic(AOConfigHolder.INSTANCE.machines.overclockDivisor,
-            AOConfigHolder.INSTANCE.machines.overclockMultiplier,1,1);
+            AOConfigHolder.INSTANCE.machines.overclockMultiplier, 1, 1);
 
         PERFECT_OVERCLOCK = new OverclockingLogic(AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor,
-            AOConfigHolder.INSTANCE.machines.overclockMultiplier,1,1);
+            AOConfigHolder.INSTANCE.machines.overclockMultiplier, 1, 1);
 
         GCYM_OVERCLOCK = new OverclockingLogic(AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor,
-            AOConfigHolder.INSTANCE.machines.overclockMultiplier,0.8,0.6);
+            AOConfigHolder.INSTANCE.machines.overclockMultiplier, 0.8, 0.6);
     }
 
     @Shadow(remap = false)
@@ -52,15 +54,16 @@ public abstract class OverclockingLogicMixin {
     @Nonnull
     @Overwrite(remap = false)
     public static @NotNull LongIntPair heatingCoilOverclockingLogic(long recipeEUt, long maximumVoltage, int recipeDuration, int maxOverclocks, int currentTemp, int recipeRequiredTemp) {
+        debugInfo("Called Overwritten heatingCoilOverclockingLogic with recipeEUt: {}, maxVoltage: {}, recipeDuration: {}, maxOverclocks: {}, currentTemp: {}, recipeRequiredTemp: {}",
+            recipeEUt, maximumVoltage, recipeDuration, maxOverclocks, currentTemp, recipeRequiredTemp);
+
         int amountEUDiscount = Math.max(0, (currentTemp - recipeRequiredTemp) / 900);
         int amountPerfectOC = amountEUDiscount / 2;
         recipeEUt = (long) ((double) recipeEUt * Math.min(1.0, Math.pow(0.95, (double) amountEUDiscount)));
-        if (amountPerfectOC > 0) {
-            LongIntPair overclock = standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, amountPerfectOC, AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
-            return standardOverclockingLogic(overclock.leftLong(), maximumVoltage, overclock.rightInt(), maxOverclocks - amountPerfectOC, AOConfigHolder.INSTANCE.machines.overclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
-        } else {
-            return standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, maxOverclocks, AOConfigHolder.INSTANCE.machines.overclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
-        }
+
+        LongIntPair overclock = standardOverclockingLogic(recipeEUt, maximumVoltage, recipeDuration, amountPerfectOC, AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
+        return standardOverclockingLogic(overclock.leftLong(), maximumVoltage, overclock.rightInt(), maxOverclocks - amountPerfectOC, AOConfigHolder.INSTANCE.machines.overclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
+
     }
 
 
@@ -83,7 +86,9 @@ public abstract class OverclockingLogicMixin {
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 
-        for (; numberOfOCs > (-AOConfigHolder.INSTANCE.machines.bonusOfOCs); numberOfOCs--) {
+        int applied = 0;
+
+        for (; numberOfOCs > 0; numberOfOCs--) {
             // it is important to do voltage first,
             // so overclocking voltage does not go above the limit before changing duration
 
@@ -102,6 +107,12 @@ public abstract class OverclockingLogicMixin {
             resultDuration = potentialDuration;
             // in case duration overclocking would waste energy
             resultVoltage = potentialVoltage;
+
+            applied++;
+
+            debugInfo("After applying {} overclocks, the recipe has {} EU/t and {} ticks",
+                applied, resultVoltage, resultDuration);
+
         }
 
         return LongIntMutablePair.of((long) resultVoltage, (int) resultDuration);
@@ -121,7 +132,7 @@ public abstract class OverclockingLogicMixin {
         double resultVoltage = recipeEUt;
         double resultParallel = 1;
 
-        for (; numberOfOCs > (-AOConfigHolder.INSTANCE.machines.bonusOfOCs); numberOfOCs--) {
+        for (; numberOfOCs > 0; numberOfOCs--) {
             // it is important to do voltage first,
             // so overclocking voltage does not go above the limit before changing duration
 

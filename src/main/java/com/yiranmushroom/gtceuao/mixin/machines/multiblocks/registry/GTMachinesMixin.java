@@ -142,7 +142,7 @@ public abstract class GTMachinesMixin {
         .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.ASSEMBLY_LINE_RECIPES)
         .alwaysTryModifyRecipe(true)
-        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,GTRecipeModifiers.DEFAULT_ENVIRONMENT_REQUIREMENT,
+        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, GTRecipeModifiers.DEFAULT_ENVIRONMENT_REQUIREMENT,
             AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::perfectCoilMachineParallel)
         .appearanceBlock(CASING_STEEL_SOLID)
         .pattern(definition -> FactoryBlockPattern.start(BACK, UP, RIGHT)
@@ -151,9 +151,9 @@ public abstract class GTMachinesMixin {
             .aisle("FOF", "RTR", "DAG", "#Y#")
             .where('S', Predicates.controller(blocks(definition.getBlock())))
             .where('F', blocks(CASING_STEEL_SOLID.get())
-            .or(ConfigHolder.INSTANCE.machines.orderedAssemblyLineFluids ?
-                Predicates.abilities(PartAbility.IMPORT_FLUIDS) :
-                Predicates.abilities(PartAbility.IMPORT_FLUIDS_1X).setMaxGlobalLimited(4)))
+                .or(ConfigHolder.INSTANCE.machines.orderedAssemblyLineFluids ?
+                    Predicates.abilities(PartAbility.IMPORT_FLUIDS) :
+                    Predicates.abilities(PartAbility.IMPORT_FLUIDS_1X).setMaxGlobalLimited(4)))
             .where('O',
                 Predicates.abilities(PartAbility.EXPORT_ITEMS)
                     .addTooltips(Component.translatable("gtceu.multiblock.pattern.location_end")))
@@ -438,7 +438,7 @@ public abstract class GTMachinesMixin {
             .shape(Shapes.box(0.001, 0.001, 0.001, 0.999, 0.999, 0.999))
             .appearanceBlock(() -> ProcessingArrayMachine.getCasingState(tier))
             .recipeType(DUMMY_RECIPES)
-            .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,ProcessingArrayMachine::recipeModifier)
+            .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, ProcessingArrayMachine::recipeModifier)
             .pattern(definition -> FactoryBlockPattern.start()
                 .aisle("XXX", "XXX", "XXX")
                 .aisle("XXX", "X#X", "XXX")
@@ -469,7 +469,9 @@ public abstract class GTMachinesMixin {
     public final static MultiblockMachineDefinition ELECTRIC_BLAST_FURNACE = REGISTRATE.multiblock("electric_blast_furnace", CoilWorkableElectricMultiblockMachine::new)
         .rotationState(RotationState.ALL)
         .recipeType(GTRecipeTypes.BLAST_RECIPES)
-        .recipeModifiers(AORecipeModifiers.PERFECT_SUBTICK_PARALLEL, AORecipeModifiers::ebfOverclock)
+        .recipeModifiers(
+            AORecipeModifiers.PERFECT_SUBTICK_PARALLEL,
+            AORecipeModifiers::ebfOverclock)
         .appearanceBlock(CASING_INVAR_HEATPROOF)
         .pattern(definition -> FactoryBlockPattern.start()
             .aisle("XXX", "CCC", "CCC", "XXX")

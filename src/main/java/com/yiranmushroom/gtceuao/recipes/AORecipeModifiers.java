@@ -24,12 +24,13 @@ import java.util.Objects;
 
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.fastParallel;
+import static com.yiranmushroom.gtceuao.gtceuao.debugInfo;
 
 public class AORecipeModifiers {
 
     public static GTRecipe ebfOverclock(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof CoilWorkableElectricMultiblockMachine coilMachine) {
-            gtceuao.debugInfo("Before EBF Overclock: recipe Eut: {}", RecipeHelper.getInputEUt(recipe));
+            debugInfo("Before EBF Overclock: recipe Eut: {}", RecipeHelper.getInputEUt(recipe));
 
             val blastFurnaceTemperature = coilMachine.getCoilType().getCoilTemperature() + 100 * Math.max(0, coilMachine.getTier() - GTValues.MV);
             if (!recipe.data.contains("ebf_temp") || recipe.data.getInt("ebf_temp") > blastFurnaceTemperature) {
@@ -51,7 +52,7 @@ public class AORecipeModifiers {
                 recipe1.data.contains("ebf_temp") ? recipe1.data.getInt("ebf_temp") : 0
             )), recipe, coilMachine.getOverclockVoltage());
 
-            gtceuao.debugInfo("After EBF Overclock: recipe Eut: {}", RecipeHelper.getInputEUt(newRecipe));
+            debugInfo("After EBF Overclock: recipe Eut: {}", RecipeHelper.getInputEUt(newRecipe));
 
             return newRecipe;
         }
@@ -128,8 +129,6 @@ public class AORecipeModifiers {
         return null;
     }
 
-//    private static final HashMap<ICoilType, Integer> coilParallelMapper = new HashMap<>();
-
     public static int getParallelAmountByCoilType(ICoilType coilType) {
         return AOConfigHolder.INSTANCE.machines.ParallelMultiplier *
             coilType.getLevel() * coilType.getEnergyDiscount();
@@ -141,17 +140,28 @@ public class AORecipeModifiers {
 
     public static GTRecipe prefectSubtickParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
         if (machine instanceof WorkableElectricMultiblockMachine electricMachine) {
-            Pair<GTRecipe, Integer>[] result = new Pair[]{null};
-            RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
-                ImmutableTriple<Long, Integer, Integer> parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(Math.abs(recipeEUt), maxVoltage, duration, amountOC, AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
-                result[0] = fastParallel(machine, recipe, parallel.getRight(), modifyDuration);
-                return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
-            }), recipe, electricMachine.getOverclockVoltage());
+            final Pair<GTRecipe, Integer>[] result = new Pair[] { null };
+            RecipeHelper.applyOverclock(
+                new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
+                    var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
+                        Math.abs(recipeEUt),
+                        maxVoltage,
+                        duration,
+                        amountOC,
+                        AOConfigHolder.INSTANCE.machines.perfectOverclockDivisor,
+                        AOConfigHolder.INSTANCE.machines.overclockMultiplier);
+
+                    result[0] = GTRecipeModifiers.accurateParallel(machine, recipe, parallel.getRight(),
+                        modifyDuration);
+                    return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
+                }), recipe, electricMachine.getOverclockVoltage());
             if (result[0] != null) {
-                return (GTRecipe)result[0].getFirst();
+                return result[0].getFirst();
+            } else {
+                debugInfo("Subtick parallel failed for recipe with original Eut: {}",
+                    RecipeHelper.getInputEUt(recipe));
             }
         }
-
-        return null;
+        return recipe;
     }
 }

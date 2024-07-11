@@ -17,11 +17,15 @@ public class AOConfigHolder {
 
     @Configurable
     public MachineConfigs machines = new MachineConfigs();
+
     @Configurable
     public RecipeConfigs recipes = new RecipeConfigs();
 
     @Configurable
     public MiscConfigs misc = new MiscConfigs();
+
+    @Configurable
+    public DebugConfigs debug = new DebugConfigs();
 
     public static class MachineConfigs {
         @Configurable
@@ -97,12 +101,6 @@ public class AOConfigHolder {
         @Configurable.Comment({"Do use legacy logic for parallel, which may reduce performance, but less buggy",
             "Default: true"})
         public boolean legacyParallelLogic = true;
-
-/*        @Configurable
-        @Configurable.Comment({"Do fast logic for parallel, which will make parallel not accurate, but way faster",
-            "This will only be effective if legacy parallel logic is disabled.",
-            "Default: true"})
-        public boolean fastParallelLogic = false;*/
 
         @Configurable
         @Configurable.Comment({"Are turbines buffed, which will make the energy hatches determine the production, and holders determines the efficiency.",
@@ -225,5 +223,9 @@ public class AOConfigHolder {
 
     }
 
-
+    public static class DebugConfigs {
+        @Configurable
+        @Configurable.Comment({"Do enable debug mode, which will print out debug information.", "Default: false"})
+        public boolean debugMode = false;
+    }
 }

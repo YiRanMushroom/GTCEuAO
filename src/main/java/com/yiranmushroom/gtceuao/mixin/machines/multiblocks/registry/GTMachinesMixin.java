@@ -68,7 +68,7 @@ public abstract class GTMachinesMixin {
     @Final
     @Shadow(remap = false)
     @Mutable
-    public static MultiblockMachineDefinition EVAPORATION_PLANT = REGISTRATE
+    public static MachineDefinition EVAPORATION_PLANT = REGISTRATE
         .multiblock("evaporation_plant", CoilWorkableElectricMultiblockMachine::new)
         .langValue("Evaporation Tower")
         .rotationState(RotationState.NON_Y_AXIS)

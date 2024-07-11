@@ -2,11 +2,7 @@ package com.yiranmushroom.gtceuao;
 
 import com.mojang.logging.LogUtils;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -17,9 +13,8 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(gtceuao.MODID)
@@ -27,6 +22,13 @@ public class gtceuao {
     public static final String MODID = "gtceuao";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    @SuppressWarnings("all")
+    public static void debugLog(String str, Object... args){
+        if (AOConfigHolder.INSTANCE.debug.debugMode){
+            LOGGER.info(str, args);
+        }
+    }
 
     // setting things up
 

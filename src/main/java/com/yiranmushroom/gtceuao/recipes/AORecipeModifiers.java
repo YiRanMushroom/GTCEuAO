@@ -12,6 +12,7 @@ import com.gregtechceu.gtceu.api.recipe.modifier.RecipeModifier;
 import com.gregtechceu.gtceu.common.data.GTRecipeModifiers;
 import com.mojang.datafixers.util.Pair;
 import com.yiranmushroom.gtceuao.config.AOConfigHolder;
+import com.yiranmushroom.gtceuao.gtceuao;
 import it.unimi.dsi.fastutil.longs.LongIntPair;
 import lombok.val;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -28,6 +29,7 @@ public class AORecipeModifiers {
 
     public static GTRecipe ebfOverclock(MetaMachine machine, @Nonnull GTRecipe recipe) {
         if (machine instanceof CoilWorkableElectricMultiblockMachine coilMachine) {
+            gtceuao.debugLog("Before EBF Overclocking: voltage: {}", RecipeHelper.getInputEUt(recipe));
             val blastFurnaceTemperature = coilMachine.getCoilType().getCoilTemperature() + 100 * Math.max(0, coilMachine.getTier() - GTValues.MV);
             if (!recipe.data.contains("ebf_temp") || recipe.data.getInt("ebf_temp") > blastFurnaceTemperature) {
                 return null;
@@ -39,7 +41,7 @@ public class AORecipeModifiers {
             var result = accurateParallel(machine, recipe, getParallelAmountByCoilType(coilMachine.getCoilType()), false);
             recipe = result.getFirst() == recipe ? result.getFirst().copy() : result.getFirst();
 
-            return RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> OverclockingLogic.heatingCoilOverclockingLogic(
+            var newRecipe = RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> OverclockingLogic.heatingCoilOverclockingLogic(
                 Math.abs(recipeEUt),
                 maxVoltage,
                 duration,
@@ -48,6 +50,9 @@ public class AORecipeModifiers {
                 recipe1.data.contains("ebf_temp") ? recipe1.data.getInt("ebf_temp") : 0
             )), recipe, coilMachine.getOverclockVoltage());
 
+            gtceuao.debugLog("After EBF Overclocking: voltage: {}", RecipeHelper.getInputEUt(newRecipe));
+
+            return newRecipe;
         }
         return null;
     }
@@ -142,7 +147,7 @@ public class AORecipeModifiers {
                 return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
             }), recipe, electricMachine.getOverclockVoltage());
             if (result[0] != null) {
-                return (GTRecipe)result[0].getFirst();
+                return (GTRecipe) result[0].getFirst();
             }
         }
 

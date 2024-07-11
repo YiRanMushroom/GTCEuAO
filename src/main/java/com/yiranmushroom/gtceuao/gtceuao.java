@@ -28,6 +28,12 @@ public class gtceuao {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
+    public static void debugInfo(String str, Object... args) {
+        if (AOConfigHolder.INSTANCE.debug.debugMode) {
+            LOGGER.info(str, args);
+        }
+    }
+
     // setting things up
 
     public gtceuao() {

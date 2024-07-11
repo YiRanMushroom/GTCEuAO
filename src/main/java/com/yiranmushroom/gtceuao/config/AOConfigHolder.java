@@ -17,11 +17,15 @@ public class AOConfigHolder {
 
     @Configurable
     public MachineConfigs machines = new MachineConfigs();
+
     @Configurable
     public RecipeConfigs recipes = new RecipeConfigs();
 
     @Configurable
     public MiscConfigs misc = new MiscConfigs();
+
+    @Configurable
+    public DebugConfigs debug = new DebugConfigs();
 
     public static class MachineConfigs {
         @Configurable
@@ -125,13 +129,8 @@ public class AOConfigHolder {
 
         @Configurable
         @Configurable.Comment({"Do make RecipeModifier not lazy, which may significantly reduce performance",
-            "But may improve machine processing speed","Default: false"})
+            "But may improve machine processing speed", "Default: false"})
         public boolean notLazyRecipeModifier = true;
-
-/*        @Configurable
-        @Configurable.Comment({"Random Factor for a recipe not been modified, the bigger the value, the less likely the recipe will be modified.",
-            "Default: 5"})
-        public int randomFactor = 1;*/ // Not helpful
 
         @Configurable
         @Configurable.Comment({"Whether to let substation hatches has only normal hatch ability?",
@@ -231,8 +230,11 @@ public class AOConfigHolder {
         @Configurable
         @Configurable.Comment({"Is fly always enabled. (even in survival mode)", "Currently working not well.", "Default: false"})
         public boolean flyAlwaysEnabled = false;
-
     }
 
-
+    public static class DebugConfigs {
+        @Configurable
+        @Configurable.Comment({"Is debug mode enabled. This will make logger provide more infos", "Default: false"})
+        public boolean debugMode = false;
+    }
 }

@@ -86,7 +86,7 @@ public abstract class OverclockingLogicMixin {
         double resultDuration = recipeDuration;
         double resultVoltage = recipeEUt;
 
-        for (; numberOfOCs > (-AOConfigHolder.INSTANCE.machines.bonusOfOCs); numberOfOCs--) {
+        for (; numberOfOCs > 0; numberOfOCs--) {
             // it is important to do voltage first,
             // so overclocking voltage does not go above the limit before changing duration
 
@@ -124,7 +124,7 @@ public abstract class OverclockingLogicMixin {
         double resultVoltage = recipeEUt;
         double resultParallel = 1;
 
-        for (; numberOfOCs > (-AOConfigHolder.INSTANCE.machines.bonusOfOCs); numberOfOCs--) {
+        for (; numberOfOCs > 0; numberOfOCs--) {
             // it is important to do voltage first,
             // so overclocking voltage does not go above the limit before changing duration
 

@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.accurateParallel;
 import static com.gregtechceu.gtceu.common.data.GTRecipeModifiers.fastParallel;
+import static com.yiranmushroom.gtceuao.gtceuao.debugInfo;
 
 public class AORecipeModifiers {
 
@@ -140,17 +141,25 @@ public class AORecipeModifiers {
 
     public static GTRecipe prefectSubtickParallel(MetaMachine machine, @NotNull GTRecipe recipe, boolean modifyDuration) {
         if (machine instanceof WorkableElectricMultiblockMachine electricMachine) {
-            Pair<GTRecipe, Integer>[] result = new Pair[]{null};
-            RecipeHelper.applyOverclock(new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
-                ImmutableTriple<Long, Integer, Integer> parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(Math.abs(recipeEUt), maxVoltage, duration, amountOC, OverclockingLogic.PERFECT_OVERCLOCK_DURATION_DIVISOR, AOConfigHolder.INSTANCE.machines.overclockMultiplier);
-                result[0] = fastParallel(machine, recipe, parallel.getRight(), modifyDuration);
-                return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
-            }), recipe, electricMachine.getOverclockVoltage());
+            final Pair<GTRecipe, Integer>[] result = new Pair[] { null };
+            RecipeHelper.applyOverclock(
+                new OverclockingLogic((recipe1, recipeEUt, maxVoltage, duration, amountOC) -> {
+                    var parallel = OverclockingLogic.standardOverclockingLogicWithSubTickParallelCount(
+                        Math.abs(recipeEUt),
+                        maxVoltage,
+                        duration,
+                        amountOC,
+                        OverclockingLogic.PERFECT_OVERCLOCK_DURATION_DIVISOR,
+                        OverclockingLogic.STANDARD_OVERCLOCK_VOLTAGE_MULTIPLIER);
+
+                    result[0] = GTRecipeModifiers.accurateParallel(machine, recipe, parallel.getRight(),
+                        modifyDuration);
+                    return LongIntPair.of(parallel.getLeft(), parallel.getMiddle());
+                }), recipe, electricMachine.getOverclockVoltage());
             if (result[0] != null) {
-                return (GTRecipe) result[0].getFirst();
+                return result[0].getFirst();
             }
         }
-
-        return null;
+        return recipe;
     }
 }
